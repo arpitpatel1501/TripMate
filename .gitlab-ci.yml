@@ -1,7 +1,7 @@
 variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
-  GRADLE_VERSION: 7.5
+  GRADLE_VERSION: "7.5"
 
 test:
   stage: test
