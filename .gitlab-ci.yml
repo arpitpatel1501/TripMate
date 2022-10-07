@@ -1,12 +1,13 @@
 variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
+  GRADLE_VERSION: 7.5
 
 test:
   stage: test
   tags:
     - dalfcs_docker_autoscale
-  image: gradle:7.3.3-jdk17-alpine
+  image: gradle:$GRADLE_VERSION-jdk17-alpine
   script: 
   - chmod +x gradlew
   - ./gradlew check
@@ -18,7 +19,7 @@ build:
   stage: build
   tags:
     - dalfcs_docker_autoscale
-  image: gradle:7.3.3-jdk17-alpine
+  image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
   - chmod +x gradlew 
   - ./gradlew assemble --scan
@@ -36,7 +37,7 @@ deploy-int:
   - apt-get install -y ruby-dev
   - gem install dpl
   - export PATH=$PATH:/usr/local/bundle/bin
-  - dpl --provider=heroku --app=$HEROKU_APP_NAME_INT --api-key=$HEROKU_API_KEY
+  - dpl --provider=heroku --app=$heroku_app_name_test --api-key=$heroku_api_key
   only: 
   - develop
 
@@ -50,6 +51,6 @@ deploy-prod:
   - apt-get install -y ruby-dev
   - gem install dpl
   - export PATH=$PATH:/usr/local/bundle/bin
-  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
+  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$heroku_api_key
   only: 
   - main
