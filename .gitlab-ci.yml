@@ -2,13 +2,14 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
-  RUNNER: "ugrad"
+  RUNNER: "grad"
+  #    dalfcs_docker_autoscale
+
 
 test:
   stage: test
   tags:
     - $RUNNER
-#    - dalfcs_docker_autoscale
   image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
     - chmod +x gradlew
