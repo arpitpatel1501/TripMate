@@ -6,7 +6,7 @@ plugins {
 
 group = 'ca.dal.grp16'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
@@ -19,10 +19,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-// Ref: https://stackoverflow.com/questions/69696321/intellij-invalid-source-release-17
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
 }
