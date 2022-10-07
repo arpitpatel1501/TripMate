@@ -21,3 +21,5 @@ Create a release branch from develop
 	Merge the release branch into master
 	Tag master with a version number.
 Merge master into develop (this brings any bug fixes you did in the release branch back into develop)
+
+# trying hotfix
