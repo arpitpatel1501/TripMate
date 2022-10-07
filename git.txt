@@ -1,5 +1,6 @@
 git checkout -b develop main # Right away set up the develop branch by branching from master.
 
+git push --set-upstream origin develop
 
 Feature branch:
 When you begin a new task:
