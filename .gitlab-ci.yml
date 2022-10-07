@@ -2,11 +2,13 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
+  RUNNER: "ugrad"
 
 test:
   stage: test
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
+#    - dalfcs_docker_autoscale
   image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
     - chmod +x gradlew
@@ -18,7 +20,7 @@ test:
 build:
   stage: build
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
   image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
     - chmod +x gradlew
@@ -30,7 +32,7 @@ build:
 deploy-int:
   stage: deploy
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
   image: ruby:3.2-rc
   script:
     - apt-get update -qy
@@ -44,7 +46,7 @@ deploy-int:
 deploy-prod:
   stage: deploy
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
   image: ruby:3.2-rc
   script:
     - apt-get update -qy
