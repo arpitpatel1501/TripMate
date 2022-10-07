@@ -1,0 +1,55 @@
+variables:
+  GRADLE_OPTS: "-Dorg:gradle.daemon=false"
+  GIT_STRATEGY: clone
+
+test:
+  stage: test
+  tags:
+    - dalfcs_docker_autoscale
+  image: gradle:7.3.3-jdk17-alpine
+  script: 
+  - chmod +x gradlew
+  - ./gradlew check
+  only:
+    refs:
+      - branches
+
+build:
+  stage: build
+  tags:
+    - dalfcs_docker_autoscale
+  image: gradle:7.3.3-jdk17-alpine
+  script:
+  - chmod +x gradlew 
+  - ./gradlew assemble --scan
+  only:
+    refs:
+      - branches
+
+deploy-int:
+  stage: deploy
+  tags: 
+    - dalfcs_docker_autoscale
+  image: ruby:3.2-rc
+  script: 
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - export PATH=$PATH:/usr/local/bundle/bin
+  - dpl --provider=heroku --app=$HEROKU_APP_NAME_INT --api-key=$HEROKU_API_KEY
+  only: 
+  - develop
+
+deploy-prod:
+  stage: deploy
+  tags: 
+    - dalfcs_docker_autoscale
+  image: ruby:3.2-rc
+  script: 
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - export PATH=$PATH:/usr/local/bundle/bin
+  - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
+  only: 
+  - main
