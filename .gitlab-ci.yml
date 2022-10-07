@@ -2,7 +2,7 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
-  RUNNER: "grad"
+  RUNNER: "dalfcs_docker_autoscale"
   #    dalfcs_docker_autoscale
 
 
