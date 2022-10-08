@@ -6,7 +6,7 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
-  RUNNER: "dalfcs_docker_autoscale"
+  RUNNER: "ugrad"  #"dalfcs_docker_autoscale"
   JDK_VERSION: "jdk8"
 
 stages:
@@ -20,10 +20,19 @@ test:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
+    - bundle install
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
     - ./gradlew check
   only:
     refs:
       - branches
+  artifacts:
+    when: always
+    paths:
+      - rspec.xml
+    reports:
+      junit: rspec.xml
+# Ref: https://docs.gitlab.com/ee/ci/testing/unit_test_reports.html
 
 build:
   stage: build
