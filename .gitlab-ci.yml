@@ -1,6 +1,5 @@
 before_script:
-  # The following line is only necessary if using a docker-based runner.
-  #- apk add --no-cache openssh-client
+  # The following line is only necessary for using a docker-based runner.
   - chmod +x ./gradlew
 
 variables:
@@ -8,6 +7,7 @@ variables:
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
   RUNNER: "dalfcs_docker_autoscale"
+  JDK_VERSION: "jdk8"
 
 stages:
   - build
@@ -18,9 +18,8 @@ test:
   stage: test
   tags:
     - $RUNNER
-  image: gradle:$GRADLE_VERSION-jdk17-alpine
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION-alpine
   script:
-#    - chmod +x gradlew
     - ./gradlew check
   only:
     refs:
@@ -30,9 +29,8 @@ build:
   stage: build
   tags:
     - $RUNNER
-  image: gradle:$GRADLE_VERSION-jdk17-alpine
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION-alpine
   script:
-#    - chmod +x gradlew
     - ./gradlew assemble --scan
   only:
     refs:
