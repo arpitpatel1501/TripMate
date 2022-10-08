@@ -1,10 +1,18 @@
+before_script:
+  # The following line is only necessary if using a docker-based runner.
+  #- apk add --no-cache openssh-client
+  - chmod +x ./gradlew
+
 variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
   RUNNER: "dalfcs_docker_autoscale"
-  #    dalfcs_docker_autoscale
 
+stages:
+  - build
+  - test
+  - deploy
 
 test:
   stage: test
@@ -12,7 +20,7 @@ test:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
-    - chmod +x gradlew
+#    - chmod +x gradlew
     - ./gradlew check
   only:
     refs:
@@ -24,13 +32,13 @@ build:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-jdk17-alpine
   script:
-    - chmod +x gradlew
+#    - chmod +x gradlew
     - ./gradlew assemble --scan
   only:
     refs:
       - branches
 
-deploy-int:
+deploy-non-prod:
   stage: deploy
   tags:
     - $RUNNER
@@ -57,3 +65,5 @@ deploy-prod:
     - dpl --provider=heroku --app=$heroku_app_name --api-key=$heroku_api_key
   only:
     - main
+
+# Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
