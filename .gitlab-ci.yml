@@ -18,7 +18,7 @@ test:
   stage: test
   tags:
     - $RUNNER
-  image: gradle:$GRADLE_VERSION-$JDK_VERSION-alpine
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
     - ./gradlew check
   only:
@@ -29,7 +29,7 @@ build:
   stage: build
   tags:
     - $RUNNER
-  image: gradle:$GRADLE_VERSION-$JDK_VERSION-alpine
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
     - ./gradlew assemble --scan
   only:
