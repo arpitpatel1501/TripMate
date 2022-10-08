@@ -2,7 +2,7 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
-  RUNNER: "grad" #"ugrad"  #"dalfcs_docker_autoscale"
+  RUNNER: "dalfcs_docker_autoscale" # "grad" #"ugrad"  #
   JDK_VERSION: "jdk8"
 
 stages:
