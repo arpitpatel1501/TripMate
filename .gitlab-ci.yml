@@ -1,7 +1,3 @@
-before_script:
-  # The following line is only necessary for using a docker-based runner.
-  - chmod +x ./gradlew
-
 variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
@@ -20,6 +16,7 @@ test:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
+    - chmod +x ./gradlew
     - ./gradlew check
   artifacts:
     when: always
@@ -38,6 +35,7 @@ build:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
+    - chmod +x ./gradlew
     - ./gradlew assemble --scan
   only:
     refs:
