@@ -27,9 +27,9 @@ test:
       - build/test-results/test
     reports:
       junit: build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
-    only:
-      refs:
-        - branches
+  only:
+    refs:
+      - branches
 # Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:
