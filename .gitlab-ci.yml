@@ -55,6 +55,8 @@ deploy-non-prod:
   only:
     - develop
 
+# Ref: https://docs.gitlab.com/ee/ci/examples/deployment/index.html
+
 deploy-prod:
   stage: deploy
   tags:
