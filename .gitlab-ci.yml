@@ -2,35 +2,49 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
+  RUNNER: "dalfcs_docker_autoscale" # "grad" #"ugrad"  #
+  JDK_VERSION: "jdk8"
+
+stages:
+  - build
+  - test
+  - deploy
 
 test:
   stage: test
   tags:
-    - dalfcs_docker_autoscale
-  image: gradle:$GRADLE_VERSION-jdk17-alpine
+    - $RUNNER
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
-    - chmod +x gradlew
+    - chmod +x ./gradlew
     - ./gradlew check
+  artifacts:
+    when: always
+    paths:
+      - build/test-results/test
+    reports:
+      junit: build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
   only:
     refs:
       - branches
+# Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:
   stage: build
   tags:
-    - dalfcs_docker_autoscale
-  image: gradle:$GRADLE_VERSION-jdk17-alpine
+    - $RUNNER
+  image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
-    - chmod +x gradlew
+    - chmod +x ./gradlew
     - ./gradlew assemble --scan
   only:
     refs:
       - branches
 
-deploy-int:
+deploy-non-prod:
   stage: deploy
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
   image: ruby:3.2-rc
   script:
     - apt-get update -qy
@@ -44,7 +58,7 @@ deploy-int:
 deploy-prod:
   stage: deploy
   tags:
-    - dalfcs_docker_autoscale
+    - $RUNNER
   image: ruby:3.2-rc
   script:
     - apt-get update -qy
@@ -54,3 +68,5 @@ deploy-prod:
     - dpl --provider=heroku --app=$heroku_app_name --api-key=$heroku_api_key
   only:
     - main
+
+# Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
