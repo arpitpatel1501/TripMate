@@ -20,19 +20,17 @@ test:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
-    - bundle install
-    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
     - ./gradlew check
-  only:
-    refs:
-      - branches
   artifacts:
     when: always
     paths:
-      - rspec.xml
+      - build/test-results/test
     reports:
-      junit: rspec.xml
-# Ref: https://docs.gitlab.com/ee/ci/testing/unit_test_reports.html
+      junit: build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
+    only:
+      refs:
+        - branches
+# Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:
   stage: build
