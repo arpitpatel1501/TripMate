@@ -16,14 +16,14 @@ test:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
-    - chmod +x ./tripmate/gradlew
-    - ./tripmate/gradlew check
+    - chmod +x ./gradlew
+    - ./gradlew check
   artifacts:
     when: always
     paths:
-      - tripmate/build/test-results/test
+      - build/test-results/test
     reports:
-      junit: tripmate/build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
+      junit: build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
   only:
     refs:
       - branches
@@ -35,8 +35,8 @@ build:
     - $RUNNER
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
-    - chmod +x ./tripmate/gradlew
-    - ./tripmate/gradlew assemble --scan
+    - chmod +x ./gradlew
+    - ./gradlew assemble --scan
   only:
     refs:
       - branches
