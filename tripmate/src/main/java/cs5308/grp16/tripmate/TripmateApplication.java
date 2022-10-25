@@ -1,4 +1,4 @@
-package ca.dal.grp16.tripmate;
+package cs5308.grp16.tripmate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
