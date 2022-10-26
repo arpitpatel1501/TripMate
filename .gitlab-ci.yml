@@ -22,7 +22,7 @@ test:
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
     - chmod +x ./gradlew
-    - .gradlew check
+    - ./gradlew check
   artifacts:
     when: always
     paths:
