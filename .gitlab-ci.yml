@@ -8,8 +8,7 @@ variables:
 before_script:
   - GRADLE_USER_HOME="$(pwd)/tripmate/.gradle"
   - export GRADLE_USER_HOME
-  - echo `GRADLE_USER_HOME` # debug
-
+  - cd tripmate
 
 stages:
   - build
@@ -29,7 +28,7 @@ test:
     paths:
       - tripmate/build/test-results/test
     reports:
-      junit: tripmate/build/test-results/test/TEST-ca.dal.grp16.tripmate.TripmateApplicationTests.xml
+      junit: tripmate/build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
   only:
     refs:
       - branches
