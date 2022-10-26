@@ -5,6 +5,10 @@ variables:
   RUNNER: "dalfcs_docker_autoscale" # "grad" #"ugrad"  #
   JDK_VERSION: "jdk8"
 
+before_script:
+  - GRADLE_USER_HOME="$(pwd)/tripmate/.gradle"
+  - export GRADLE_USER_HOME
+
 stages:
   - build
   - test
