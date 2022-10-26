@@ -6,9 +6,10 @@ variables:
   JDK_VERSION: "jdk8"
 
 before_script:
-  - echo `pwd` # debug
   - GRADLE_USER_HOME="$(pwd)/tripmate/.gradle"
   - export GRADLE_USER_HOME
+  - echo `GRADLE_USER_HOME` # debug
+
 
 stages:
   - build
