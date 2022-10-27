@@ -26,9 +26,9 @@ test:
   artifacts:
     when: always
     paths:
-      - build/test-results/test
+      - tripmate/build/test-results/test
     reports:
-      junit: build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
+      junit: tripmate/build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
   only:
     refs:
       - branches
