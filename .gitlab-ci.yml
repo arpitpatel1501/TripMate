@@ -42,7 +42,6 @@ build:
   script:
     - chmod +x ./gradlew
     - ./gradlew assemble --scan
-    - ./gradlew bootJar
   only:
     refs:
       - branches
