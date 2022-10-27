@@ -12,4 +12,10 @@ public class login {
         return "greeting";
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+        model.addAttribute("name", name);
+        return "index";
+    }
+
 }
