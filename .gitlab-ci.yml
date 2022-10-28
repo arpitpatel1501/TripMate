@@ -57,6 +57,9 @@ deploy-non-prod:
     - gem install dpl
     - export PATH=$PATH:/usr/local/bundle/bin
     - dpl --provider=heroku --app=$heroku_app_name_test --api-key=$heroku_api_key
+  environment:
+    name: staging
+    url: https://trip-mate-grp16-test.herokuapp.com/
   only:
     - develop
 
@@ -73,6 +76,9 @@ deploy-prod:
     - gem install dpl
     - export PATH=$PATH:/usr/local/bundle/bin
     - dpl --provider=heroku --app=$heroku_app_name --api-key=$heroku_api_key
+  environment:
+    name: production
+    url: https://trip-mate-grp16.herokuapp.com/
   only:
     - main
 
