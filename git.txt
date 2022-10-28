@@ -1,0 +1,25 @@
+git checkout -b develop main # Right away set up the develop branch by branching from master.
+
+git push --set-upstream origin develop
+
+Feature branch:
+When you begin a new task:
+Ensure you have the latest version of develop (git pull) 
+	feature Branch from develop, make your branch name something meaningful
+	Checkout the branch
+		Do your work
+		Compile and test your code
+	Push your branch to gitlab
+	Wait for the CI pipeline to report success (or fix any failures it detects)
+Merge your change into develop
+
+Release branch:
+Create a release branch from develop
+	Test it locally
+	Deploy it to your production server manually
+	Test it on production
+	Merge the release branch into master
+	Tag master with a version number.
+Merge master into develop (this brings any bug fixes you did in the release branch back into develop)
+
+# trying hotfix
