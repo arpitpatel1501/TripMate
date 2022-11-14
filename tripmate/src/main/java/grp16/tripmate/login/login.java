@@ -1,16 +1,34 @@
 package grp16.tripmate.login;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.user.User;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@RestController
+@Controller
 public class login {
+    private final ILogger logger = new MyLogger(this);
 
-    @RequestMapping(value = "/greeting", method = RequestMethod.GET)
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
+    @GetMapping("/greeting")
+    public String greeting(Model model) {
+
         return "greeting";
     }
 
+    @GetMapping("/login")
+    public String greetingForm(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
 
+    @PostMapping("/login")
+    public String greetingSubmit(@ModelAttribute User user, Model model) {
+        model.addAttribute("user", user);
+        logger.info(user.getUsername() + " " + user.getPassword());
+        return "greeting";
+    }
 }
