@@ -3,9 +3,14 @@ package grp16.tripmate.logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// Adapter class - object scope adapter
 public class MyLogger implements ILogger {
 
     Logger logger;
+
+    // Do not implement default constructor as it requires a classobj, thus making it private
+    private MyLogger() {
+    }
 
     public MyLogger(Object classObj) {
         logger = LogManager.getLogger(classObj);
