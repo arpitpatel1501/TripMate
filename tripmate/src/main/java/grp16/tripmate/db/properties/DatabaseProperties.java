@@ -9,10 +9,10 @@ import java.util.Properties;
 
 public class DatabaseProperties {
 
-    private ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLogger(this);
 
-    static DatabaseProperties databaseProperties;
-    public static final String DATABASE_CONFIGURATION_FILE = "./application.properties";
+    private static DatabaseProperties databaseProperties;
+    private static final String DATABASE_CONFIGURATION_FILE = "./application.properties";
 
     public String getDatabaseURL() {
         return databaseURL;

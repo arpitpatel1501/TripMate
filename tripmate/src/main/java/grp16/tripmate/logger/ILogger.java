@@ -6,4 +6,6 @@ public interface ILogger {
     void error(String message);
 
     void warn(String message);
+
+
 }

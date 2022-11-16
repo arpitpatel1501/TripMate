@@ -1,8 +1,7 @@
-package grp16.tripmate.login;
+package grp16.tripmate.user;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLogger;
-import grp16.tripmate.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
