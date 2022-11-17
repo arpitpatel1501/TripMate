@@ -27,7 +27,7 @@ public class login {
     @PostMapping("/login")
     public String greetingSubmit(@ModelAttribute User user, Model model) {
         model.addAttribute("user", user);
-        logger.info(user.getUsername() + " " + user.getPassword());
+        logger.info(user.getFirstName() + " " + user.getPassword());
         return "greeting";
     }
 }

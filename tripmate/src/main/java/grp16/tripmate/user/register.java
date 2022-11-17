@@ -31,7 +31,7 @@ public class register {
     @PostMapping("/register")
     public String greetingSubmit(@ModelAttribute User user, Model model) throws Exception {
         model.addAttribute("user", user);
-        logger.info(user.getUsername() + " " + user.getPassword());
+        logger.info(user.getFirstName() + " " + user.getPassword());
         Connection connection = databaseConnectionDAO.getDatabaseConnection();
         connection.createStatement();
         connection.close();

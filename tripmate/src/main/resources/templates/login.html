@@ -7,7 +7,7 @@
 <body>
 <h1>Login</h1>
 <form action="#" th:action="@{/login}" th:object="${user}" method="post">
-    <p>Id: <input type="text" th:field="*{username}"/></p>
+    <p>Id: <input type="email" th:field="*{email}"/></p>
     <p>Message: <input type="password" th:field="*{password}"/></p>
     <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
 </form>
