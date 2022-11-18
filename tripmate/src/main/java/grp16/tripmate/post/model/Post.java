@@ -1,6 +1,6 @@
-package grp16.tripmate.post;
+package grp16.tripmate.post.model;
 
-import grp16.tripmate.user.User;
+import grp16.tripmate.user.model.User;
 import java.util.Date;
 
 public class Post {

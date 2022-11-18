@@ -1,4 +1,4 @@
-package grp16.tripmate.user;
+package grp16.tripmate.user.model;
 
 public class Hobby {
     private int id;

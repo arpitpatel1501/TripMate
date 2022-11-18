@@ -1,4 +1,6 @@
-package grp16.tripmate.user;
+package grp16.tripmate.user.model;
+
+import grp16.tripmate.user.model.Hobby;
 
 import java.util.Date;
 import java.util.List;
