@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class Login {
-    // just for commit
     private final ILogger logger = new MyLogger(this);
 
     @GetMapping("/greeting")
@@ -29,7 +28,7 @@ public class Login {
     @PostMapping("/login")
     public String greetingSubmit(@ModelAttribute User user, Model model) {
         model.addAttribute("user", user);
-        logger.info(user.getFirstName() + " " + user.getPassword());
+        logger.info(user.getUsername() + " " + user.getPassword());
         return "greeting";
     }
 }
