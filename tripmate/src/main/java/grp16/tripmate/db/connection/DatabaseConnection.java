@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection implements DatabaseConnectionDAO {
 
-    private ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLogger(this);
     private Connection connection = null;
 
 

@@ -29,7 +29,8 @@ public class DatabaseProperties {
     private String databaseURL, databaseUserName, databasePassword;
 
     private DatabaseProperties() throws Exception {
-        setProfileProperties(getActiveProfile());
+        String activeProfile = getActiveProfile();
+        setProfileProperties(activeProfile);
     }
 
     public static DatabaseProperties getInstance() throws Exception {
@@ -39,7 +40,7 @@ public class DatabaseProperties {
         return databaseProperties;
     }
 
-    private String getActiveProfile() throws IOException {
+    public String getActiveProfile() throws IOException {
 
         String activeProfile = loadPropertiesFromFile(DATABASE_CONFIGURATION_FILE).getProperty("spring.profiles.active");
 
@@ -72,4 +73,6 @@ public class DatabaseProperties {
         logger.info(databaseUserName);
         logger.info(databasePassword);
     }
+
+
 }
