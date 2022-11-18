@@ -15,6 +15,7 @@ import java.sql.Connection;
 
 @Controller
 public class Register {
+    // to merge with develop
     private final ILogger logger = new MyLogger(this);
 
     DatabaseConnectionDAO databaseConnectionDAO;

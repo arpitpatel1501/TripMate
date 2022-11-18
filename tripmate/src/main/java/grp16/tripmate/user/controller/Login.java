@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class Login {
-    // just for commit
     private final ILogger logger = new MyLogger(this);
 
     @GetMapping("/greeting")
