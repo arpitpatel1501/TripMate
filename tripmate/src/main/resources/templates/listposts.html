@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>${title}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>${title}</h1>
+<div th:replace="../fragments/menubar :: menubar"></div>
+
+<tr th:each="student: ${students}">
+    <td th:text="${student.id}"/>
+    <td th:text="${student.name}"/>
+</tr>
+</body>
+</html>

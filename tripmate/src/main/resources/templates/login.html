@@ -6,10 +6,15 @@
 </head>
 <body>
 <h1>Login</h1>
+<div th:replace="../fragments/menubar :: menubar"></div>
 <form action="#" th:action="@{/login}" th:object="${user}" method="post">
     <p>Id: <input type="text" th:field="*{username}"/></p>
     <p>Message: <input type="password" th:field="*{password}"/></p>
     <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
 </form>
+<form action="#" th:action="@{/register}" method="post">
+    <input type="submit" value="Register"/>
+</form>
+
 </body>
 </html>
