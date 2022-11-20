@@ -15,7 +15,6 @@ import java.sql.Connection;
 
 @Controller
 public class Register {
-    // to merge with develop
     private final ILogger logger = new MyLogger(this);
 
     DatabaseConnectionDAO databaseConnectionDAO;
@@ -27,6 +26,8 @@ public class Register {
     @GetMapping("/register")
     public String greetingForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("title", "Register");
+
         return "register";
     }
 
@@ -37,6 +38,6 @@ public class Register {
         Connection connection = databaseConnectionDAO.getDatabaseConnection();
         connection.createStatement();
         connection.close();
-        return "greeting";
+        return "login";
     }
 }

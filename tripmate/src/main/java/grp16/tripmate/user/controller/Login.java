@@ -22,6 +22,7 @@ public class Login {
     @GetMapping("/login")
     public String greetingForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("title", "Login");
         return "login";
     }
 
