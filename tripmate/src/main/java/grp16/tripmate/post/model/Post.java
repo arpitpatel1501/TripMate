@@ -33,6 +33,10 @@ public class Post {
         this.isHidden = isHidden;
     }
 
+    public Post() {
+
+    }
+
     public int getId() {
         return id;
     }
