@@ -1,10 +1,18 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLogger;
 import grp16.tripmate.user.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Post {
+    private final ILogger logger = new MyLogger(this);
+
     private int id;
     private User owner;
     private String title;
@@ -131,5 +139,25 @@ public class Post {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public static List<Post> resultSetToPosts(ResultSet rs) throws SQLException {
+        List<Post> results = new ArrayList<>();
+        while (rs.next()) {
+            Post post = new Post();
+            post.setId(rs.getInt("id"));
+            post.setTitle(rs.getString("title"));
+            post.setCapacity(rs.getInt("capacity"));
+            post.setDescription(rs.getString("description"));
+            post.setEndDate(rs.getDate("end_ts"));
+            post.setHidden(false);
+            post.setDestination(rs.getString("destination_location"));
+            post.setMaxAge(rs.getInt("max_age"));
+            post.setMinAge(rs.getInt("min_age"));
+            post.setStartDate(rs.getDate("start_ts"));
+            post.setSource(rs.getString("source_location"));
+            results.add(post);
+        }
+        return results;
     }
 }

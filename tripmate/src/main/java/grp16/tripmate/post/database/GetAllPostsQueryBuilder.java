@@ -17,7 +17,7 @@ public class GetAllPostsQueryBuilder implements GetAllPostsQueryBuilderDAO {
 
 
     @Override
-    public String getAllPosts(int userid) {
+    public String getPostsByUserId(int userid) {
         /*
         posts.add(new Post(1, new User(), "title 1", 5, "source 1", "destination 1", new Date(), new Date(), 15, 25, "description 1", false));
          * */
@@ -32,7 +32,23 @@ public class GetAllPostsQueryBuilder implements GetAllPostsQueryBuilderDAO {
                 "    `capacity`,\n" +
                 "    `created_by`,\n" +
                 "    `description`\n" +
-                "FROM `Post` where `is_hidden` = 0";
+                "FROM `Post` where `is_hidden` != 1 and `created_by` = " + userid;
+    }
+
+    @Override
+    public String getAllPostsNotCraetedByUserId(int userid) {
+        return "SELECT `id`,\n" +
+                "    `title`,\n" +
+                "    `source_location`,\n" +
+                "    `destination_location`,\n" +
+                "    `start_ts`,\n" +
+                "    `end_ts`,\n" +
+                "    `min_age`,\n" +
+                "    `max_age`,\n" +
+                "    `capacity`,\n" +
+                "    `created_by`,\n" +
+                "    `description`\n" +
+                "FROM `Post` where `is_hidden` != 1 and `created_by` != " + userid;
     }
 }
 

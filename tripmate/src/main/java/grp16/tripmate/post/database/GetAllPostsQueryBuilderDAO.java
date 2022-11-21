@@ -8,6 +8,8 @@ public interface GetAllPostsQueryBuilderDAO {
      * @param email is email of the admin
      * @return String query to select admin by email.
      */
-    String getAllPosts(int userid);
+    String getPostsByUserId(int userid);
+
+    String getAllPostsNotCraetedByUserId(int userid);
 
 }
