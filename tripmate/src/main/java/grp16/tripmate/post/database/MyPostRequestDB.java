@@ -1,16 +1,16 @@
 package grp16.tripmate.post.database;
 
-public class PostRequestDB implements IPostRequestDB{
+public class MyPostRequestDB implements IMyPostRequestDB {
 
-    private static PostRequestDB instance;
+    private static MyPostRequestDB instance;
 
-    private PostRequestDB() {
+    private MyPostRequestDB() {
         //Required empty constructor
     }
 
-    public static PostRequestDB getInstance() {
+    public static MyPostRequestDB getInstance() {
         if (instance == null) {
-            instance = new PostRequestDB();
+            instance = new MyPostRequestDB();
         }
         return instance;
     }
