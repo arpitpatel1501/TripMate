@@ -1,8 +1,5 @@
 package grp16.tripmate.user.controller;
 
-import com.sun.tools.javac.comp.Todo;
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.DatabaseConnectionDAO;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLogger;
 import grp16.tripmate.user.model.User;
@@ -27,7 +24,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String userLogin(@ModelAttribute User user){
-        logger.info(user.getUsername() + "Login SUCCESS");
+        logger.info(user.getUsername() + " Login SUCCESS");
         return "greeting";
     }
 
@@ -40,8 +37,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String userRegister(@ModelAttribute User user) throws Exception {
-//        TODO Validation Logic
-        logger.info(user.getUsername() + "Register SUCCESS");
+        logger.info(user.getUsername() + " Register SUCCESS");
         return userLogin(user);
     }
 }
