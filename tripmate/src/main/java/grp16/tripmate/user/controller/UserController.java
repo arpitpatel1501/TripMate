@@ -1,5 +1,6 @@
 package grp16.tripmate.user.controller;
 
+import com.sun.tools.javac.comp.Todo;
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.DatabaseConnectionDAO;
 import grp16.tripmate.logger.ILogger;
@@ -14,30 +15,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.sql.Connection;
 
 @Controller
-public class Register {
+public class UserController {
     private final ILogger logger = new MyLogger(this);
 
-    DatabaseConnectionDAO databaseConnectionDAO;
+    @GetMapping("/login")
+    public String userLogin(Model model){
+        model.addAttribute("user", new User());
+        model.addAttribute("title", "Login");
+        return "login";
+    }
 
-    Register() {
-        this.databaseConnectionDAO = new DatabaseConnection();
+    @PostMapping("/login")
+    public String userLogin(@ModelAttribute User user){
+        logger.info(user.getUsername() + "Login SUCCESS");
+        return "greeting";
     }
 
     @GetMapping("/register")
-    public String greetingForm(Model model) {
+    public String userRegister(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("title", "Register");
-
         return "register";
     }
 
     @PostMapping("/register")
-    public String greetingSubmit(@ModelAttribute User user, Model model) throws Exception {
-        model.addAttribute("user", user);
-        logger.info(user.getUsername() + " " + user.getPassword());
-        Connection connection = databaseConnectionDAO.getDatabaseConnection();
-        connection.createStatement();
-        connection.close();
-        return "login";
+    public String userRegister(@ModelAttribute User user) throws Exception {
+//        TODO Validation Logic
+        logger.info(user.getUsername() + "Register SUCCESS");
+        return userLogin(user);
     }
 }
