@@ -32,9 +32,18 @@ public class PostRequestController {
         databaseConnectionDAO = new DatabaseConnection();
     }
 
-    @GetMapping("/post_request")
+    @GetMapping("/post_requests")
     public String postRequest(Model model) throws Exception {
-        // Stud function
+        model.addAttribute("requests_count", 2);
+        model.addAttribute("title", "Post Request");
+//        final Connection connection = databaseConnectionDAO.getDatabaseConnection();
+//        Statement statement = connection.createStatement();
+//        String query = iPostRequestDB.getPostRequests(1);
+//        logger.info(query);
+//        final ResultSet allRequests = statement.executeQuery(query);
+        List<PostRequest> postRequests = PostRequest.resultSetToPostRequests(null);
+//        connection.close();
+        model.addAttribute("postRequests", postRequests);
         return "post_requests";
     }
 }

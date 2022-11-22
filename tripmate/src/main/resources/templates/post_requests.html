@@ -8,5 +8,12 @@
 </head>
 <body>
 <p th:text="'Number of Requests: ' + ${requests_count}"/>
+
+<tr th:each="postRequest, iterstat: ${postRequests}">
+  <td th:text="Id: ${postRequest.getId}"><br></td>
+  <td th:text="UserName: ${postRequest.getUserName}"><br></td>
+  <td th:text="PostId: ${postRequest.getPostId}"><br></td>
+  <br>
+</tr>
 </body>
 </html>

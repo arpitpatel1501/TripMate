@@ -13,6 +13,22 @@ public class PostRequest {
     private int postId;
     private String userName;
 
+    public int getId() {
+        return id;
+    }
+
+    public PostRequestStatus getStatus() {
+        return status;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
     public PostRequest(int id, PostRequestStatus status, int postId, String userName) {
         this.id = id;
         this.status = status;
