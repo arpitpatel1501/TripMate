@@ -12,4 +12,6 @@ public interface GetAllPostsQueryBuilderDAO {
 
     String getAllPostsNotCraetedByUserId(int userid);
 
+    String getPostByPostId(int postid);
+
 }

@@ -50,6 +50,22 @@ public class GetAllPostsQueryBuilder implements GetAllPostsQueryBuilderDAO {
                 "    `description`\n" +
                 "FROM `Post` where `is_hidden` != 1 and `created_by` != " + userid;
     }
+
+    @Override
+    public String getPostByPostId(int postid) {
+        return "SELECT `id`,\n" +
+                "    `title`,\n" +
+                "    `source_location`,\n" +
+                "    `destination_location`,\n" +
+                "    `start_ts`,\n" +
+                "    `end_ts`,\n" +
+                "    `min_age`,\n" +
+                "    `max_age`,\n" +
+                "    `capacity`,\n" +
+                "    `created_by`,\n" +
+                "    `description`\n" +
+                "FROM `Post` where `id` = " + postid;
+    }
 }
 
 
