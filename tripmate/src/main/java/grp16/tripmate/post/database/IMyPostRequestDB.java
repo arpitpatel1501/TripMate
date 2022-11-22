@@ -1,5 +1,8 @@
 package grp16.tripmate.post.database;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public interface IMyPostRequestDB {
-    String getPostRequests(int userid);
+    public String getPostRequestByUserId(int userid);
 }

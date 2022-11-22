@@ -1,7 +1,14 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.db.connection.DatabaseConnection;
+import grp16.tripmate.db.connection.DatabaseConnectionDAO;
+import grp16.tripmate.post.database.GetPostRequestQueryBuilder;
+import grp16.tripmate.post.database.IGetPostRequestQueryBuilder;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +17,11 @@ public class MyPostRequest {
     private PostRequestStatus status;
     private int postId;
     private String userName;
+    private DatabaseConnectionDAO databaseConnectionDAO;
+    private Connection connection;
+    private Statement statement;
+
+    private ResultSet resultSet;
 
     public int getId() {
         return id;
@@ -36,9 +48,30 @@ public class MyPostRequest {
 
     public MyPostRequest() {
         // Empty constructor
+        databaseConnectionDAO = new DatabaseConnection();
     }
 
-    public static List<MyPostRequest> resultSetToPostRequests(ResultSet rs){
+    public Statement getConnection() throws Exception {
+
+        connection = databaseConnectionDAO.getDatabaseConnection();
+        statement = connection.createStatement();
+
+        return statement;
+    }
+
+    public ResultSet resultExecuteQuery(String query) throws Exception {
+
+
+//        posts.add(new Post(1, new User(), "title 1", 5, "source 1", "destination 1", new Date(), new Date(), 15, 25, "description 1", false));
+        statement = getConnection();
+        resultSet = statement.executeQuery(query);
+        connection.close();
+        return resultSet;
+    }
+
+    public List<MyPostRequest> resultMyPostRequests(String query) throws Exception {
+        resultSet = resultExecuteQuery(query);
+
         List<MyPostRequest> results = new ArrayList<>();
 //        while (rs.next()) {
             MyPostRequest myPostRequest = new MyPostRequest();

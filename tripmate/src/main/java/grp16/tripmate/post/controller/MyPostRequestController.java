@@ -11,31 +11,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 @Controller
 public class MyPostRequestController {
 
-    private final ILogger logger = new MyLogger(this);
-    final IMyPostRequestDB iMyPostRequestDB;
-    final DatabaseConnectionDAO databaseConnectionDAO;
+    MyPostRequestDB myPostRequestDB;
+    MyPostRequest myPostRequest;
+    String query;
 
     MyPostRequestController() {
-        iMyPostRequestDB = MyPostRequestDB.getInstance();
-        databaseConnectionDAO = new DatabaseConnection();
+        myPostRequestDB = MyPostRequestDB.getInstance();
+        myPostRequest = new MyPostRequest();
     }
 
     @GetMapping("/post_requests")
     public String postRequest(Model model) throws Exception {
         model.addAttribute("requests_count", 2);
         model.addAttribute("title", "Post Request");
-//        final Connection connection = databaseConnectionDAO.getDatabaseConnection();
-//        Statement statement = connection.createStatement();
-//        String query = iPostRequestDB.getPostRequests(1);
-//        logger.info(query);
-//        final ResultSet allRequests = statement.executeQuery(query);
-        List<MyPostRequest> postRequests = MyPostRequest.resultSetToPostRequests(null);
-//        connection.close();
+
+        query = myPostRequestDB.getPostRequestByUserId(1);
+        List<MyPostRequest> postRequests =  myPostRequest.resultMyPostRequests(query);
+
+
         model.addAttribute("postRequests", postRequests);
         return "post_requests";
     }
