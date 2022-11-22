@@ -3,6 +3,9 @@ package grp16.tripmate.user.controller;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLogger;
 import grp16.tripmate.user.model.User;
+import grp16.tripmate.user.model.UserValidation;
+import grp16.tripmate.user.persistance.IUserPersistance;
+import grp16.tripmate.user.persistance.SQLPersistance;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,8 @@ import java.sql.Connection;
 @Controller
 public class UserController {
     private final ILogger logger = new MyLogger(this);
+    IUserPersistance persistance = new SQLPersistance();
+    private UserValidation validator = new UserValidation(persistance);
 
     @GetMapping("/login")
     public String userLogin(Model model){
@@ -24,6 +29,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String userLogin(@ModelAttribute User user){
+        validator.validateUser(user);
         logger.info(user.getUsername() + " Login SUCCESS");
         return "greeting";
     }
@@ -37,6 +43,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String userRegister(@ModelAttribute User user) throws Exception {
+        validator.validateUser(user);
         logger.info(user.getUsername() + " Register SUCCESS");
         return userLogin(user);
     }
