@@ -1,7 +1,7 @@
 package grp16.tripmate.post.model;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
 
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Post {
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
 
     private int id;
     private User owner;

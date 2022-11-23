@@ -2,7 +2,7 @@ package grp16.tripmate.db.connection;
 
 import grp16.tripmate.db.properties.DatabaseProperties;
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection implements DatabaseConnectionDAO {
 
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
     private Connection connection = null;
 
 

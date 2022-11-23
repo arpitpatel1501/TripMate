@@ -1,7 +1,7 @@
 package grp16.tripmate.db.sql;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class LoadSQLProfile {
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
 
     public boolean loadSQLforProfile(Connection conn, String env) {
 
