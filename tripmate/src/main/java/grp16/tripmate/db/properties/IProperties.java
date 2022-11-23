@@ -4,6 +4,6 @@ import grp16.tripmate.db.DatabaseConnectionException;
 
 import java.sql.Connection;
 
-public interface PropertiesDAO {
+public interface IProperties {
     Connection getDatabaseConnection() throws DatabaseConnectionException;
 }

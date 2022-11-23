@@ -1,7 +1,7 @@
 package grp16.tripmate.user.controller;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.DatabaseConnectionDAO;
+import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class Register {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    DatabaseConnectionDAO databaseConnectionDAO;
+    IDatabaseConnection IDatabaseConnection;
 
     Register() {
-        this.databaseConnectionDAO = new DatabaseConnection();
+        this.IDatabaseConnection = new DatabaseConnection();
     }
 
     @GetMapping("/register")
