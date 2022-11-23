@@ -1,7 +1,7 @@
-package grp16.tripmate.post.model;
+package grp16.tripmate.postrequest.model;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.DatabaseConnectionDAO;
+import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class MyRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private DatabaseConnectionDAO databaseConnectionDAO;
+    private final IDatabaseConnection databaseConnection;
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -28,7 +28,7 @@ public class MyRequest {
 
     public MyRequest() {
         // Empty constructor
-        databaseConnectionDAO = new DatabaseConnection();
+        databaseConnection = new DatabaseConnection();
     }
 
     public PostRequestStatus getStatus() {
@@ -64,7 +64,7 @@ public class MyRequest {
     }
 
     public Statement getConnection() throws Exception {
-        connection = databaseConnectionDAO.getDatabaseConnection();
+        connection = databaseConnection.getDatabaseConnection();
         statement = connection.createStatement();
 
         return statement;
@@ -85,11 +85,9 @@ public class MyRequest {
             MyRequest myRequest = new MyRequest();
             if (resultSet.getString("status").equals("pending")) {
                 myRequest.setStatus(PostRequestStatus.PENDING);
-            }
-            else if (resultSet.getString("status").equals("approved")) {
+            } else if (resultSet.getString("status").equals("approved")) {
                 myRequest.setStatus(PostRequestStatus.APPROVED);
-            }
-            else {
+            } else {
                 myRequest.setStatus(PostRequestStatus.REJECTED);
             }
             myRequest.setPostTitle(resultSet.getString("postTitle"));
