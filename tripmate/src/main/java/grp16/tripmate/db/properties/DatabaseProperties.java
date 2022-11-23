@@ -1,7 +1,7 @@
 package grp16.tripmate.db.properties;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class DatabaseProperties {
 
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
 
     private static DatabaseProperties databaseProperties;
     private static final String DATABASE_CONFIGURATION_FILE = "./application.properties";

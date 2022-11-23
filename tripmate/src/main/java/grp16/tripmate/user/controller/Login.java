@@ -1,7 +1,7 @@
 package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class Login {
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
 
     @GetMapping("/greeting")
     public String greeting(Model model) {
