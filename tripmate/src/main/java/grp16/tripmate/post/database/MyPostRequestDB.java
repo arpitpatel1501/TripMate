@@ -11,8 +11,12 @@ public class MyPostRequestDB implements IMyPostRequestDB {
     }
     @Override
     public String getPostRequestByUserId(int userid) {
-        String query = "SELECT `status`,\n" +
-                "FROM `PostRequest` where `created_by` = " + userid;
+        String query = "SELECT u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, p.title as postTitle, p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
+                "FROM PostRequest pr\n" +
+                "JOIN Post p on pr.Post_id = p.id\n" +
+                "JOIN User u on pr.request_owner = u.id\n" +
+                "JOIN User post_owner on post_owner.id = p.created_by\n" +
+                "WHERE pr.status = \"pending\" and pr.request_owner = u.id and u.id != p.created_by;";
         return query;
     }
 }
