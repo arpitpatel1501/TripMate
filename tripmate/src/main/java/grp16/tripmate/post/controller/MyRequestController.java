@@ -1,14 +1,7 @@
 package grp16.tripmate.post.controller;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.DatabaseConnectionDAO;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
-import grp16.tripmate.post.database.IMyPostRequestDB;
 import grp16.tripmate.post.database.IMyRequestDB;
-import grp16.tripmate.post.database.MyPostRequestDB;
 import grp16.tripmate.post.database.MyRequestDB;
-import grp16.tripmate.post.model.MyPostRequest;
 import grp16.tripmate.post.model.MyRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

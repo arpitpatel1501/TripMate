@@ -3,7 +3,7 @@ package grp16.tripmate.post.model;
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.DatabaseConnectionDAO;
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MyPostRequest {
 
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
     private DatabaseConnectionDAO databaseConnectionDAO;
     private Connection connection;
     private Statement statement;
