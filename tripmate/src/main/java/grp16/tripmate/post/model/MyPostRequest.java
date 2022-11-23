@@ -14,6 +14,10 @@ import java.util.List;
 public class MyPostRequest {
 
     private final ILogger logger = new MyLogger(this);
+    private DatabaseConnectionDAO databaseConnectionDAO;
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
 
     private int id;
     private PostRequestStatus status;
@@ -24,10 +28,6 @@ public class MyPostRequest {
     private int idCreator;
     private String firstNameCreator;
     private String lastNameCreator;
-    private DatabaseConnectionDAO databaseConnectionDAO;
-    private Connection connection;
-    private Statement statement;
-    private ResultSet resultSet;
 
     public MyPostRequest() {
         // Empty constructor

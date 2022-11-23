@@ -18,24 +18,24 @@ import java.util.List;
 
 @Controller
 public class MyRequestController {
-//    private IMyRequestDB iMyRequestDB;
-//    private MyRequest myRequest;
-//    private String query;
-//
-//    MyRequestController() {
-//        iMyRequestDB = MyRequestDB.getInstance();
-//        databaseConnectionDAO = new DatabaseConnection();
-//    }
-//
-//    @GetMapping("/my_requests")
-//    public String myRequest(Model model) throws Exception {
-//        model.addAttribute("requests_count", 2);
-//        model.addAttribute("title", "My Requests");
-//
-//        iMyRequestDB.getPostRequestByUserId(1);
-//        List<MyRequest> myRequests = MyRequest.resultSetToMyRequests(null);
-////        connection.close();
-//        model.addAttribute("myRequests", myRequests);
-//        return "my_requests";
-//    }
+    private IMyRequestDB iMyRequestDB;
+    private MyRequest myRequest;
+    private String query;
+
+    MyRequestController() {
+        iMyRequestDB = MyRequestDB.getInstance();
+        myRequest = new MyRequest();
+    }
+
+    @GetMapping("/my_requests")
+    public String myRequest(Model model) throws Exception {
+        model.addAttribute("title", "My Request");
+
+        query = iMyRequestDB.getMyRequestByUserId(1);
+        List<MyRequest> myRequestList =  myRequest.resultMyRequests(query);
+        model.addAttribute("requests_count", myRequestList.size());
+
+        model.addAttribute("myRequests", myRequestList);
+        return "my_requests";
+    }
 }

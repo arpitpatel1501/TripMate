@@ -16,7 +16,7 @@ public class MyPostRequestDB implements IMyPostRequestDB {
                 "JOIN Post p on pr.Post_id = p.id\n" +
                 "JOIN User u on pr.request_owner = u.id\n" +
                 "JOIN User post_owner on post_owner.id = p.created_by\n" +
-                "WHERE pr.status = \"pending\" and pr.request_owner = u.id and u.id != p.created_by;";
+                "WHERE pr.status = \"pending\" and pr.request_owner = "+ userid +" and "+ userid +" != p.created_by;";
         return query;
     }
 }
