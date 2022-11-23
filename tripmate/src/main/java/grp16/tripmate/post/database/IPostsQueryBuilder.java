@@ -1,6 +1,6 @@
 package grp16.tripmate.post.database;
 
-public interface GetAllPostsQueryBuilderDAO {
+public interface IPostsQueryBuilder {
 
     /**
      * Gets the query to select admin by email.
@@ -8,9 +8,9 @@ public interface GetAllPostsQueryBuilderDAO {
      * @param email is email of the admin
      * @return String query to select admin by email.
      */
-    String getPostsByUserId(int userid);
+    String getAllPosts();
 
-    String getAllPostsNotCraetedByUserId(int userid);
+    String getPostsByUserId(int userid);
 
     String getPostByPostId(int postid);
 

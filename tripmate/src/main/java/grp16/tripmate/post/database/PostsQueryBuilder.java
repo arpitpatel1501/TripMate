@@ -1,26 +1,39 @@
 package grp16.tripmate.post.database;
 
-public class GetAllPostsQueryBuilder implements GetAllPostsQueryBuilderDAO {
-    private static GetAllPostsQueryBuilder instance;
+public class PostsQueryBuilder implements IPostsQueryBuilder {
+    private static PostsQueryBuilder instance;
 
 
-    private GetAllPostsQueryBuilder() {
+    private PostsQueryBuilder() {
         //Required empty constructor
     }
 
-    public static GetAllPostsQueryBuilder getInstance() {
+    public static PostsQueryBuilder getInstance() {
         if (instance == null) {
-            instance = new GetAllPostsQueryBuilder();
+            instance = new PostsQueryBuilder();
         }
         return instance;
     }
 
 
     @Override
+    public String getAllPosts() {
+        return "SELECT `id`,\n" +
+                "    `title`,\n" +
+                "    `source_location`,\n" +
+                "    `destination_location`,\n" +
+                "    `start_ts`,\n" +
+                "    `end_ts`,\n" +
+                "    `min_age`,\n" +
+                "    `max_age`,\n" +
+                "    `capacity`,\n" +
+                "    `created_by`,\n" +
+                "    `description`\n" +
+                "FROM `Post` where `is_hidden` != 1 ";
+    }
+
+    @Override
     public String getPostsByUserId(int userid) {
-        /*
-        posts.add(new Post(1, new User(), "title 1", 5, "source 1", "destination 1", new Date(), new Date(), 15, 25, "description 1", false));
-         * */
         return "SELECT `id`,\n" +
                 "    `title`,\n" +
                 "    `source_location`,\n" +
@@ -35,21 +48,6 @@ public class GetAllPostsQueryBuilder implements GetAllPostsQueryBuilderDAO {
                 "FROM `Post` where `is_hidden` != 1 and `created_by` = " + userid;
     }
 
-    @Override
-    public String getAllPostsNotCraetedByUserId(int userid) {
-        return "SELECT `id`,\n" +
-                "    `title`,\n" +
-                "    `source_location`,\n" +
-                "    `destination_location`,\n" +
-                "    `start_ts`,\n" +
-                "    `end_ts`,\n" +
-                "    `min_age`,\n" +
-                "    `max_age`,\n" +
-                "    `capacity`,\n" +
-                "    `created_by`,\n" +
-                "    `description`\n" +
-                "FROM `Post` where `is_hidden` != 1 and `created_by` != " + userid;
-    }
 
     @Override
     public String getPostByPostId(int postid) {
