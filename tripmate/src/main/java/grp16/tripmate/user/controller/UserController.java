@@ -1,7 +1,7 @@
 package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserValidation;
 import grp16.tripmate.user.persistance.IUserPersistance;
@@ -16,7 +16,7 @@ import java.sql.Connection;
 
 @Controller
 public class UserController {
-    private final ILogger logger = new MyLogger(this);
+    private final ILogger logger = new MyLoggerAdapter(this);
     IUserPersistance persistance = new SQLPersistance();
     private UserValidation validator = new UserValidation(persistance);
 
