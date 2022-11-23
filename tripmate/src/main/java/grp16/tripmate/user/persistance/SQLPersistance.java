@@ -14,7 +14,7 @@ public class SQLPersistance implements IUserPersistance{
     @Override
     public User getUser() throws Exception {
         connection = connectionDAO.getDatabaseConnection();
-
+        connectionDAO.clearDatabaseConnection();
         return null;
     }
 }
