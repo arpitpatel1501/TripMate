@@ -15,11 +15,6 @@ import java.sql.Connection;
 
 @SpringBootApplication
 public class TripmateApplication {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "index";
-    }
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(TripmateApplication.class).profiles("devint", "production", "test").run(args);
