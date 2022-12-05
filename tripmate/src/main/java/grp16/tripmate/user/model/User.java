@@ -5,7 +5,6 @@ import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserQueryBuilder;
 import grp16.tripmate.user.database.UserQueryBuilder;
 
@@ -105,14 +104,8 @@ public class User implements IUser {
         Statement statement = connection.createStatement();
         ResultSet userRS = statement.executeQuery(queryBuilder.getUserByUsername(this.getUsername()));
         User userFromDb = resultSetToUsers(userRS).get(0);
-        storeUserInSession(userFromDb);
         connection.close();
-        return userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(PasswordEncoder.encodeString(this.getPassword()));
-    }
-
-    private void storeUserInSession(User user) {
-        SessionManager.Instance().setValue(UserDbColumnNames.username, user.getUsername());
-        SessionManager.Instance().setValue(UserDbColumnNames.id, user.getId());
+        return userFromDb != null && userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(PasswordEncoder.encodeString(this.getPassword()));
     }
 
     public List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException {
