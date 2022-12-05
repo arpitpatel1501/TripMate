@@ -1,4 +1,4 @@
-package grp16.tripmate.postrequest.database;
+package grp16.tripmate.request.database;
 
 public interface IMyRequestDB {
     public String getMyRequestByUserId(int userid);

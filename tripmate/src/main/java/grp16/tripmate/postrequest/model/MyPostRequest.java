@@ -14,7 +14,7 @@ import java.util.List;
 public class MyPostRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private IDatabaseConnection databaseConnection;
+    private final IDatabaseConnection databaseConnection;
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -30,7 +30,6 @@ public class MyPostRequest {
     private String lastNameCreator;
 
     public MyPostRequest() {
-        // Empty constructor
         databaseConnection = new DatabaseConnection();
     }
 

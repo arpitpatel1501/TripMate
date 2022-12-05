@@ -1,6 +1,6 @@
-package grp16.tripmate.postrequest.database;
+package grp16.tripmate.request.database;
 
-public class MyRequestDB implements IMyRequestDB{
+public class MyRequestDB implements IMyRequestDB {
     private static MyRequestDB instance;
     public static MyRequestDB getInstance() {
         if (instance == null) {
