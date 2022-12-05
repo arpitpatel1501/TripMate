@@ -18,12 +18,28 @@
         <td th:text="${post.getCapacity()}"/>
     </tr>
     <tr>
+        <th>Source:</th>
+        <td th:text="${post.getSource()}"/>
+    </tr>
+    <tr>
+        <th>Destination:</th>
+        <td th:text="${post.getDestination()}"/>
+    </tr>
+    <tr>
         <th>Start Date:</th>
         <td th:text="${post.getStartDate()}"/>
     </tr>
     <tr>
         <th>End Date:</th>
         <td th:text="${post.getEndDate()}"/>
+    </tr>
+    <tr>
+        <th>Min Age:</th>
+        <td th:text="${post.getMinAge()}"/>
+    </tr>
+    <tr>
+        <th>Max Age:</th>
+        <td th:text="${post.getMaxAge()}"/>
     </tr>
     <tr>
         <th>Description:</th>

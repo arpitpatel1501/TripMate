@@ -1,4 +1,4 @@
-package grp16.tripmate.encoder;
+package grp16.tripmate.user.encoder;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

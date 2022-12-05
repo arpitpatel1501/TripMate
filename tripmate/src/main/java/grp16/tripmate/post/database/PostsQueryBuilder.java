@@ -1,6 +1,10 @@
 package grp16.tripmate.post.database;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
+
 public class PostsQueryBuilder implements IPostsQueryBuilder {
+    private final ILogger logger = new MyLoggerAdapter(this);
     private static PostsQueryBuilder instance;
 
 
@@ -51,7 +55,7 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
 
     @Override
     public String getPostByPostId(int postid) {
-        return "SELECT `id`,\n" +
+        String query =  "SELECT `id`,\n" +
                 "    `title`,\n" +
                 "    `source_location`,\n" +
                 "    `destination_location`,\n" +
@@ -63,6 +67,8 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
                 "    `created_by`,\n" +
                 "    `description`\n" +
                 "FROM `Post` where `id` = " + postid;
+        logger.info(query);
+        return query;
     }
 }
 

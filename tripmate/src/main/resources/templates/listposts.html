@@ -11,6 +11,10 @@
 
 <table class="round" th:each="post: ${posts}">
     <tr>
+        <th>Id:</th>
+        <td th:text="${post.getId()}"/>
+    </tr>
+    <tr>
         <th>Title:</th>
         <td th:text="${post.getTitle()}"/>
     </tr>
@@ -32,8 +36,8 @@
     </tr>
     <tr>
         <td>
-            <form action="#" th:action="@{/viewpost/} + ${{post.id}}" method="get">
-                <button th:id="'table_entry_childs_button_' + ${post.id}" type="submit"> View Post</button>
+            <form action="#" th:action="@{/viewpost}" method="get">
+                <button th:id="'table_entry_childs_button_' + ${post.id}" th:name="postid" th:value="${post.getId()}" type="submit"> View Post</button>
             </form>
         </td>
     </tr>
