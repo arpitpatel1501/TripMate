@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="../fragments/menubar :: menubar"></div>
+<h1 th:text="${title}"></h1>
+<head>
+    <title>My Post Requests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="'Number of Requests: ' + ${requests_count}"/>
+
+<tr th:each="postRequest, iterstat: ${postRequests}">
+    <td><B><span th:text="${postRequest.getFirstNameRequestee()}  + ' ' +${postRequest.getLastNameRequestee}"/> </B>
+        requested to join post <B><span th:text="${postRequest.getPostTitle}"/></B> <br></td>
+    <br>
+    <td>
+        <button type="button" onclick="alert('Accept')">Accept</button>
+        <button type="button" onclick="alert('Decline')">Decline</button>
+        <br></td>
+    <br>
+</tr>
+</body>
+</html>
