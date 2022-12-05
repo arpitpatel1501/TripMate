@@ -2,7 +2,7 @@ package grp16.tripmate.user.model;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.encoder.PasswordEncoder;
+import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.database.IUserQueryBuilder;

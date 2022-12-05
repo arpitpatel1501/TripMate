@@ -37,11 +37,12 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
-    @GetMapping("/viewpost/")
-    public String viewPost(Model model, @RequestParam int postid) {
+    @GetMapping("/viewpost")
+    public String viewPost(Model model, @RequestParam(name="postid") int postid) {
         model.addAttribute("title", "View Post");
-        Post postById = post.getPostByPostId(postid);
-        model.addAttribute("post", postById);
+        Post myPost = post.getPostByPostId(postid);
+        logger.info(myPost.toString());
+        model.addAttribute("post", myPost);
         return "viewpost";
     }
 }

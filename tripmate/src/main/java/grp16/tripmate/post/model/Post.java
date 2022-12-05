@@ -189,14 +189,32 @@ public class Post implements IPost {
         try {
             final Connection connection = dbConnection.getDatabaseConnection();
             String query = queryBuilder.getPostByPostId(postid);
-            logger.info(query);
             final ResultSet postRS = connection.createStatement().executeQuery(query);
             Post post = Post.resultSetToPosts(postRS).get(0);
+            logger.info(post.toString());
             connection.close();
+            return post;
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", owner=" + owner +
+                ", title='" + title + '\'' +
+                ", capacity=" + capacity +
+                ", source='" + source + '\'' +
+                ", destination='" + destination + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", minAge=" + minAge +
+                ", maxAge=" + maxAge +
+                ", description='" + description + '\'' +
+                ", isHidden=" + isHidden +
+                '}';
+    }
 }
