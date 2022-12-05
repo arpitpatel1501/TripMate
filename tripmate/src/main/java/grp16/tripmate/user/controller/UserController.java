@@ -2,36 +2,41 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.user.model.IUser;
 import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserValidation;
-import grp16.tripmate.user.persistance.IUserPersistance;
-import grp16.tripmate.user.persistance.SQLPersistance;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.sql.Connection;
-
 @Controller
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
-    IUserPersistance persistance = new SQLPersistance();
-    private UserValidation validator = new UserValidation(persistance);
+
+
+    public UserController() {
+    }
 
     @GetMapping("/login")
-    public String userLogin(Model model){
+    public String userLogin(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("title", "Login");
         return "login";
     }
 
     @PostMapping("/login")
-    public String userLogin(@ModelAttribute User user){
-        validator.validateUser(user);
-        logger.info(user.getUsername() + " Login SUCCESS");
-        return "greeting";
+    public String userLogin(@ModelAttribute User user) throws Exception {
+        logger.info(user.toString());
+        boolean isValidUser = user.validateUser();
+
+        if (isValidUser) {
+            logger.info(user.getUsername() + " Login SUCCESS");
+            return "greeting";
+        } else {
+            logger.error(user.getUsername() + " Login FAILED");
+            return "error";
+        }
     }
 
     @GetMapping("/register")
@@ -43,8 +48,13 @@ public class UserController {
 
     @PostMapping("/register")
     public String userRegister(@ModelAttribute User user) throws Exception {
-        validator.validateUser(user);
-        logger.info(user.getUsername() + " Register SUCCESS");
-        return userLogin(user);
+        boolean isUserCreatedSuccessfully = user.createUser();
+        if (isUserCreatedSuccessfully) {
+            logger.info(user.getUsername() + " Register SUCCESS");
+            return "login";
+        } else {
+            logger.error("Register FAILED");
+            return "error";
+        }
     }
 }
