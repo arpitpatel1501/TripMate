@@ -41,7 +41,6 @@ public class PostController implements IPostController {
     public String viewPost(Model model, @RequestParam(name="postid") int postid) {
         model.addAttribute("title", "View Post");
         Post myPost = post.getPostByPostId(postid);
-        logger.info(myPost.toString());
         model.addAttribute("post", myPost);
         return "viewpost";
     }
