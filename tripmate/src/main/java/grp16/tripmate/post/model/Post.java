@@ -30,24 +30,8 @@ public class Post implements IPost {
     private int maxAge;
     private String description;
     private boolean isHidden;
-
-    public Post(int id, User owner, String title, int capacity, String source, String destination, Date startDate, Date endDate, int minAge, int maxAge, String description, boolean isHidden) {
-        this.id = id;
-        this.owner = owner;
-        this.title = title;
-        this.capacity = capacity;
-        this.source = source;
-        this.destination = destination;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.description = description;
-        this.isHidden = isHidden;
-    }
-
-    IDatabaseConnection dbConnection;
-    IPostsQueryBuilder queryBuilder;
+    private IDatabaseConnection dbConnection;
+    private IPostsQueryBuilder queryBuilder;
 
     public Post() {
         queryBuilder = PostsQueryBuilder.getInstance();

@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_TEST`.`User` (
                                                            `firstname` VARCHAR(45) NOT NULL,
                                                            `lastname` VARCHAR(45) NULL,
                                                            `email` VARCHAR(45) NOT NULL,
-                                                           `password` VARCHAR(45) NOT NULL,
+                                                           `password` VARCHAR(200) NOT NULL,
                                                            `birthdate` DATE NULL,
                                                            `gender` VARCHAR(16) NULL,
                                                            PRIMARY KEY (`id`),

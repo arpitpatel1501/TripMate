@@ -27,7 +27,6 @@ public class MyRequest {
     private String lastNameCreator;
 
     public MyRequest() {
-        // Empty constructor
         databaseConnection = new DatabaseConnection();
     }
 
