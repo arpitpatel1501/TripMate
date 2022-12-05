@@ -1,8 +1,8 @@
-package grp16.tripmate.post.controller;
+package grp16.tripmate.postrequest.controller;
 
-import grp16.tripmate.post.database.IMyPostRequestDB;
-import grp16.tripmate.post.database.MyPostRequestDB;
-import grp16.tripmate.post.model.MyPostRequest;
+import grp16.tripmate.postrequest.database.IMyPostRequestDB;
+import grp16.tripmate.postrequest.database.MyPostRequestDB;
+import grp16.tripmate.postrequest.model.MyPostRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
-package grp16.tripmate.post.model;
+package grp16.tripmate.postrequest.model;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.DatabaseConnectionDAO;
+import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class MyPostRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private DatabaseConnectionDAO databaseConnectionDAO;
+    private IDatabaseConnection databaseConnection;
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -31,7 +31,7 @@ public class MyPostRequest {
 
     public MyPostRequest() {
         // Empty constructor
-        databaseConnectionDAO = new DatabaseConnection();
+        databaseConnection = new DatabaseConnection();
     }
 
     public String getFirstNameRequestee() {
@@ -75,7 +75,7 @@ public class MyPostRequest {
     }
 
     public Statement getConnection() throws Exception {
-        connection = databaseConnectionDAO.getDatabaseConnection();
+        connection = databaseConnection.getDatabaseConnection();
         statement = connection.createStatement();
 
         return statement;

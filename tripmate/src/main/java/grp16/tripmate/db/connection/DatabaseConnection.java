@@ -6,13 +6,9 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
-public class DatabaseConnection implements DatabaseConnectionDAO {
-
+public class DatabaseConnection implements IDatabaseConnection {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private Connection connection = null;
-
 
     private Connection connectToDatabase() throws Exception {
         String databaseURL = DatabaseProperties.getInstance().getDatabaseURL();
@@ -27,19 +23,6 @@ public class DatabaseConnection implements DatabaseConnectionDAO {
 
     @Override
     public Connection getDatabaseConnection() throws Exception {
-        clearDatabaseConnection();
-        connection = connectToDatabase();
-        return connection;
-    }
-
-    @Override
-    public void clearDatabaseConnection() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            connection = null;
-        }
+        return connectToDatabase();
     }
 }

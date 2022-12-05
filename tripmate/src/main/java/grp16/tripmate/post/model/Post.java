@@ -1,16 +1,21 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.db.connection.DatabaseConnection;
+import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.IPostsQueryBuilder;
+import grp16.tripmate.post.database.PostsQueryBuilder;
 import grp16.tripmate.user.model.User;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Post {
+public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private int id;
@@ -25,24 +30,12 @@ public class Post {
     private int maxAge;
     private String description;
     private boolean isHidden;
-
-    public Post(int id, User owner, String title, int capacity, String source, String destination, Date startDate, Date endDate, int minAge, int maxAge, String description, boolean isHidden) {
-        this.id = id;
-        this.owner = owner;
-        this.title = title;
-        this.capacity = capacity;
-        this.source = source;
-        this.destination = destination;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.description = description;
-        this.isHidden = isHidden;
-    }
+    private IDatabaseConnection dbConnection;
+    private IPostsQueryBuilder queryBuilder;
 
     public Post() {
-
+        queryBuilder = PostsQueryBuilder.getInstance();
+        dbConnection = new DatabaseConnection();
     }
 
     public int getId() {
@@ -145,19 +138,65 @@ public class Post {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
             Post post = new Post();
-            post.setId(rs.getInt("id"));
-            post.setTitle(rs.getString("title"));
-            post.setCapacity(rs.getInt("capacity"));
-            post.setDescription(rs.getString("description"));
-            post.setEndDate(rs.getDate("end_ts"));
+            post.setId(rs.getInt(PostDbColumnNames.ID));
+            post.setTitle(rs.getString(PostDbColumnNames.TITLE));
+            post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));
+            post.setDescription(rs.getString(PostDbColumnNames.DESCRIPTION));
+            post.setEndDate(rs.getDate(PostDbColumnNames.ENDDATE));
             post.setHidden(false);
-            post.setDestination(rs.getString("destination_location"));
-            post.setMaxAge(rs.getInt("max_age"));
-            post.setMinAge(rs.getInt("min_age"));
-            post.setStartDate(rs.getDate("start_ts"));
-            post.setSource(rs.getString("source_location"));
+            post.setDestination(rs.getString(PostDbColumnNames.DESTINATION));
+            post.setMaxAge(rs.getInt(PostDbColumnNames.MAXAGE));
+            post.setMinAge(rs.getInt(PostDbColumnNames.MINAGE));
+            post.setStartDate(rs.getDate(PostDbColumnNames.STARTDATE));
+            post.setSource(rs.getString(PostDbColumnNames.SOURCE));
             results.add(post);
         }
         return results;
     }
+
+    public List<Post> getPostsByUserId(int userid) {
+        try {
+            final Connection connection = new DatabaseConnection().getDatabaseConnection();
+            IPostsQueryBuilder queryBuilder = PostsQueryBuilder.getInstance();
+            String query = queryBuilder.getPostsByUserId(userid);
+            logger.info(query);
+            final ResultSet allPosts = connection.createStatement().executeQuery(query);
+            List<Post> posts = Post.resultSetToPosts(allPosts);
+            connection.close();
+            return posts;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Post> getAllPosts() {
+        try {
+            final Connection connection = dbConnection.getDatabaseConnection();
+            String query = queryBuilder.getAllPosts();
+            logger.info(query);
+            final ResultSet allPosts = connection.createStatement().executeQuery(query);
+            List<Post> posts = Post.resultSetToPosts(allPosts);
+            connection.close();
+            return posts;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public Post getPostByPostId(int postid) {
+        try {
+            final Connection connection = dbConnection.getDatabaseConnection();
+            String query = queryBuilder.getPostByPostId(postid);
+            logger.info(query);
+            final ResultSet postRS = connection.createStatement().executeQuery(query);
+            Post post = Post.resultSetToPosts(postRS).get(0);
+            connection.close();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
 }
