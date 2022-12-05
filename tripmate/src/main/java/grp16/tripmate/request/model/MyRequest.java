@@ -1,9 +1,10 @@
-package grp16.tripmate.postrequest.model;
+package grp16.tripmate.request.model;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.postrequest.model.PostRequestStatus;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,7 +28,6 @@ public class MyRequest {
     private String lastNameCreator;
 
     public MyRequest() {
-        // Empty constructor
         databaseConnection = new DatabaseConnection();
     }
 
