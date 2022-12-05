@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+</head>
+<body>
+<div th:replace="../fragments/menubar :: menubar"></div>
+<h1 th:text="${title}"></h1>
+
+<table class="round" th:object="${user}">
+    <tr>
+        <th>ID:</th>
+        <td th:text="${user.getId()}"/>
+    </tr>
+    <tr>
+        <th>Username:</th>
+        <td th:text="${user.getUsername()}"/>
+    </tr>
+    <tr>
+        <th>First Name:</th>
+        <td th:text="${user.getFirstname()}"/>
+    </tr>
+    <tr>
+        <th>Last Name:</th>
+        <td th:text="${user.getLastname()}"/>
+    </tr>
+    <tr>
+        <th>Birth Date:</th>
+        <td th:text="${user.getBirthDate()}"/>
+    </tr>
+    <tr>
+        <th>Gender:</th>
+        <td th:text="${user.getGender()}"/>
+    </tr>
+
+</table>
+<form action="#" th:action="@{/changePassword}" th:object="${user}" method="post">
+    <p>Change Password: <input type="password" th:field="*{password}" required/></p>
+    <p><input type="submit" value="Change Password"/></p>
+</form>
+</body>
+</html>

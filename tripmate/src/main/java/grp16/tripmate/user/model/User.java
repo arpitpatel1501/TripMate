@@ -5,6 +5,7 @@ import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserQueryBuilder;
 import grp16.tripmate.user.database.UserQueryBuilder;
 
@@ -105,15 +106,25 @@ public class User implements IUser {
         ResultSet userRS = statement.executeQuery(queryBuilder.getUserByUsername(this.getUsername()));
         User userFromDb = resultSetToUsers(userRS).get(0);
         connection.close();
-        return userFromDb != null && userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(PasswordEncoder.encodeString(this.getPassword()));
+        boolean isValidUser = userFromDb != null && userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(PasswordEncoder.encodeString(this.getPassword()));
+        if (isValidUser) {
+            logger.info("Current User: " + userFromDb);
+            SessionManager.Instance().setValue(UserDbColumnNames.id, userFromDb.getId());
+        }
+        return isValidUser;
     }
 
-    public List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException {
+    public List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException, ParseException {
         List<User> results = new ArrayList<>();
         while (rs.next()) {
             User user = new User();
             user.setUsername(rs.getString(UserDbColumnNames.username));
             user.setPassword(rs.getString(UserDbColumnNames.password));
+            user.setId(rs.getInt(UserDbColumnNames.id));
+            user.setFirstname(rs.getString(UserDbColumnNames.firstname));
+            user.setLastname(rs.getString(UserDbColumnNames.lastname));
+            user.setBirthDate(String.valueOf(rs.getDate(UserDbColumnNames.birthDate)));
+            user.setGender(rs.getString(UserDbColumnNames.gender));
             results.add(user);
         }
         return results;
@@ -130,6 +141,19 @@ public class User implements IUser {
         return rowUpdate == 1;
     }
 
+    @Override
+    public User getLoggedInUser() throws Exception {
+        int currentUserId = (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        logger.info("Current User ID: " + currentUserId);
+        String query = queryBuilder.getUserByUserID(currentUserId);
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        ResultSet userRS = statement.executeQuery(query);
+        User userFromDb = resultSetToUsers(userRS).get(0);
+        connection.close();
+        return userFromDb;
+    }
+
     public String dateToSQLDate(Date date) {
         if (date != null) {
             // Ref: https://theopentutorials.com/examples/java/util/date/how-to-convert-java-util-date-to-mysql-date-format/
@@ -141,16 +165,19 @@ public class User implements IUser {
         return "";
     }
 
+    public void changePassword() throws Exception {
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        String query = queryBuilder.changePassword(this);
+        logger.info(query);
+        int rowUpdate = statement.executeUpdate(query);
+        connection.close();
+    }
+
+
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", birthDate=" + birthDate +
-                ", gender='" + gender + '\'' +
-                '}';
+        return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 }

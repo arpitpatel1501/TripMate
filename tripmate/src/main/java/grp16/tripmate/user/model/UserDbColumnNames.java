@@ -13,5 +13,5 @@ public class UserDbColumnNames {
     public static final String birthDate = "birthdate";
     public static final String gender = "gender";
 
-
+    public static final String tableName = "User";
 }

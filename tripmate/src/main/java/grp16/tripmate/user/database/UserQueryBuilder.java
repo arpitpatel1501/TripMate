@@ -1,11 +1,14 @@
 package grp16.tripmate.user.database;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
 public class UserQueryBuilder implements IUserQueryBuilder {
     private static IUserQueryBuilder instance;
 
+    private final ILogger logger = new MyLoggerAdapter(this);
 
     public UserQueryBuilder() {
         //Required empty constructor
@@ -33,7 +36,7 @@ public class UserQueryBuilder implements IUserQueryBuilder {
 
     @Override
     public String getUserByUserID(int userid) {
-        return "SELECT `User`.`id`," +
+        String query = "SELECT `User`.`id`," +
                 "    `User`.`firstname`," +
                 "    `User`.`lastname`," +
                 "    `User`.`email`," +
@@ -41,6 +44,8 @@ public class UserQueryBuilder implements IUserQueryBuilder {
                 "    `User`.`birthdate`," +
                 "    `User`.`gender`" +
                 "FROM `User` where id = " + userid;
+        logger.info(query);
+        return query;
     }
 
     @Override
@@ -61,6 +66,17 @@ public class UserQueryBuilder implements IUserQueryBuilder {
                 "\"" + user.getPassword() + "\"," +
                 "\"" + user.dateToSQLDate(user.getBirthDate()) + "\"," +
                 "\"" + user.getGender() + "\");";
+    }
+
+    @Override
+    public String changePassword(User user) {
+        String query = "update " +
+                UserDbColumnNames.tableName + " set " +
+                UserDbColumnNames.password + " = '" +
+                user.getPassword() + "'" +
+                " where " +
+                UserDbColumnNames.id + " = " + user.getId();
+        return query;
     }
 }
 

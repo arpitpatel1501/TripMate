@@ -9,4 +9,6 @@ public interface IUserQueryBuilder {
     String getUserByUserID(int userid);
 
     String createUser(User user);
+
+    String changePassword(User user);
 }
