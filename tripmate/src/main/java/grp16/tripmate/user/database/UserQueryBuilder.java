@@ -69,13 +69,16 @@ public class UserQueryBuilder implements IUserQueryBuilder {
     }
 
     @Override
-    public String changePassword(User user) {
+    public String changeUserDetails(User user) {
         String query = "update " +
                 UserDbColumnNames.tableName + " set " +
-                UserDbColumnNames.password + " = '" +
-                user.getPassword() + "'" +
+                UserDbColumnNames.password + " = '" + user.getPassword() + "'" + "," +
+                UserDbColumnNames.gender + " = '" + user.getGender() + "'" + "," +
+                UserDbColumnNames.firstname + " = '" + user.getFirstname() + "'" + "," +
+                UserDbColumnNames.lastname + " = '" + user.getLastname() + "'" +
                 " where " +
                 UserDbColumnNames.id + " = " + user.getId();
+        logger.info(query);
         return query;
     }
 }
