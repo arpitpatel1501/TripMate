@@ -2,6 +2,8 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.PostDbColumnNames;
 
 public class PostsQueryBuilder implements IPostsQueryBuilder {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -67,6 +69,23 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
                 "    `created_by`,\n" +
                 "    `description`\n" +
                 "FROM `Post` where `id` = " + postid;
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String getUpdatePostQuery(Post post) {
+        String query =  "UPDATE "+ PostDbColumnNames.TABLENAME + "\n" +
+                "    SET "+ PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
+                            PostDbColumnNames.SOURCE + "='" + post.getSource() + "',\n" +
+                            PostDbColumnNames.DESTINATION + "='" + post.getDestination() + "',\n" +
+                            PostDbColumnNames.STARTDATE + "='" + post.getStartDate() + "',\n" +
+                            PostDbColumnNames.ENDDATE + "='" + post.getEndDate() + "',\n" +
+                            PostDbColumnNames.MINAGE + "=" + post.getMinAge() + ",\n" +
+                            PostDbColumnNames.MAXAGE + "=" + post.getMaxAge() + ",\n" +
+                            PostDbColumnNames.CAPACITY + "=" + post.getCapacity() + ",\n" +
+                            PostDbColumnNames.DESCRIPTION + "='" + post.getDescription() + "'\n" +
+                "    WHERE "+ PostDbColumnNames.ID + "=" + post.getId();
         logger.info(query);
         return query;
     }

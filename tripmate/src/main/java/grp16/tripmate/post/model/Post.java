@@ -11,6 +11,9 @@ import grp16.tripmate.user.model.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -86,12 +89,20 @@ public class Post implements IPost {
         this.startDate = startDate;
     }
 
+    public void setStartDate(String startDate) throws ParseException {
+        this.startDate = new SimpleDateFormat("yyyy-mm-dd").parse(startDate);
+    }
+
     public Date getEndDate() {
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public void setEndDate(String endDate) throws ParseException {
+        this.endDate = new SimpleDateFormat("yyyy-mm-dd").parse(endDate);
     }
 
     public int getMinAge() {
@@ -134,7 +145,7 @@ public class Post implements IPost {
         this.owner = owner;
     }
 
-    public static List<Post> resultSetToPosts(ResultSet rs) throws SQLException {
+    public static List<Post> resultSetToPosts(ResultSet rs) throws SQLException, ParseException {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
             Post post = new Post();
@@ -198,6 +209,23 @@ public class Post implements IPost {
             logger.error(e.getMessage());
         }
         return null;
+    }
+
+    public boolean updatePost(){
+        Connection connection = null;
+        boolean isUpdateSuccess = false;
+        try {
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String query = queryBuilder.getUpdatePostQuery(this);
+            logger.info(query);
+            statement.executeUpdate(query);
+            isUpdateSuccess = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isUpdateSuccess;
     }
 
     @Override
