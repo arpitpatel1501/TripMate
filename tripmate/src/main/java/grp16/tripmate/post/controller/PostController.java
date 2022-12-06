@@ -8,8 +8,7 @@ import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,11 +38,25 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
-    @GetMapping("/viewpost")
-    public String viewPost(Model model, @RequestParam(name="postid") int postid) {
+    @GetMapping("/viewpost/{id}")
+    public String viewPost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "View Post");
         Post myPost = post.getPostByPostId(postid);
         model.addAttribute("post", myPost);
         return "viewpost";
+    }
+
+    @GetMapping("/editpost/{id}")
+    public String editPost(Model model, @PathVariable("id") int postid) {
+        model.addAttribute("title", "Edit Post");
+        Post myPost = post.getPostByPostId(postid);
+        model.addAttribute("post", myPost);
+        return "updatepost";
+    }
+
+    @PostMapping("/updatepost/{id}")
+    public String udpatePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        post.updatePost();
+        return "redirect:/dashboard";
     }
 }

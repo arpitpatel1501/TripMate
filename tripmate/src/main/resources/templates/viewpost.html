@@ -45,6 +45,13 @@
         <th>Description:</th>
         <td th:text="${post.getDescription()}"/>
     </tr>
+    <tr>
+        <td>
+            <form action="#" th:action="@{/editpost/{id}(id=${post.getId()})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
 </table>
 
 </body>
