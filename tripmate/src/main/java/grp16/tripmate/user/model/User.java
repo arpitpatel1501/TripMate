@@ -170,7 +170,6 @@ public class User implements IUser {
         Statement statement = connection.createStatement();
         this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
         String query = queryBuilder.changeUserDetails(this);
-        logger.info(query);
         int rowUpdate = statement.executeUpdate(query);
         connection.close();
     }

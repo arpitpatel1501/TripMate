@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/changeUserDetails")
-    public String changePassword(Model model, @ModelAttribute User user) throws Exception {
+    public String changeUserDetails(Model model, @ModelAttribute User user) throws Exception {
         logger.info("Change user to " + user);
         user.changeUserDetails();
         return "view_profile";
