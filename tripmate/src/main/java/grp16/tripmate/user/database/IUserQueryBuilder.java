@@ -10,5 +10,5 @@ public interface IUserQueryBuilder {
 
     String createUser(User user);
 
-    String changePassword(User user);
+    String changeUserDetails(User user);
 }

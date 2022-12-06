@@ -165,11 +165,11 @@ public class User implements IUser {
         return "";
     }
 
-    public void changePassword() throws Exception {
+    public void changeUserDetails() throws Exception {
         Connection connection = dbConnection.getDatabaseConnection();
         Statement statement = connection.createStatement();
         this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        String query = queryBuilder.changePassword(this);
+        String query = queryBuilder.changeUserDetails(this);
         logger.info(query);
         int rowUpdate = statement.executeUpdate(query);
         connection.close();
