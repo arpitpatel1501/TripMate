@@ -66,7 +66,7 @@ public class UserController {
         User loggedInUser = new User().getLoggedInUser();
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
-        model.addAttribute("title", "Register");
+        model.addAttribute("title", "View/Update Profile");
         return "view_profile";
     }
 
