@@ -215,6 +215,16 @@ public class Post implements IPost {
         return null;
     }
 
+    @Override
+    public List<Post> getFeedbackPosts() throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean isEligibleForFeedback() {
+        return endDate.before(new Date());
+    }
+
     public boolean updatePost() {
         Connection connection = null;
         boolean isUpdateSuccess = false;
