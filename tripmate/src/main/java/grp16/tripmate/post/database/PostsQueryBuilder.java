@@ -21,6 +21,34 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
         return instance;
     }
 
+    @Override
+    public String getCreatePostQuery(Post post) {
+        String query = "INSERT INTO " + PostDbColumnNames.TABLENAME + "( \n" +
+                PostDbColumnNames.OWNER + "," +
+                PostDbColumnNames.TITLE + "," +
+                PostDbColumnNames.SOURCE +  "," +
+                PostDbColumnNames.DESTINATION +  "," +
+                PostDbColumnNames.STARTDATE +  "," +
+                PostDbColumnNames.ENDDATE +  "," +
+                PostDbColumnNames.MINAGE +  "," +
+                PostDbColumnNames.MAXAGE +  "," +
+                PostDbColumnNames.CAPACITY +  "," +
+                PostDbColumnNames.DESCRIPTION +  ") \n" +
+                "VALUES \n" +
+                "( \n" +
+                post.getOwner().getId() + ",\n" +
+                "'" + post.getTitle() + "',\n" +
+                "'" + post.getSource() + "',\n" +
+                "'" + post.getDestination() + "',\n" +
+                "'" + post.getStartDate() + "',\n" +
+                "'" + post.getEndDate() + "',\n" +
+                post.getMinAge() + ",\n" +
+                post.getMaxAge() + ",\n" +
+                post.getCapacity() + ",\n" +
+                "'" + post.getDescription() + "'\n );";
+        logger.info(query);
+        return query;
+    }
 
     @Override
     public String getAllPosts() {
@@ -106,6 +134,22 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
                 PostDbColumnNames.DESCRIPTION +
                 "FROM " + PostDbColumnNames.TABLENAME +
                 "where " + PostDbColumnNames.ENDDATE + "< now()";
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String deletePostQuery(int postid) {
+        String query =  "DELETE FROM " + PostDbColumnNames.TABLENAME + " WHERE " + PostDbColumnNames.ID + " = " + postid;
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String hidePostQuery(int postid) {
+        String query =  "UPDATE "+ PostDbColumnNames.TABLENAME + "\n" +
+                "    SET "+ PostDbColumnNames.ISHIDDEN + "=" + true + ",\n" +
+                "    WHERE "+ PostDbColumnNames.ID + "=" + postid;
         logger.info(query);
         return query;
     }
