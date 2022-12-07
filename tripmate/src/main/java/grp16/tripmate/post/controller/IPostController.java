@@ -7,5 +7,5 @@ public interface IPostController {
 
     String getUserPosts(Model model) throws Exception;
 
-    String viewPost(Model model, int postid);
+    String viewPost(Model model, int postid) throws Exception;
 }
