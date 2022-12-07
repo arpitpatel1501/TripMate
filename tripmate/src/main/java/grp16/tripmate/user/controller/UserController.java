@@ -81,4 +81,10 @@ public class UserController {
     public String loadMainPage(Model model) {
         return "redirect:/login";
     }
+
+    @GetMapping("/logout")
+    public String logout(Model model) {
+        SessionManager.Instance().removeValue(UserDbColumnNames.id);
+        return "redirect:/login";
+    }
 }
