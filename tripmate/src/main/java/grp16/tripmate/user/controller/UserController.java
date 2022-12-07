@@ -3,27 +3,29 @@ package grp16.tripmate.user.controller;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.IUser;
+import grp16.tripmate.user.model.IUserFactory;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.model.UserFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
+    private final IUserFactory userFactory;
 
     public UserController() {
+        userFactory = UserFactory.getInstance();
     }
 
     @GetMapping("/login")
     public String userLogin(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", userFactory.getNewUser());
         model.addAttribute("title", "Login");
         return "login";
     }
@@ -44,7 +46,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String userRegister(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", userFactory.getNewUser());
         model.addAttribute("title", "Register");
         return "register";
     }
@@ -63,7 +65,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
-        User loggedInUser = new User().getLoggedInUser();
+        User loggedInUser = userFactory.getNewUser().getLoggedInUser();
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
         model.addAttribute("title", "View/Update Profile");
