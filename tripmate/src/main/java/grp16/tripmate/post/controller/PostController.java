@@ -32,7 +32,7 @@ public class PostController implements IPostController {
     }
 
     @GetMapping("/createpost")
-    public String getNewPost(Model model){
+    public String getNewPost(Model model) {
         Post myPost = new Post();
         model.addAttribute("title", "New Post");
         model.addAttribute("post", myPost);
@@ -40,7 +40,7 @@ public class PostController implements IPostController {
     }
 
     @PostMapping("/createpost")
-    public String createPost(Model model, @ModelAttribute Post post){
+    public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
         post.createPost();
         return "redirect:/dashboard";
@@ -91,5 +91,11 @@ public class PostController implements IPostController {
     public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
         model.addAttribute("title", "Hide Post");
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/join")
+    public String join(Model model, @ModelAttribute Post post) {
+        SessionManager.Instance().removeValue(UserDbColumnNames.id);
+        return "redirect:/login";
     }
 }

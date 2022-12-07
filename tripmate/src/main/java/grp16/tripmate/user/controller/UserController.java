@@ -90,4 +90,6 @@ public class UserController {
         SessionManager.Instance().removeValue(UserDbColumnNames.id);
         return "redirect:/login";
     }
+
+
 }
