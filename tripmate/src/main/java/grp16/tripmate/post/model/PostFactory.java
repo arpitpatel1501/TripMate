@@ -1,7 +1,7 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.user.model.IUserFactory;
-import grp16.tripmate.user.model.UserFactory;
+
+import java.util.Date;
 
 public class PostFactory implements IPostFactory {
 
@@ -20,6 +20,9 @@ public class PostFactory implements IPostFactory {
 
     @Override
     public IPost getNewPost() {
+        Post post = new Post();
+        post.setStartDate(new Date());
+        post.setEndDate(new Date());
         return new Post();
     }
 }

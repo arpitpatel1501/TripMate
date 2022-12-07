@@ -43,8 +43,7 @@ public class Post implements IPost {
     public Post() {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
-        this.setStartDate(new Date());
-        this.setEndDate(new Date());
+
         postFactory = PostFactory.getInstance();
     }
 
