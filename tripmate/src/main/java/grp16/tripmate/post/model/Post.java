@@ -38,11 +38,14 @@ public class Post implements IPost {
     private final IDatabaseConnection dbConnection;
     private final IPostsQueryBuilder queryBuilder;
 
-    public Post(){
+    private static IPostFactory postFactory = null;
+
+    public Post() {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
         this.setStartDate(new Date());
         this.setEndDate(new Date());
+        postFactory = PostFactory.getInstance();
     }
 
     public int getId() {
@@ -171,7 +174,7 @@ public class Post implements IPost {
     public static List<Post> resultSetToPosts(ResultSet rs) throws Exception {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
-            Post post = new Post();
+            Post post = (Post) postFactory.getNewPost();
             post.setId(rs.getInt(PostDbColumnNames.ID));
             post.setTitle(rs.getString(PostDbColumnNames.TITLE));
             post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));
@@ -194,7 +197,6 @@ public class Post implements IPost {
             final Connection connection = new DatabaseConnection().getDatabaseConnection();
             IPostsQueryBuilder queryBuilder = PostsQueryBuilder.getInstance();
             String query = queryBuilder.getPostsByUserId(userid);
-//            logger.info(query);
             final ResultSet allPosts = connection.createStatement().executeQuery(query);
             List<Post> posts = Post.resultSetToPosts(allPosts);
             connection.close();
@@ -209,7 +211,6 @@ public class Post implements IPost {
         try {
             final Connection connection = dbConnection.getDatabaseConnection();
             String query = queryBuilder.getAllPosts();
-//            logger.info(query);
             final ResultSet allPosts = connection.createStatement().executeQuery(query);
             List<Post> posts = Post.resultSetToPosts(allPosts);
             connection.close();
@@ -226,7 +227,6 @@ public class Post implements IPost {
             String query = queryBuilder.getPostByPostId(postid);
             final ResultSet postRS = connection.createStatement().executeQuery(query);
             Post post = Post.resultSetToPosts(postRS).get(0);
-//            logger.info(post.toString());
             connection.close();
             return post;
         } catch (Exception e) {
@@ -261,10 +261,10 @@ public class Post implements IPost {
         return isUpdateSuccess;
     }
 
-    public boolean deletePost(){
+    public boolean deletePost() {
         boolean isDeleteSuccessful = false;
         Connection connection = null;
-        try{
+        try {
             connection = dbConnection.getDatabaseConnection();
             Statement statement = connection.createStatement();
             String query = queryBuilder.deletePostQuery(this.getId());
@@ -278,10 +278,10 @@ public class Post implements IPost {
         return isDeleteSuccessful;
     }
 
-    public boolean hidePost(){
+    public boolean hidePost() {
         boolean isHidingSuccessful = false;
         Connection connection = null;
-        try{
+        try {
             connection = dbConnection.getDatabaseConnection();
             Statement statement = connection.createStatement();
             String query = queryBuilder.hidePostQuery(this.getId());
