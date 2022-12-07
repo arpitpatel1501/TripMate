@@ -25,13 +25,14 @@ public class User implements IUser {
 
     private String username;
     private String password;
-
     private int id;
-
     private String firstname;
     private String lastname;
     private Date birthDate;
     private String gender;
+
+    private final IUserQueryBuilder queryBuilder;
+    private final IDatabaseConnection dbConnection;
 
     public int getId() {
         return id;
@@ -73,15 +74,6 @@ public class User implements IUser {
         this.gender = gender;
     }
 
-    private final IUserQueryBuilder queryBuilder;
-    private final IDatabaseConnection dbConnection;
-
-    public User() {
-        this.queryBuilder = new UserQueryBuilder();
-        this.dbConnection = new DatabaseConnection();
-
-    }
-
     public String getUsername() {
         return username;
     }
@@ -99,6 +91,15 @@ public class User implements IUser {
         this.password = password;
     }
 
+    public User() {
+        this.queryBuilder = UserQueryBuilder.getInstance();
+        this.dbConnection = new DatabaseConnection();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
+    }
 
     public boolean validateUser() throws Exception {
         Connection connection = dbConnection.getDatabaseConnection();
@@ -114,7 +115,7 @@ public class User implements IUser {
         return isValidUser;
     }
 
-    public List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException, ParseException {
+    private List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException, ParseException {
         List<User> results = new ArrayList<>();
         while (rs.next()) {
             User user = new User();
@@ -174,12 +175,7 @@ public class User implements IUser {
         connection.close();
     }
 
-
     @Override
-    public String toString() {
-        return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
-    }
-
     public User getUserById(int userid) throws Exception {
         Connection connection = dbConnection.getDatabaseConnection();
         Statement statement = connection.createStatement();
