@@ -6,6 +6,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
 import grp16.tripmate.post.database.PostsQueryBuilder;
+import grp16.tripmate.user.controller.UserController;
 import grp16.tripmate.user.model.User;
 
 import java.sql.Connection;
@@ -142,11 +143,12 @@ public class Post implements IPost {
         return owner;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwner(int ownerid) throws Exception {
+        this.owner = new User().getUserById(ownerid);
+        logger.info(owner.toString());
     }
 
-    public static List<Post> resultSetToPosts(ResultSet rs) throws SQLException, ParseException {
+    public static List<Post> resultSetToPosts(ResultSet rs) throws Exception {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
             Post post = new Post();
@@ -161,6 +163,7 @@ public class Post implements IPost {
             post.setMinAge(rs.getInt(PostDbColumnNames.MINAGE));
             post.setStartDate(rs.getDate(PostDbColumnNames.STARTDATE));
             post.setSource(rs.getString(PostDbColumnNames.SOURCE));
+            post.setOwner(rs.getInt(PostDbColumnNames.OWNER));
             results.add(post);
         }
         return results;
