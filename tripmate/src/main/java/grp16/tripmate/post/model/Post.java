@@ -35,8 +35,8 @@ public class Post implements IPost {
     private int maxAge;
     private String description;
     private boolean isHidden;
-    private IDatabaseConnection dbConnection;
-    private IPostsQueryBuilder queryBuilder;
+    private final IDatabaseConnection dbConnection;
+    private final IPostsQueryBuilder queryBuilder;
 
     public Post() {
         queryBuilder = PostsQueryBuilder.getInstance();
@@ -213,6 +213,16 @@ public class Post implements IPost {
             logger.error(e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public List<Post> getFeedbackPosts() throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean isEligibleForFeedback() {
+        return endDate.before(new Date());
     }
 
     public boolean updatePost() {
