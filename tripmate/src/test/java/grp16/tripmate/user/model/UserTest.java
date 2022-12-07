@@ -6,6 +6,7 @@ import grp16.tripmate.user.encoder.PasswordEncoder;
 import org.apache.logging.log4j.core.util.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class UserTest {
     private final ILogger logger = new MyLoggerAdapter(this);
 
