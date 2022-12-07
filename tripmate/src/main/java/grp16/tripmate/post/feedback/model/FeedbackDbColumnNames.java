@@ -1,4 +1,4 @@
-package grp16.tripmate.feedback.model;
+package grp16.tripmate.post.feedback.model;
 
 public class FeedbackDbColumnNames {
     public static final String ID = "id";
