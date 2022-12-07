@@ -3,7 +3,9 @@ package grp16.tripmate.feedback.controller;
 import grp16.tripmate.feedback.model.Feedback;
 import grp16.tripmate.feedback.model.IFeedback;
 import grp16.tripmate.post.model.IPost;
+import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
@@ -18,13 +20,16 @@ public class FeedbackController {
 
     final private IFeedback feedback;
 
+    private IPostFactory postFactory;
+
     public FeedbackController() {
         feedback = new Feedback();
+        postFactory = PostFactory.getInstance();
     }
 
     @GetMapping("/feedback/{id}")
     public String loadFeedbackPage(Model model, @PathVariable("id") int postid) {
-        model.addAttribute("post", new Post().getPostByPostId(postid));
+        model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postid));
         model.addAttribute("currentFeedback", new Feedback());
         model.addAttribute("title", "Feedback");
         return "feedback";
