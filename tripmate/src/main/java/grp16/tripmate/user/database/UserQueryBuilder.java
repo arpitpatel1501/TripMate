@@ -10,8 +10,8 @@ public class UserQueryBuilder implements IUserQueryBuilder {
 
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    public UserQueryBuilder() {
-        //Required empty constructor
+    private UserQueryBuilder() {
+        //Required private empty constructor
     }
 
     public static IUserQueryBuilder getInstance() {
