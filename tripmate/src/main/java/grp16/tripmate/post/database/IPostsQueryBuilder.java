@@ -11,4 +11,8 @@ public interface IPostsQueryBuilder {
     String getPostByPostId(int postid);
 
     String getUpdatePostQuery(Post post);
+
+    String deletePostQuery(int postid);
+
+    String hidePostQuery(int postid);
 }

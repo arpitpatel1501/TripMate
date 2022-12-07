@@ -89,6 +89,22 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
         logger.info(query);
         return query;
     }
+
+    @Override
+    public String deletePostQuery(int postid) {
+        String query =  "DELETE FROM " + PostDbColumnNames.TABLENAME + " WHERE " + PostDbColumnNames.ID + " = " + postid;
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String hidePostQuery(int postid) {
+        String query =  "UPDATE "+ PostDbColumnNames.TABLENAME + "\n" +
+                "    SET "+ PostDbColumnNames.ISHIDDEN + "=" + true + ",\n" +
+                "    WHERE "+ PostDbColumnNames.ID + "=" + postid;
+        logger.info(query);
+        return query;
+    }
 }
 
 

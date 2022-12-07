@@ -56,7 +56,21 @@ public class PostController implements IPostController {
 
     @PostMapping("/updatepost/{id}")
     public String udpatePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Update Post");
         post.updatePost();
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/deletepost/{id}")
+    public String deletePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post){
+        model.addAttribute("title","Delete Post");
+        post.deletePost();
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/hidepost/{id}")
+    public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post){
+        model.addAttribute("title","Hide Post");
         return "redirect:/dashboard";
     }
 }

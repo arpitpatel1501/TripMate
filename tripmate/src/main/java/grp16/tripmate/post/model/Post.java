@@ -228,6 +228,40 @@ public class Post implements IPost {
         return isUpdateSuccess;
     }
 
+    public boolean deletePost(){
+        boolean isDeleteSuccessful = false;
+        Connection connection = null;
+        try{
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String query = queryBuilder.deletePostQuery(this.getId());
+            logger.info(query);
+            statement.executeUpdate(query);
+            isDeleteSuccessful = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isDeleteSuccessful;
+    }
+
+    public boolean hidePost(){
+        boolean isHidingSuccessful = false;
+        Connection connection = null;
+        try{
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String query = queryBuilder.hidePostQuery(this.getId());
+            logger.info(query);
+            statement.executeUpdate(query);
+            isHidingSuccessful = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isHidingSuccessful;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
