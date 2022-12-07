@@ -77,4 +77,15 @@ public class UserController {
         user.changeUserDetails();
         return "view_profile";
     }
+
+    @GetMapping("/")
+    public String loadMainPage(Model model) {
+        return "redirect:/login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(Model model) {
+        SessionManager.Instance().removeValue(UserDbColumnNames.id);
+        return "redirect:/login";
+    }
 }

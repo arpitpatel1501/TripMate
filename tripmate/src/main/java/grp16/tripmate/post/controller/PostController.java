@@ -39,10 +39,13 @@ public class PostController implements IPostController {
     }
 
     @GetMapping("/viewpost/{id}")
-    public String viewPost(Model model, @PathVariable("id") int postid) {
+    public String viewPost(Model model, @PathVariable("id") int postid) throws Exception {
         model.addAttribute("title", "View Post");
         Post myPost = post.getPostByPostId(postid);
+        logger.info(myPost.toString());
+        model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
         model.addAttribute("post", myPost);
+        model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
         return "viewpost";
     }
 

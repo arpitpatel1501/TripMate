@@ -8,4 +8,8 @@ public interface IPost {
     List<Post> getAllPosts();
 
     Post getPostByPostId(int postid);
+
+    List<Post> getFeedbackPosts() throws Exception;
+
+    boolean isEligibleForFeedback();
 }
