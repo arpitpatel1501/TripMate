@@ -179,4 +179,12 @@ public class User implements IUser {
     public String toString() {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
+
+    public User getUserById(int userid) throws Exception {
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        String query = queryBuilder.getUserByUserID(userid);
+        ResultSet rs = statement.executeQuery(query);
+        return resultSetToUsers(rs).get(0);
+    }
 }

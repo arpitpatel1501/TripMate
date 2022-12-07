@@ -30,5 +30,9 @@ public class SessionManager {
         return session.get(key);
     }
 
+    public void removeValue(String key) {
+        session.remove(key);
+    }
+
 
 }
