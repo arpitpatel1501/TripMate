@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,8 +82,8 @@ public class Post implements IPost {
         this.destination = destination;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getStartDate() {
+        return getSQLParsableDate(startDate);
     }
 
     public void setStartDate(Date startDate) {
@@ -90,11 +91,11 @@ public class Post implements IPost {
     }
 
     public void setStartDate(String startDate) throws ParseException {
-        this.startDate = new SimpleDateFormat("yyyy-mm-dd").parse(startDate);
+        this.startDate = getJavaDate(startDate);
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getEndDate() {
+        return getSQLParsableDate(endDate);
     }
 
     public void setEndDate(Date endDate) {
@@ -102,7 +103,7 @@ public class Post implements IPost {
     }
 
     public void setEndDate(String endDate) throws ParseException {
-        this.endDate = new SimpleDateFormat("yyyy-mm-dd").parse(endDate);
+        this.endDate = getJavaDate(endDate);
     }
 
     public int getMinAge() {
@@ -170,7 +171,7 @@ public class Post implements IPost {
             final Connection connection = new DatabaseConnection().getDatabaseConnection();
             IPostsQueryBuilder queryBuilder = PostsQueryBuilder.getInstance();
             String query = queryBuilder.getPostsByUserId(userid);
-            logger.info(query);
+//            logger.info(query);
             final ResultSet allPosts = connection.createStatement().executeQuery(query);
             List<Post> posts = Post.resultSetToPosts(allPosts);
             connection.close();
@@ -185,7 +186,7 @@ public class Post implements IPost {
         try {
             final Connection connection = dbConnection.getDatabaseConnection();
             String query = queryBuilder.getAllPosts();
-            logger.info(query);
+//            logger.info(query);
             final ResultSet allPosts = connection.createStatement().executeQuery(query);
             List<Post> posts = Post.resultSetToPosts(allPosts);
             connection.close();
@@ -202,7 +203,7 @@ public class Post implements IPost {
             String query = queryBuilder.getPostByPostId(postid);
             final ResultSet postRS = connection.createStatement().executeQuery(query);
             Post post = Post.resultSetToPosts(postRS).get(0);
-            logger.info(post.toString());
+//            logger.info(post.toString());
             connection.close();
             return post;
         } catch (Exception e) {
@@ -211,14 +212,14 @@ public class Post implements IPost {
         return null;
     }
 
-    public boolean updatePost(){
+    public boolean updatePost() {
         Connection connection = null;
         boolean isUpdateSuccess = false;
         try {
             connection = dbConnection.getDatabaseConnection();
             Statement statement = connection.createStatement();
             String query = queryBuilder.getUpdatePostQuery(this);
-            logger.info(query);
+//            logger.info(query);
             statement.executeUpdate(query);
             isUpdateSuccess = true;
             connection.close();
@@ -245,4 +246,14 @@ public class Post implements IPost {
                 ", isHidden=" + isHidden +
                 '}';
     }
+
+    private String getSQLParsableDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    private Date getJavaDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    }
+
 }
