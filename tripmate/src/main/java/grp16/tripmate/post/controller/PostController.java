@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -30,6 +31,21 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
+    @GetMapping("/createpost")
+    public String getNewPost(Model model){
+        Post myPost = new Post();
+        model.addAttribute("title", "New Post");
+        model.addAttribute("post", myPost);
+        return "createpost";
+    }
+
+    @PostMapping("/createpost")
+    public String createPost(Model model, @ModelAttribute Post post){
+        model.addAttribute("title", "Create Post");
+        post.createPost();
+        return "redirect:/dashboard";
+    }
+
     @GetMapping("/myposts")
     public String getUserPosts(Model model) throws Exception {
         model.addAttribute("title", "My Posts");
@@ -39,10 +55,13 @@ public class PostController implements IPostController {
     }
 
     @GetMapping("/viewpost/{id}")
-    public String viewPost(Model model, @PathVariable("id") int postid) {
+    public String viewPost(Model model, @PathVariable("id") int postid) throws Exception {
         model.addAttribute("title", "View Post");
         Post myPost = post.getPostByPostId(postid);
+        logger.info(myPost.toString());
+        model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
         model.addAttribute("post", myPost);
+        model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
         return "viewpost";
     }
 
@@ -62,15 +81,15 @@ public class PostController implements IPostController {
     }
 
     @PostMapping("/deletepost/{id}")
-    public String deletePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post){
-        model.addAttribute("title","Delete Post");
+    public String deletePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Delete Post");
         post.deletePost();
         return "redirect:/dashboard";
     }
 
     @PostMapping("/hidepost/{id}")
-    public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post){
-        model.addAttribute("title","Hide Post");
+    public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Hide Post");
         return "redirect:/dashboard";
     }
 }

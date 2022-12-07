@@ -21,6 +21,34 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
         return instance;
     }
 
+    @Override
+    public String getCreatePostQuery(Post post) {
+        String query = "INSERT INTO " + PostDbColumnNames.TABLENAME + "( \n" +
+                PostDbColumnNames.OWNER + "," +
+                PostDbColumnNames.TITLE + "," +
+                PostDbColumnNames.SOURCE +  "," +
+                PostDbColumnNames.DESTINATION +  "," +
+                PostDbColumnNames.STARTDATE +  "," +
+                PostDbColumnNames.ENDDATE +  "," +
+                PostDbColumnNames.MINAGE +  "," +
+                PostDbColumnNames.MAXAGE +  "," +
+                PostDbColumnNames.CAPACITY +  "," +
+                PostDbColumnNames.DESCRIPTION +  ") \n" +
+                "VALUES \n" +
+                "( \n" +
+                post.getOwner().getId() + ",\n" +
+                "'" + post.getTitle() + "',\n" +
+                "'" + post.getSource() + "',\n" +
+                "'" + post.getDestination() + "',\n" +
+                "'" + post.getStartDate() + "',\n" +
+                "'" + post.getEndDate() + "',\n" +
+                post.getMinAge() + ",\n" +
+                post.getMaxAge() + ",\n" +
+                post.getCapacity() + ",\n" +
+                "'" + post.getDescription() + "'\n );";
+        logger.info(query);
+        return query;
+    }
 
     @Override
     public String getAllPosts() {
@@ -57,7 +85,7 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
 
     @Override
     public String getPostByPostId(int postid) {
-        String query =  "SELECT `id`,\n" +
+        String query = "SELECT `id`,\n" +
                 "    `title`,\n" +
                 "    `source_location`,\n" +
                 "    `destination_location`,\n" +
@@ -75,17 +103,37 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
 
     @Override
     public String getUpdatePostQuery(Post post) {
-        String query =  "UPDATE "+ PostDbColumnNames.TABLENAME + "\n" +
-                "    SET "+ PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
-                            PostDbColumnNames.SOURCE + "='" + post.getSource() + "',\n" +
-                            PostDbColumnNames.DESTINATION + "='" + post.getDestination() + "',\n" +
-                            PostDbColumnNames.STARTDATE + "='" + post.getStartDate() + "',\n" +
-                            PostDbColumnNames.ENDDATE + "='" + post.getEndDate() + "',\n" +
-                            PostDbColumnNames.MINAGE + "=" + post.getMinAge() + ",\n" +
-                            PostDbColumnNames.MAXAGE + "=" + post.getMaxAge() + ",\n" +
-                            PostDbColumnNames.CAPACITY + "=" + post.getCapacity() + ",\n" +
-                            PostDbColumnNames.DESCRIPTION + "='" + post.getDescription() + "'\n" +
-                "    WHERE "+ PostDbColumnNames.ID + "=" + post.getId();
+        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
+                "    SET " + PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
+                PostDbColumnNames.SOURCE + "='" + post.getSource() + "',\n" +
+                PostDbColumnNames.DESTINATION + "='" + post.getDestination() + "',\n" +
+                PostDbColumnNames.STARTDATE + "='" + post.getStartDate() + "',\n" +
+                PostDbColumnNames.ENDDATE + "='" + post.getEndDate() + "',\n" +
+                PostDbColumnNames.MINAGE + "=" + post.getMinAge() + ",\n" +
+                PostDbColumnNames.MAXAGE + "=" + post.getMaxAge() + ",\n" +
+                PostDbColumnNames.CAPACITY + "=" + post.getCapacity() + ",\n" +
+                PostDbColumnNames.DESCRIPTION + "='" + post.getDescription() + "'\n" +
+                "    WHERE " + PostDbColumnNames.ID + "=" + post.getId();
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String getFeedbackPosts() {
+        String query = "SELECT " + PostDbColumnNames.ID + "," +
+                PostDbColumnNames.TITLE + "," +
+                PostDbColumnNames.SOURCE + "," +
+                PostDbColumnNames.DESTINATION + "," +
+                PostDbColumnNames.STARTDATE + "," +
+                PostDbColumnNames.ENDDATE + "," +
+                PostDbColumnNames.MINAGE + "," +
+                PostDbColumnNames.MAXAGE + "," +
+                PostDbColumnNames.ISHIDDEN + "," +
+                PostDbColumnNames.CAPACITY + "," +
+                PostDbColumnNames.OWNER + "," +
+                PostDbColumnNames.DESCRIPTION +
+                "FROM " + PostDbColumnNames.TABLENAME +
+                "where " + PostDbColumnNames.ENDDATE + "< now()";
         logger.info(query);
         return query;
     }
