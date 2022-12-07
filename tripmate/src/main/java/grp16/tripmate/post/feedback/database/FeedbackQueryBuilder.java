@@ -1,7 +1,7 @@
-package grp16.tripmate.feedback.database;
+package grp16.tripmate.post.feedback.database;
 
-import grp16.tripmate.feedback.model.Feedback;
-import grp16.tripmate.feedback.model.FeedbackDbColumnNames;
+import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.feedback.model.FeedbackDbColumnNames;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
@@ -43,6 +43,16 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
 
         return query;
 
+    }
+
+    public String deleteFeedbackByPostId(int postid) {
+        String query = "DELETE FROM " +
+                FeedbackDbColumnNames.TABLE_NAME +
+                " WHERE postid = " + postid;
+
+        logger.info(query);
+
+        return query;
     }
 
 }

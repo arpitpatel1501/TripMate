@@ -1,10 +1,8 @@
-package grp16.tripmate.feedback.controller;
+package grp16.tripmate.post.feedback.controller;
 
-import grp16.tripmate.feedback.model.Feedback;
-import grp16.tripmate.feedback.model.IFeedback;
-import grp16.tripmate.post.model.IPost;
+import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.feedback.model.IFeedback;
 import grp16.tripmate.post.model.IPostFactory;
-import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;

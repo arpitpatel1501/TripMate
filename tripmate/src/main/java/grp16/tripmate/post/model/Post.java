@@ -4,7 +4,9 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
+import grp16.tripmate.post.database.PostDatabase;
 import grp16.tripmate.post.database.PostsQueryBuilder;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
@@ -40,11 +42,14 @@ public class Post implements IPost {
 
     private static IPostFactory postFactory = null;
 
+    private IPostDatabase database;
+
     public Post() {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
 
         postFactory = PostFactory.getInstance();
+        database = new PostDatabase();
     }
 
     public int getId() {
@@ -153,91 +158,23 @@ public class Post implements IPost {
     }
 
     @Override
-    public boolean createPost() {
-        Connection connection = null;
-        boolean isCreationSuccess = false;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            this.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-            String query = queryBuilder.getCreatePostQuery(this);
-            statement.executeUpdate(query);
-            isCreationSuccess = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isCreationSuccess;
+    public boolean createPost() throws Exception {
+        return database.createPost(this);
     }
 
-    public static List<Post> resultSetToPosts(ResultSet rs) throws Exception {
-        List<Post> results = new ArrayList<>();
-        while (rs.next()) {
-            Post post = (Post) postFactory.getNewPost();
-            post.setId(rs.getInt(PostDbColumnNames.ID));
-            post.setTitle(rs.getString(PostDbColumnNames.TITLE));
-            post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));
-            post.setDescription(rs.getString(PostDbColumnNames.DESCRIPTION));
-            post.setEndDate(rs.getDate(PostDbColumnNames.ENDDATE));
-            post.setHidden(false);
-            post.setDestination(rs.getString(PostDbColumnNames.DESTINATION));
-            post.setMaxAge(rs.getInt(PostDbColumnNames.MAXAGE));
-            post.setMinAge(rs.getInt(PostDbColumnNames.MINAGE));
-            post.setStartDate(rs.getDate(PostDbColumnNames.STARTDATE));
-            post.setSource(rs.getString(PostDbColumnNames.SOURCE));
-            post.setOwner(rs.getInt(PostDbColumnNames.OWNER));
-            results.add(post);
-        }
-        return results;
-    }
 
     public List<Post> getPostsByUserId(int userid) {
-        try {
-            final Connection connection = new DatabaseConnection().getDatabaseConnection();
-            IPostsQueryBuilder queryBuilder = PostsQueryBuilder.getInstance();
-            String query = queryBuilder.getPostsByUserId(userid);
-            final ResultSet allPosts = connection.createStatement().executeQuery(query);
-            List<Post> posts = Post.resultSetToPosts(allPosts);
-            connection.close();
-            return posts;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
+        return database.getPostsByUserId(userid);
     }
 
     public List<Post> getAllPosts() {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            String query = queryBuilder.getAllPosts();
-            final ResultSet allPosts = connection.createStatement().executeQuery(query);
-            List<Post> posts = Post.resultSetToPosts(allPosts);
-            connection.close();
-            return posts;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
+        return database.getAllPosts();
     }
 
     public Post getPostByPostId(int postid) {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            String query = queryBuilder.getPostByPostId(postid);
-            final ResultSet postRS = connection.createStatement().executeQuery(query);
-            Post post = Post.resultSetToPosts(postRS).get(0);
-            connection.close();
-            return post;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
+        return database.getPostByPostId(postid);
     }
 
-    @Override
-    public List<Post> getFeedbackPosts() throws Exception {
-        return null;
-    }
 
     @Override
     public boolean isEligibleForFeedback() {
@@ -245,53 +182,15 @@ public class Post implements IPost {
     }
 
     public boolean updatePost() {
-        Connection connection = null;
-        boolean isUpdateSuccess = false;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.getUpdatePostQuery(this);
-            statement.executeUpdate(query);
-            isUpdateSuccess = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isUpdateSuccess;
+        return database.updatePost(this);
     }
 
     public boolean deletePost() {
-        boolean isDeleteSuccessful = false;
-        Connection connection = null;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.deletePostQuery(this.getId());
-            logger.info(query);
-            statement.executeUpdate(query);
-            isDeleteSuccessful = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isDeleteSuccessful;
+        return database.deletePost(this);
     }
 
-    public boolean hidePost() {
-        boolean isHidingSuccessful = false;
-        Connection connection = null;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.hidePostQuery(this.getId());
-            logger.info(query);
-            statement.executeUpdate(query);
-            isHidingSuccessful = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isHidingSuccessful;
+    public boolean hidePost(Post post) {
+        return database.hidePost(post);
     }
 
     @Override
