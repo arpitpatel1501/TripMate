@@ -6,12 +6,12 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
 import grp16.tripmate.post.database.PostsQueryBuilder;
-import grp16.tripmate.user.controller.UserController;
+import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
+import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -38,9 +38,11 @@ public class Post implements IPost {
     private final IDatabaseConnection dbConnection;
     private final IPostsQueryBuilder queryBuilder;
 
-    public Post() {
+    public Post(){
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
+        this.setStartDate(new Date());
+        this.setEndDate(new Date());
     }
 
     public int getId() {
@@ -148,6 +150,24 @@ public class Post implements IPost {
         logger.info(owner.toString());
     }
 
+    @Override
+    public boolean createPost() {
+        Connection connection = null;
+        boolean isCreationSuccess = false;
+        try {
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            this.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            String query = queryBuilder.getCreatePostQuery(this);
+            statement.executeUpdate(query);
+            isCreationSuccess = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isCreationSuccess;
+    }
+
     public static List<Post> resultSetToPosts(ResultSet rs) throws Exception {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
@@ -232,7 +252,6 @@ public class Post implements IPost {
             connection = dbConnection.getDatabaseConnection();
             Statement statement = connection.createStatement();
             String query = queryBuilder.getUpdatePostQuery(this);
-//            logger.info(query);
             statement.executeUpdate(query);
             isUpdateSuccess = true;
             connection.close();
@@ -240,6 +259,40 @@ public class Post implements IPost {
             throw new RuntimeException(e);
         }
         return isUpdateSuccess;
+    }
+
+    public boolean deletePost(){
+        boolean isDeleteSuccessful = false;
+        Connection connection = null;
+        try{
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String query = queryBuilder.deletePostQuery(this.getId());
+            logger.info(query);
+            statement.executeUpdate(query);
+            isDeleteSuccessful = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isDeleteSuccessful;
+    }
+
+    public boolean hidePost(){
+        boolean isHidingSuccessful = false;
+        Connection connection = null;
+        try{
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            String query = queryBuilder.hidePostQuery(this.getId());
+            logger.info(query);
+            statement.executeUpdate(query);
+            isHidingSuccessful = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isHidingSuccessful;
     }
 
     @Override

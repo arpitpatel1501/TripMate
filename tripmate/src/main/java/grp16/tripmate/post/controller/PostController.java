@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,21 @@ public class PostController implements IPostController {
         List<Post> posts = post.getAllPosts();
         model.addAttribute("posts", posts);
         return "listposts";
+    }
+
+    @GetMapping("/createpost")
+    public String getNewPost(Model model){
+        Post myPost = new Post();
+        model.addAttribute("title", "New Post");
+        model.addAttribute("post", myPost);
+        return "createpost";
+    }
+
+    @PostMapping("/createpost")
+    public String createPost(Model model, @ModelAttribute Post post){
+        model.addAttribute("title", "Create Post");
+        post.createPost();
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/myposts")
@@ -59,7 +75,21 @@ public class PostController implements IPostController {
 
     @PostMapping("/updatepost/{id}")
     public String udpatePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Update Post");
         post.updatePost();
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/deletepost/{id}")
+    public String deletePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Delete Post");
+        post.deletePost();
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/hidepost/{id}")
+    public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+        model.addAttribute("title", "Hide Post");
         return "redirect:/dashboard";
     }
 }
