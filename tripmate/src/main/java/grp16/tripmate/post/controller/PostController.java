@@ -62,11 +62,4 @@ public class PostController implements IPostController {
         post.updatePost();
         return "redirect:/dashboard";
     }
-
-    @GetMapping("/feedback/{id}")
-    public String loadFeedbackPage(Model model, @PathVariable("id") int postid) {
-        model.addAttribute("postid", postid);
-        model.addAttribute("title", "Feedback");
-        return "feedback";
-    }
 }
