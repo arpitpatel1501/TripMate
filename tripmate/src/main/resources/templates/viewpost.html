@@ -52,6 +52,13 @@
             </form>
         </td>
     </tr>
+    <tr th:if="${isFeedbackButtonVisible}">
+        <td>
+            <form action="#" th:action="@{/feedback/{id}(id=${post.getId()})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
 </table>
 
 </body>

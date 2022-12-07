@@ -211,7 +211,21 @@ public class Post implements IPost {
         return null;
     }
 
-    public boolean updatePost(){
+    @Override
+    public List<Post> getFeedbackPosts() throws Exception {
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        String query = queryBuilder.getFeedbackPosts();
+        ResultSet rs = statement.executeQuery(query);
+        return resultSetToPosts(rs);
+    }
+
+    @Override
+    public boolean isEligibleForFeedback() {
+        return this.getEndDate().equals(new Date());
+    }
+
+    public boolean updatePost() {
         Connection connection = null;
         boolean isUpdateSuccess = false;
         try {

@@ -43,6 +43,9 @@ public class PostController implements IPostController {
         model.addAttribute("title", "View Post");
         Post myPost = post.getPostByPostId(postid);
         model.addAttribute("post", myPost);
+        model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+
+
         return "viewpost";
     }
 
