@@ -53,6 +53,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String userRegister(@ModelAttribute User user) throws Exception {
+
         boolean isUserCreatedSuccessfully = user.createUser();
         if (isUserCreatedSuccessfully) {
             logger.info(user.getUsername() + " Register SUCCESS");
