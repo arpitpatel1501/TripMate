@@ -11,4 +11,6 @@ public interface IPostsQueryBuilder {
     String getPostByPostId(int postid);
 
     String getUpdatePostQuery(Post post);
+
+    String getFeedbackPosts();
 }
