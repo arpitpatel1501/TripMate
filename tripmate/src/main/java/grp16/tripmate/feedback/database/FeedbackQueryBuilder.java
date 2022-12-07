@@ -4,7 +4,6 @@ import grp16.tripmate.feedback.model.Feedback;
 import grp16.tripmate.feedback.model.FeedbackDbColumnNames;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.PostsQueryBuilder;
 
 public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
 
@@ -28,7 +27,6 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
         String query = "INSERT INTO " +
                 FeedbackDbColumnNames.TABLE_NAME +
                 " (" +
-//              FeedbackDbColumnNames.ID + "," +
                 FeedbackDbColumnNames.POST_ID + "," +
                 FeedbackDbColumnNames.USER_ID + "," +
                 FeedbackDbColumnNames.FEEDBACK + "," +
@@ -36,7 +34,6 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
                 ")" +
                 " VALUES " +
                 "(" +
-//                "1,\n" +
                 feedback.getPost().getId() + "," +
                 feedback.getUser().getId() + "," +
                 " '" + feedback.getFeedback() + "' " + "," +
