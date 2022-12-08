@@ -3,7 +3,9 @@ package grp16.tripmate.post.controller;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.IPost;
+import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,13 @@ import java.util.List;
 public class PostController implements IPostController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    final private IPost post;
+    final private IPostFactory postFactory;
+
+    private final IPost post;
 
     PostController() {
-        post = new Post();
+        postFactory = PostFactory.getInstance();
+        post = postFactory.getNewPost();
     }
 
     @GetMapping("/dashboard")
@@ -32,15 +37,15 @@ public class PostController implements IPostController {
     }
 
     @GetMapping("/createpost")
-    public String getNewPost(Model model){
-        Post myPost = new Post();
+    public String getNewPost(Model model) {
+        Post myPost = postFactory.getNewPost();
         model.addAttribute("title", "New Post");
         model.addAttribute("post", myPost);
         return "createpost";
     }
 
     @PostMapping("/createpost")
-    public String createPost(Model model, @ModelAttribute Post post){
+    public String createPost(Model model, @ModelAttribute Post post) throws Exception {
         model.addAttribute("title", "Create Post");
         post.createPost();
         return "redirect:/dashboard";
@@ -90,6 +95,7 @@ public class PostController implements IPostController {
     @PostMapping("/hidepost/{id}")
     public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
         model.addAttribute("title", "Hide Post");
+        post.hidePost();
         return "redirect:/dashboard";
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IPost {
 
-    boolean createPost();
+    boolean createPost() throws Exception;
 
     List<Post> getPostsByUserId(int userid);
 
@@ -12,7 +12,8 @@ public interface IPost {
 
     Post getPostByPostId(int postid);
 
-    List<Post> getFeedbackPosts() throws Exception;
 
     boolean isEligibleForFeedback();
+
+    boolean hidePost();
 }

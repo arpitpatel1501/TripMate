@@ -26,14 +26,14 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
         String query = "INSERT INTO " + PostDbColumnNames.TABLENAME + "( \n" +
                 PostDbColumnNames.OWNER + "," +
                 PostDbColumnNames.TITLE + "," +
-                PostDbColumnNames.SOURCE +  "," +
-                PostDbColumnNames.DESTINATION +  "," +
-                PostDbColumnNames.STARTDATE +  "," +
-                PostDbColumnNames.ENDDATE +  "," +
-                PostDbColumnNames.MINAGE +  "," +
-                PostDbColumnNames.MAXAGE +  "," +
-                PostDbColumnNames.CAPACITY +  "," +
-                PostDbColumnNames.DESCRIPTION +  ") \n" +
+                PostDbColumnNames.SOURCE + "," +
+                PostDbColumnNames.DESTINATION + "," +
+                PostDbColumnNames.STARTDATE + "," +
+                PostDbColumnNames.ENDDATE + "," +
+                PostDbColumnNames.MINAGE + "," +
+                PostDbColumnNames.MAXAGE + "," +
+                PostDbColumnNames.CAPACITY + "," +
+                PostDbColumnNames.DESCRIPTION + ") \n" +
                 "VALUES \n" +
                 "( \n" +
                 post.getOwner().getId() + ",\n" +
@@ -52,18 +52,24 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
 
     @Override
     public String getAllPosts() {
-        return "SELECT `id`,\n" +
-                "    `title`,\n" +
-                "    `source_location`,\n" +
-                "    `destination_location`,\n" +
-                "    `start_ts`,\n" +
-                "    `end_ts`,\n" +
-                "    `min_age`,\n" +
-                "    `max_age`,\n" +
-                "    `capacity`,\n" +
-                "    `created_by`,\n" +
-                "    `description`\n" +
-                "FROM `Post` where `is_hidden` != 1 ";
+        String query = "SELECT `Post`.`id`,\n" +
+                "    `Post`.`title`,\n" +
+                "    `Post`.`source_location`,\n" +
+                "    `Post`.`destination_location`,\n" +
+                "    `Post`.`start_ts`,\n" +
+                "    `Post`.`end_ts`,\n" +
+                "    `Post`.`min_age`,\n" +
+                "    `Post`.`max_age`,\n" +
+                "    `Post`.`is_hidden`,\n" +
+                "    `Post`.`capacity`,\n" +
+                "    `Post`.`created_by`,\n" +
+                "    `Post`.`description`\n" +
+                "FROM `CSCI5308_16_DEVINT`.`Post`" +
+                " where " + PostDbColumnNames.ISHIDDEN + " != 1";
+
+        logger.info(query);
+
+        return query;
     }
 
     @Override
@@ -95,16 +101,17 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
                 "    `max_age`,\n" +
                 "    `capacity`,\n" +
                 "    `created_by`,\n" +
-                "    `description`\n" +
-                "FROM `Post` where `id` = " + postid;
+                "    `description` ,\n " +
+                PostDbColumnNames.ISHIDDEN +
+                " FROM `Post` where `id` = " + postid;
         logger.info(query);
         return query;
     }
 
     @Override
     public String getUpdatePostQuery(Post post) {
-        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
-                "    SET " + PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
+        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "    SET " +
+                PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
                 PostDbColumnNames.SOURCE + "='" + post.getSource() + "',\n" +
                 PostDbColumnNames.DESTINATION + "='" + post.getDestination() + "',\n" +
                 PostDbColumnNames.STARTDATE + "='" + post.getStartDate() + "',\n" +
@@ -140,16 +147,16 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
 
     @Override
     public String deletePostQuery(int postid) {
-        String query =  "DELETE FROM " + PostDbColumnNames.TABLENAME + " WHERE " + PostDbColumnNames.ID + " = " + postid;
+        String query = "DELETE FROM " + PostDbColumnNames.TABLENAME + " WHERE " + PostDbColumnNames.ID + " = " + postid;
         logger.info(query);
         return query;
     }
 
     @Override
     public String hidePostQuery(int postid) {
-        String query =  "UPDATE "+ PostDbColumnNames.TABLENAME + "\n" +
-                "    SET "+ PostDbColumnNames.ISHIDDEN + "=" + true + ",\n" +
-                "    WHERE "+ PostDbColumnNames.ID + "=" + postid;
+        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
+                "    SET " + PostDbColumnNames.ISHIDDEN + "=" + true + "\n" +
+                "    WHERE " + PostDbColumnNames.ID + "=" + postid;
         logger.info(query);
         return query;
     }

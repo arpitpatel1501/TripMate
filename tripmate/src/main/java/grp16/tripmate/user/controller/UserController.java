@@ -37,7 +37,7 @@ public class UserController {
 
         if (isValidUser) {
             logger.info(user.getUsername() + " Login SUCCESS");
-            return "greeting";
+            return "redirect:/dashboard";
         } else {
             logger.error(user.getUsername() + " Login FAILED");
             return "error";
@@ -90,4 +90,6 @@ public class UserController {
         SessionManager.Instance().removeValue(UserDbColumnNames.id);
         return "redirect:/login";
     }
+
+
 }

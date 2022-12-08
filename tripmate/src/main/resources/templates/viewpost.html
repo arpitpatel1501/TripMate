@@ -70,6 +70,13 @@
             </form>
         </td>
     </tr>
+    <tr th:if="${canJoin}">
+        <td>
+            <form action="#" th:action="@{/join}" method="post">
+                <button type="submit">Request to join</button>
+            </form>
+        </td>
+    </tr>
 </table>
 
 </body>
