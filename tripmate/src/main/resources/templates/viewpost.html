@@ -84,5 +84,13 @@
     </tr>
 </table>
 
+<h2 th:if="${feedbacks.size() != 0}">Feedbacks on this post</h2>
+<table>
+    <tr th:each="feedback: ${feedbacks}">
+        <td th:text="${feedback.rating}"/>
+        <td th:text="${feedback.feedback}"/>
+    </tr>
+</table>
+
 </body>
 </html>
