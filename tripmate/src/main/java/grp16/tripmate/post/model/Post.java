@@ -42,14 +42,15 @@ public class Post implements IPost {
 
     private static IPostFactory postFactory = null;
 
-    private IPostDatabase database;
+    private final IPostDatabase database;
 
     public Post() {
-        queryBuilder = PostsQueryBuilder.getInstance();
-        dbConnection = new DatabaseConnection();
-
         postFactory = PostFactory.getInstance();
-        database = new PostDatabase();
+        database = postFactory.getPostDatabase();
+        queryBuilder = postFactory.getPostQueryBuilder();
+        dbConnection = new DatabaseConnection();
+        this.setStartDate(new Date());
+        this.setEndDate(new Date());
     }
 
     public int getId() {
@@ -189,8 +190,8 @@ public class Post implements IPost {
         return database.deletePost(this);
     }
 
-    public boolean hidePost(Post post) {
-        return database.hidePost(post);
+    public boolean hidePost() {
+        return database.hidePost(this);
     }
 
     @Override

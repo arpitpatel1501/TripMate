@@ -11,8 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class UserTest {
     private final ILogger logger = new MyLoggerAdapter(this);
