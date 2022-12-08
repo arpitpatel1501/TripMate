@@ -67,6 +67,7 @@ public class PostController implements IPostController {
         model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
         model.addAttribute("post", myPost);
         model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+        model.addAttribute("canJoin", myPost.isEligibleToJoin());
         return "viewpost";
     }
 
