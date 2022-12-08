@@ -8,6 +8,7 @@ import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
 import grp16.tripmate.post.database.PostDatabase;
 import grp16.tripmate.post.database.PostsQueryBuilder;
+import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
@@ -188,6 +189,10 @@ public class Post implements IPost {
 
     public boolean deletePost() {
         return database.deletePost(this);
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return database.getFeedbacks(this.getId());
     }
 
     public boolean hidePost() {

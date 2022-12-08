@@ -55,4 +55,13 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
         return query;
     }
 
+    @Override
+    public String getFeedbacksByPostId(int post_id) {
+        String query = "select * from Feedback where postid = " + post_id;
+
+        logger.info(query);
+
+        return query;
+    }
+
 }
