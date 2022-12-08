@@ -3,6 +3,11 @@
 <head>
     <title th:text="${title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script>
+        function deleteConfirmationAlert() {
+            alert("This post will be deleted permanently.");
+        }
+    </script>
 </head>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
@@ -54,7 +59,7 @@
         </td>
         <td>
             <form action="#" th:action="@{/deletepost/{id}(id=${post.getId()})}" method="post">
-                <button type="submit">Delete</button>
+                <button type="submit" onclick="deleteConfirmationAlert()">Delete</button>
             </form>
         </td>
         <td>
