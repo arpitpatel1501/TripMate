@@ -221,4 +221,12 @@ public class Post implements IPost {
         return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
 
+    public boolean isEligibleToJoin() throws Exception {
+        boolean isPastDate = endDate.equals(new Date());
+        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        logger.info(String.valueOf(isPastDate));
+        logger.info(String.valueOf(isOwner));
+        return !isPastDate && !isOwner;
+    }
+
 }
