@@ -26,16 +26,34 @@ public class FeedbackDatabase implements IFeedbackDatabase {
     @Override
     public void createFeedback(Feedback feedback) {
         String query = queryBuilder.createFeedback(feedback);
-        executeQuery(query);
+        execute(query);
     }
 
     @Override
     public void deleteFeedbackByPostId(int postid) {
         String query = queryBuilder.deleteFeedbackByPostId(postid);
-        executeQuery(query);
+        execute(query);
     }
 
-    private void executeQuery(String query) {
+    @Override
+    public List<Feedback> getFeedbacksByPostId(int post_id) {
+        String query = queryBuilder.getFeedbacksByPostId(post_id);
+        return executeQuery(query);
+    }
+
+    private List<Feedback> executeQuery(String query) {
+        try {
+            final Connection connection = dbConnection.getDatabaseConnection();
+            List<Feedback> feedbacks = resultSetToFeedback(connection.createStatement().executeQuery(query));
+            connection.close();
+            return feedbacks;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    private void execute(String query) {
         try {
             final Connection connection = dbConnection.getDatabaseConnection();
             connection.createStatement().execute(query);
