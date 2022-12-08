@@ -14,4 +14,6 @@ public interface IPost {
 
 
     boolean isEligibleForFeedback();
+
+    boolean hidePost();
 }

@@ -36,12 +36,12 @@ public class PostDatabase implements IPostDatabase {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
         factory = PostFactory.getInstance();
-        feedbackDatabase = new FeedbackDatabase();
+        feedbackDatabase = factory.getFeedbackDatabase();
     }
 
     @Override
     public boolean updatePost(Post post) {
-        String query = queryBuilder.getCreatePostQuery(post);
+        String query = queryBuilder.getUpdatePostQuery(post);
         return executeQuery(query);
     }
 
@@ -54,7 +54,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean hidePost(Post post) {
-        String query = queryBuilder.getCreatePostQuery(post);
+        String query = queryBuilder.hidePostQuery(post.getId());
         return executeQuery(query);
     }
 
@@ -84,13 +84,13 @@ public class PostDatabase implements IPostDatabase {
     public List<Post> resultSetToPosts(ResultSet rs) throws Exception {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
-            Post post = (Post) factory.getNewPost();
+            Post post = factory.getNewPost();
             post.setId(rs.getInt(PostDbColumnNames.ID));
             post.setTitle(rs.getString(PostDbColumnNames.TITLE));
             post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));
             post.setDescription(rs.getString(PostDbColumnNames.DESCRIPTION));
             post.setEndDate(rs.getDate(PostDbColumnNames.ENDDATE));
-            post.setHidden(false);
+            post.setHidden(rs.getBoolean(PostDbColumnNames.ISHIDDEN));
             post.setDestination(rs.getString(PostDbColumnNames.DESTINATION));
             post.setMaxAge(rs.getInt(PostDbColumnNames.MAXAGE));
             post.setMinAge(rs.getInt(PostDbColumnNames.MINAGE));
