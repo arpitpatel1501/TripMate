@@ -46,40 +46,40 @@ build:
     refs:
       - branches
 
-deploy-non-prod:
-  stage: deploy
-  tags:
-    - $RUNNER
-  image: ruby:3.2-rc
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - export PATH=$PATH:/usr/local/bundle/bin
-    - dpl --provider=heroku --app=$heroku_app_name_test --api-key=$heroku_api_key
-  environment:
-    name: staging
-    url: https://trip-mate-grp16-test.herokuapp.com/
-  only:
-    - develop
+# deploy-non-prod:
+#   stage: deploy
+#   tags:
+#     - $RUNNER
+#   image: ruby:3.2-rc
+#   script:
+#     - apt-get update -qy
+#     - apt-get install -y ruby-dev
+#     - gem install dpl
+#     - export PATH=$PATH:/usr/local/bundle/bin
+#     - dpl --provider=heroku --app=$heroku_app_name_test --api-key=$heroku_api_key
+#   environment:
+#     name: staging
+#     url: https://trip-mate-grp16-test.herokuapp.com/
+#   only:
+#     - develop
 
-# Ref: https://docs.gitlab.com/ee/ci/examples/deployment/index.html
+# # Ref: https://docs.gitlab.com/ee/ci/examples/deployment/index.html
 
-deploy-prod:
-  stage: deploy
-  tags:
-    - $RUNNER
-  image: ruby:3.2-rc
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - export PATH=$PATH:/usr/local/bundle/bin
-    - dpl --provider=heroku --app=$heroku_app_name --api-key=$heroku_api_key
-  environment:
-    name: production
-    url: https://trip-mate-grp16.herokuapp.com/
-  only:
-    - main
+# deploy-prod:
+#   stage: deploy
+#   tags:
+#     - $RUNNER
+#   image: ruby:3.2-rc
+#   script:
+#     - apt-get update -qy
+#     - apt-get install -y ruby-dev
+#     - gem install dpl
+#     - export PATH=$PATH:/usr/local/bundle/bin
+#     - dpl --provider=heroku --app=$heroku_app_name --api-key=$heroku_api_key
+#   environment:
+#     name: production
+#     url: https://trip-mate-grp16.herokuapp.com/
+#   only:
+#     - main
 
-# Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
+# # Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
