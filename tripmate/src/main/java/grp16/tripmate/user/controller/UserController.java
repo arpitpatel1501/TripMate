@@ -58,7 +58,6 @@ public class UserController {
         iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
         iVerification.verification(user.getUsername());
 
-        System.out.println("in userVerification");
         this.user = user;
 
         return "user_verification";
@@ -71,13 +70,6 @@ public class UserController {
 //            return "error";
 //        }
     }
-
-//    @PostMapping("/verify")
-//    public String usVerification(HttpServletRequest request) throws Exception {
-//        String code = request.getParameter("code");
-//        System.out.println("code"+code);
-//        return "verify";
-//    }
 
     @PostMapping("/verify")
     public String userVerificationCode(HttpServletRequest request) {
