@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IPostDatabase database;
+    private IPostDatabase database;
 
     private int id;
     private User owner;
@@ -208,6 +208,14 @@ public class Post implements IPost {
     public void setOwner(int ownerid) throws Exception {
         this.owner = new User().getUserById(ownerid);
         logger.info(owner.toString());
+    }
+
+    public IPostDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(IPostDatabase database){
+        this.database = database;
     }
 
     @Override

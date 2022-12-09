@@ -1,7 +1,7 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
@@ -20,13 +20,13 @@ import java.util.List;
 
 @Controller
 public class PostController implements IPostController {
-    private final ILogger logger;
     private final IPostFactory postFactory;
+    private final ILogger logger;
+
 
     PostController() {
         postFactory = PostFactory.getInstance();
         logger = postFactory.getLogger(this);
-
     }
 
     @GetMapping("/dashboard")
@@ -49,6 +49,7 @@ public class PostController implements IPostController {
     @PostMapping("/createpost")
     public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
+        post.setDatabase(postFactory.getPostDatabase());
         try {
             post.createPost();
             return "redirect:/dashboard";
@@ -104,21 +105,26 @@ public class PostController implements IPostController {
     @PostMapping("/updatepost")
     public String udpatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
+        post.setDatabase(postFactory.getPostDatabase());
         post.updatePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/deletepost")
-    public String deletePost(Model model, @ModelAttribute Post post) {
+    @PostMapping("/deletepost/{id}")
+    public String deletePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Delete Post");
-        post.deletePost();
+        Post post = (Post) postFactory.getNewPost();
+        Post myPost = post.getPostByPostId(postid);
+        myPost.deletePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/hidepost")
-    public String hidePost(Model model, @ModelAttribute Post post) {
+    @PostMapping("/hidepost/{id}")
+    public String hidePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Hide Post");
-        post.hidePost();
+        Post post = (Post) postFactory.getNewPost();
+        Post myPost = post.getPostByPostId(postid);
+        myPost.hidePost();
         return "redirect:/dashboard";
     }
 

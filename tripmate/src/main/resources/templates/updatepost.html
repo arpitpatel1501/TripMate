@@ -22,6 +22,7 @@
     <p>Min Age : <input type="number" th:field="*{minAge}" th:value="${post.getMinAge()}"></p>
     <p>Max Age : <input type="number" th:field="*{maxAge}" th:value="${post.getMaxAge()}"></p>
     <p>Description : <input type="text" th:field="*{description}" th:value="${post.getDescription()}"></p>
+    <input type="hidden" th:field="*{id}" th:value="${post.getId()}">
     <button type="submit">Update</button>
 </form>
 <h2 class="error" th:text="${error}"></h2>
