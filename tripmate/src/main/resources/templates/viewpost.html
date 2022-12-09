@@ -60,7 +60,7 @@
         </td>
         <td>
             <form action="#" th:action="@{/deletepost/{id}(id=${post.getId()})}" method="post">
-                <button type="submit" onclick="deleteConfirmationAlert()">Delete</button>
+                <button type="submit">Delete</button>
             </form>
         </td>
         <td>
@@ -82,14 +82,6 @@
                 <button type="submit">Request to join</button>
             </form>
         </td>
-    </tr>
-</table>
-
-<h2 th:if="${feedbacks.size() != 0}">Feedbacks on this post</h2>
-<table>
-    <tr th:each="feedback: ${feedbacks}">
-        <td th:text="${feedback.rating}"/>
-        <td th:text="${feedback.feedback}"/>
     </tr>
 </table>
 

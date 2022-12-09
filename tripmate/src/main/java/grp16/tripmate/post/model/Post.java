@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/*
+**References
+**https://www.baeldung.com/java-simple-date-format
+ */
+
 public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
 
