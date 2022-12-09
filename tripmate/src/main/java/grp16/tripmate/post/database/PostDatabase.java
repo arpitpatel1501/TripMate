@@ -6,10 +6,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
 import grp16.tripmate.post.feedback.model.Feedback;
-import grp16.tripmate.post.model.IPostFactory;
-import grp16.tripmate.post.model.Post;
-import grp16.tripmate.post.model.PostDbColumnNames;
-import grp16.tripmate.post.model.PostFactory;
+import grp16.tripmate.post.model.*;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
@@ -21,16 +18,12 @@ import java.util.List;
 
 public class PostDatabase implements IPostDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IPostFactory factory;
     private final IPostsQueryBuilder queryBuilder;
-    private final IFeedbackDatabase feedbackDatabase;
     private final IDatabaseConnection dbConnection;
 
     public PostDatabase() {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
-        factory = PostFactory.getInstance();
-        feedbackDatabase = factory.getFeedbackDatabase();
     }
 
     @Override
@@ -71,7 +64,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean deletePost(Post post) {
-        feedbackDatabase.deleteFeedbackByPostId(post.getId());
+        PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post.getId());
         String query = queryBuilder.deletePostQuery(post.getId());
         return executeQuery(query);
     }
@@ -84,14 +77,14 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public List<Feedback> getFeedbacks(int post_id) {
-        return feedbackDatabase.getFeedbacksByPostId(post_id);
+        return PostFactory.getInstance().getFeedbackDatabase().getFeedbacksByPostId(post_id);
     }
 
     @Override
     public List<Post> resultSetToPosts(ResultSet rs) throws Exception {
         List<Post> results = new ArrayList<>();
         while (rs.next()) {
-            Post post = factory.getNewPost();
+            Post post = (Post) PostFactory.getInstance().getNewPost();
             post.setId(rs.getInt(PostDbColumnNames.ID));
             post.setTitle(rs.getString(PostDbColumnNames.TITLE));
             post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));

@@ -11,50 +11,55 @@ import grp16.tripmate.post.feedback.database.IFeedbackQueryBuilder;
 import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.post.feedback.model.IFeedback;
 
-import java.util.Date;
-
 public class PostFactory implements IPostFactory {
 
-    private static IPostFactory instance;
+    private static IPostFactory instance = null;
+    private IPostDatabase postDatabase;
+    private IPostsQueryBuilder postQueryBuilder;
+    private IFeedbackDatabase feedbackDatabase;
+    private IFeedbackQueryBuilder feedbackQueryBuilder;
 
     private PostFactory() {
-        //Required private empty constructor
+        postDatabase = new PostDatabase();
+        postQueryBuilder = PostsQueryBuilder.getInstance();
+        feedbackDatabase = new FeedbackDatabase();
+        feedbackQueryBuilder = FeedbackQueryBuilder.getInstance();
     }
 
-    public static PostFactory getInstance() {
+    public static IPostFactory getInstance() {
         if (instance == null) {
             instance = new PostFactory();
         }
-        return (PostFactory) instance;
+        return instance;
     }
 
     @Override
-    public Post getNewPost() {
+    public IPost getNewPost() {
         return new Post();
     }
 
     @Override
     public IPostDatabase getPostDatabase() {
-        return new PostDatabase();
+        return postDatabase;
     }
 
     @Override
     public IPostsQueryBuilder getPostQueryBuilder() {
-        return PostsQueryBuilder.getInstance();
+        return postQueryBuilder;
     }
 
     @Override
-    public Feedback getNewFeedback() {
+    public IFeedback getNewFeedback() {
         return new Feedback();
     }
 
     @Override
     public IFeedbackDatabase getFeedbackDatabase() {
-        return new FeedbackDatabase();
+        return feedbackDatabase;
     }
 
     @Override
     public IFeedbackQueryBuilder getFeedbackQueryBuilder() {
-        return FeedbackQueryBuilder.getInstance();
+        return feedbackQueryBuilder;
     }
 }
