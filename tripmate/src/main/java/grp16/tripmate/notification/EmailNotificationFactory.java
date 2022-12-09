@@ -10,7 +10,7 @@ public class EmailNotificationFactory implements INotificationFactory{
         return intance;
     }
     @Override
-    public INotification createEmailNotification() {
+    public INotification createEmailNotification() throws Exception {
         return new EmailNotification();
     }
 }
