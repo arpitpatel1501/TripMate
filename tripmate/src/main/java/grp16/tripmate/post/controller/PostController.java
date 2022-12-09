@@ -16,16 +16,14 @@ import java.util.Date;
 import java.util.List;
 
 /*
-**References
-**https://www.baeldung.com/spring-thymeleaf-request-parameters
+ **References
+ **https://www.baeldung.com/spring-thymeleaf-request-parameters
  */
 
 @Controller
 public class PostController implements IPostController {
     private final ILogger logger = new MyLoggerAdapter(this);
-
-    final private IPostFactory postFactory;
-
+    private final IPostFactory postFactory;
     private final IPost post;
 
     PostController() {
