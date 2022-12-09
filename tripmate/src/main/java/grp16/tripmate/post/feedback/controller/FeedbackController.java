@@ -35,10 +35,15 @@ public class FeedbackController {
 
 
     @PostMapping("/feedback/{id}")
-    public String createFeedback(Model model, @PathVariable("id") int postid, @ModelAttribute Feedback feedback) throws Exception {
-        feedback.setPost(postid);
-        feedback.setUser((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        feedback.createFeedback();
+    public String createFeedback(Model model, @PathVariable("id") int postid, @ModelAttribute Feedback feedback) {
+        try {
+            feedback.setPost(postid);
+            feedback.setUser((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            feedback.createFeedback();
+        } catch (Exception e) {
+            return "redirect:/error";
+        }
         return "redirect:/dashboard";
+
     }
 }
