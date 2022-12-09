@@ -1,7 +1,7 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.post.model.IPost;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
@@ -48,9 +48,9 @@ public class PostController implements IPostController {
     @PostMapping("/createpost")
     public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
+        post.setDatabase(postFactory.getPostDatabase());
         try {
-            IPost newPost = postFactory.getNewPost().copy(post);
-            newPost.createPost();
+            post.createPost();
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -104,23 +104,26 @@ public class PostController implements IPostController {
     @PostMapping("/updatepost")
     public String udpatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
-        IPost newPost = postFactory.getNewPost().copy(post);
-        newPost.updatePost();
+        post.setDatabase(postFactory.getPostDatabase());
+        post.updatePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/deletepost")
-    public String deletePost(Model model, @ModelAttribute Post post) {
+    @PostMapping("/deletepost/{id}")
+    public String deletePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Delete Post");
-        post.deletePost();
+        Post post = (Post) postFactory.getNewPost();
+        Post myPost = post.getPostByPostId(postid);
+        myPost.deletePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/hidepost")
-    public String hidePost(Model model, @ModelAttribute Post post) {
+    @PostMapping("/hidepost/{id}")
+    public String hidePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Hide Post");
-        IPost newPost = postFactory.getNewPost().copy(post);
-        newPost.hidePost();
+        Post post = (Post) postFactory.getNewPost();
+        Post myPost = post.getPostByPostId(postid);
+        myPost.hidePost();
         return "redirect:/dashboard";
     }
 
