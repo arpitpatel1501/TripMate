@@ -13,7 +13,7 @@ public class Feedback implements IFeedback {
 
 
     private int id;
-    private Post post;
+    private int postId;
     private User user;
     private String feedback;
 
@@ -33,12 +33,12 @@ public class Feedback implements IFeedback {
         this.id = id;
     }
 
-    public Post getPost() {
-        return post;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setPost(int postId) {
-        this.post = new Post().getPostByPostId(postId);
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public User getUser() {

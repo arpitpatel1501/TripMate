@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script>
         function deleteConfirmationAlert() {
-            alert("This post will be deleted permanently.");
+            return confirm("This post will be deleted permanently.");
         }
     </script>
     <link rel="stylesheet" href="/css/menubar.css">
@@ -60,12 +60,12 @@
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{/deletepost/{id}(id=${post.getId()})}" method="post">
+            <form action="#" th:action="@{/deletepost}" method="post">
                 <button type="submit">Delete</button>
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{/hidepost/{id}(id=${post.getId()})}" method="post">
+            <form action="#" th:action="@{/hidepost}" method="post">
                 <button type="submit">Hide</button>
             </form>
         </td>

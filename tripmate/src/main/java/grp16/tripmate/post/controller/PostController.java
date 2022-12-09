@@ -2,7 +2,6 @@ package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
@@ -23,12 +22,10 @@ import java.util.List;
 public class PostController implements IPostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
-    private final IPostDatabase postDatabase;
 
     PostController() {
         logger = new MyLoggerAdapter(this);
         postFactory = PostFactory.getInstance();
-        postDatabase = postFactory.getPostDatabase();
     }
 
     @GetMapping("/dashboard")
@@ -100,22 +97,22 @@ public class PostController implements IPostController {
         return "updatepost";
     }
 
-    @PostMapping("/updatepost/{id}")
-    public String udpatePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+    @PostMapping("/updatepost")
+    public String udpatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
         post.updatePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/deletepost/{id}")
-    public String deletePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+    @PostMapping("/deletepost")
+    public String deletePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Delete Post");
         post.deletePost();
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/hidepost/{id}")
-    public String hidePost(Model model, @PathVariable("id") int postid, @ModelAttribute Post post) {
+    @PostMapping("/hidepost")
+    public String hidePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Hide Post");
         post.hidePost();
         return "redirect:/dashboard";
