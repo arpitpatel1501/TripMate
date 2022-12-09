@@ -1,7 +1,7 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
@@ -26,7 +26,6 @@ public class PostController implements IPostController {
     PostController() {
         postFactory = PostFactory.getInstance();
         logger = postFactory.getLogger(this);
-
     }
 
     @GetMapping("/dashboard")
@@ -50,7 +49,8 @@ public class PostController implements IPostController {
     public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
         try {
-            post.createPost();
+            IPost newPost = postFactory.getNewPost().copy(post);
+            newPost.createPost();
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -104,7 +104,8 @@ public class PostController implements IPostController {
     @PostMapping("/updatepost")
     public String udpatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
-        post.updatePost();
+        IPost newPost = postFactory.getNewPost().copy(post);
+        newPost.updatePost();
         return "redirect:/dashboard";
     }
 
@@ -118,7 +119,8 @@ public class PostController implements IPostController {
     @PostMapping("/hidepost")
     public String hidePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Hide Post");
-        post.hidePost();
+        IPost newPost = postFactory.getNewPost().copy(post);
+        newPost.hidePost();
         return "redirect:/dashboard";
     }
 
