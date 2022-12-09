@@ -14,13 +14,13 @@
 
 <form action="#" th:action="@{/createpost}" th:object="${post}" method="post">
     <p>Title : <input type="text" th:field="*{title}" required></p>
-    <p>Capacity : <input type="number" th:field="*{capacity}" min="0" required></p>
+    <p>Capacity : <input type="number" th:field="*{capacity}" min="0" max="30" required></p>
     <p>Source : <input type="text" th:field="*{source}" required></p>
     <p>Destination : <input type="text" th:field="*{destination}" required></p>
     <p>Start Date : <input type="date" th:field="*{startDate}" required></p>
     <p>End Date : <input type="date" th:field="*{endDate}" required></p>
-    <p>Min Age : <input type="number" th:field="*{minAge}" required></p>
-    <p>Max Age : <input type="number" th:field="*{maxAge}" required></p>
+    <p>Min Age : <input type="number" th:field="*{minAge}" min="1" max="100" required></p>
+    <p>Max Age : <input type="number" th:field="*{maxAge}" min="1" max="100" required></p>
     <p>Description : <input type="text" th:field="*{description}" required></p>
     <button type="submit">Create</button>
 </form>
