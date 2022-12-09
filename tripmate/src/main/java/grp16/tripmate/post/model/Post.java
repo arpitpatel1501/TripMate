@@ -24,12 +24,16 @@ import java.util.Date;
 import java.util.List;
 
 /*
-**References
-**https://www.baeldung.com/java-simple-date-format
+ **References
+ **https://www.baeldung.com/java-simple-date-format
  */
 
 public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
+    private final IPostDatabase database;
+    private final IDatabaseConnection dbConnection;
+    private final IPostsQueryBuilder queryBuilder;
+    private final IPostFactory postFactory;
 
     private int id;
     private User owner;
@@ -43,12 +47,6 @@ public class Post implements IPost {
     private int maxAge;
     private String description;
     private boolean isHidden;
-    private final IDatabaseConnection dbConnection;
-    private final IPostsQueryBuilder queryBuilder;
-
-    private static IPostFactory postFactory = null;
-
-    private final IPostDatabase database;
 
     public Post() {
         postFactory = PostFactory.getInstance();
@@ -57,6 +55,60 @@ public class Post implements IPost {
         dbConnection = new DatabaseConnection();
         this.setStartDate(new Date());
         this.setEndDate(new Date());
+    }
+
+    @Override
+    public boolean createPost() throws Exception {
+        return database.createPost(this);
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userid) {
+        return database.getPostsByUserId(userid);
+    }
+
+    @Override
+    public List<Post> getAllPosts() {
+        return database.getAllPosts();
+    }
+
+    @Override
+    public Post getPostByPostId(int postid) {
+        return database.getPostByPostId(postid);
+    }
+
+    @Override
+    public boolean updatePost() {
+        return database.updatePost(this);
+    }
+
+    @Override
+    public boolean deletePost() {
+        return database.deletePost(this);
+    }
+
+    @Override
+    public boolean hidePost() {
+        return database.hidePost(this);
+    }
+
+    @Override
+    public List<Feedback> getFeedbacks() {
+        return database.getFeedbacks(this.getId());
+    }
+
+    @Override
+    public boolean isEligibleForFeedback() {
+        return endDate.before(new Date());
+    }
+
+    @Override
+    public boolean isEligibleToJoin() throws Exception {
+        boolean isPastDate = endDate.equals(new Date());
+        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        logger.info(String.valueOf(isPastDate));
+        logger.info(String.valueOf(isOwner));
+        return !isPastDate && !isOwner;
     }
 
     public int getId() {
@@ -123,6 +175,15 @@ public class Post implements IPost {
         this.endDate = getJavaDate(endDate);
     }
 
+    private String getSQLParsableDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    private Date getJavaDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    }
+
     public int getMinAge() {
         return minAge;
     }
@@ -165,78 +226,7 @@ public class Post implements IPost {
     }
 
     @Override
-    public boolean createPost() throws Exception {
-        return database.createPost(this);
-    }
-
-
-    public List<Post> getPostsByUserId(int userid) {
-        return database.getPostsByUserId(userid);
-    }
-
-    public List<Post> getAllPosts() {
-        return database.getAllPosts();
-    }
-
-    public Post getPostByPostId(int postid) {
-        return database.getPostByPostId(postid);
-    }
-
-
-    @Override
-    public boolean isEligibleForFeedback() {
-        return endDate.before(new Date());
-    }
-
-    public boolean updatePost() {
-        return database.updatePost(this);
-    }
-
-    public boolean deletePost() {
-        return database.deletePost(this);
-    }
-
-    public List<Feedback> getFeedbacks() {
-        return database.getFeedbacks(this.getId());
-    }
-
-    public boolean hidePost() {
-        return database.hidePost(this);
-    }
-
-    @Override
     public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", owner=" + owner +
-                ", title='" + title + '\'' +
-                ", capacity=" + capacity +
-                ", source='" + source + '\'' +
-                ", destination='" + destination + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", minAge=" + minAge +
-                ", maxAge=" + maxAge +
-                ", description='" + description + '\'' +
-                ", isHidden=" + isHidden +
-                '}';
+        return "Post{" + "id=" + id + ", owner=" + owner + ", title='" + title + '\'' + ", capacity=" + capacity + ", source='" + source + '\'' + ", destination='" + destination + '\'' + ", startDate=" + startDate + ", endDate=" + endDate + ", minAge=" + minAge + ", maxAge=" + maxAge + ", description='" + description + '\'' + ", isHidden=" + isHidden + '}';
     }
-
-    private String getSQLParsableDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
-    }
-
-    private Date getJavaDate(String date) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-    }
-
-    public boolean isEligibleToJoin() throws Exception {
-        boolean isPastDate = endDate.equals(new Date());
-        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
-        logger.info(String.valueOf(isPastDate));
-        logger.info(String.valueOf(isOwner));
-        return !isPastDate && !isOwner;
-    }
-
 }
