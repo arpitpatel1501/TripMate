@@ -8,6 +8,7 @@
             alert("This post will be deleted permanently.");
         }
     </script>
+    <link rel="stylesheet" href="/css/menubar.css">
 </head>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
@@ -59,7 +60,7 @@
         </td>
         <td>
             <form action="#" th:action="@{/deletepost/{id}(id=${post.getId()})}" method="post">
-                <button type="submit" onclick="deleteConfirmationAlert()">Delete</button>
+                <button type="submit">Delete</button>
             </form>
         </td>
         <td>

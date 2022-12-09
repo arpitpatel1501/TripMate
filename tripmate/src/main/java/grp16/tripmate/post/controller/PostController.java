@@ -50,10 +50,15 @@ public class PostController implements IPostController {
     }
 
     @PostMapping("/createpost")
-    public String createPost(Model model, @ModelAttribute Post post) throws Exception {
+    public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
-        post.createPost();
-        return "redirect:/dashboard";
+        try {
+            post.createPost();
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "createpost";
+        }
     }
 
     @GetMapping("/myposts")
@@ -72,6 +77,7 @@ public class PostController implements IPostController {
         model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
         model.addAttribute("post", myPost);
         model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+        model.addAttribute("feedbacks", myPost.getFeedbacks());
         return "viewpost";
     }
 

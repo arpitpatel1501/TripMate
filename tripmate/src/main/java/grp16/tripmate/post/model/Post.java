@@ -8,6 +8,7 @@ import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
 import grp16.tripmate.post.database.PostDatabase;
 import grp16.tripmate.post.database.PostsQueryBuilder;
+import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
@@ -195,6 +196,10 @@ public class Post implements IPost {
         return database.deletePost(this);
     }
 
+    public List<Feedback> getFeedbacks() {
+        return database.getFeedbacks(this.getId());
+    }
+
     public boolean hidePost() {
         return database.hidePost(this);
     }
@@ -224,6 +229,14 @@ public class Post implements IPost {
 
     private Date getJavaDate(String date) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    }
+
+    public boolean isEligibleToJoin() throws Exception {
+        boolean isPastDate = endDate.equals(new Date());
+        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        logger.info(String.valueOf(isPastDate));
+        logger.info(String.valueOf(isOwner));
+        return !isPastDate && !isOwner;
     }
 
 }

@@ -8,6 +8,7 @@ import grp16.tripmate.post.feedback.database.FeedbackDatabase;
 import grp16.tripmate.post.feedback.database.FeedbackQueryBuilder;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
 import grp16.tripmate.post.feedback.database.IFeedbackQueryBuilder;
+import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostDbColumnNames;
@@ -136,5 +137,9 @@ public class PostDatabase implements IPostDatabase {
             logger.error(e.getMessage());
         }
         return null;
+    }
+
+    public List<Feedback> getFeedbacks(int post_id) {
+        return feedbackDatabase.getFeedbacksByPostId(post_id);
     }
 }
