@@ -2,22 +2,23 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.notification.EmailNotificationFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.IUserFactory;
-import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserDbColumnNames;
-import grp16.tripmate.user.model.UserFactory;
+import grp16.tripmate.user.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
+    IVerification iVerification;
     private final IUserFactory userFactory;
+    private User user;
 
     public UserController() {
         userFactory = UserFactory.getInstance();
@@ -52,12 +53,39 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String userRegister(@ModelAttribute User user) throws Exception {
+    public String userVerification(@ModelAttribute User user) throws Exception {
 
-        boolean isUserCreatedSuccessfully = user.createUser();
-        if (isUserCreatedSuccessfully) {
-            logger.info(user.getUsername() + " Register SUCCESS");
-            return "login";
+        iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
+        iVerification.verification(user.getUsername());
+
+        System.out.println("in userVerification");
+        this.user = user;
+
+        return "user_verification";
+//        boolean isUserCreatedSuccessfully = user.createUser();
+//        if (isUserCreatedSuccessfully) {
+//            logger.info(user.getUsername() + " Register SUCCESS");
+//            return "login";
+//        } else {
+//            logger.error("Register FAILED");
+//            return "error";
+//        }
+    }
+
+//    @PostMapping("/verify")
+//    public String usVerification(HttpServletRequest request) throws Exception {
+//        String code = request.getParameter("code");
+//        System.out.println("code"+code);
+//        return "verify";
+//    }
+
+    @PostMapping("/verify")
+    public String userVerificationCode(HttpServletRequest request) {
+
+        String code = request.getParameter("code");
+
+        if (this.iVerification.verifyCode(code)) {
+            return "redirect:/dashboard";
         } else {
             logger.error("Register FAILED");
             return "error";
@@ -90,6 +118,4 @@ public class UserController {
         SessionManager.Instance().removeValue(UserDbColumnNames.id);
         return "redirect:/login";
     }
-
-
 }

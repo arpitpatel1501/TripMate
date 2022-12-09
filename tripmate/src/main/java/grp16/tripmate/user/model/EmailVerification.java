@@ -5,6 +5,8 @@ import grp16.tripmate.notification.INotification;
 import grp16.tripmate.notification.INotificationFactory;
 import grp16.tripmate.properties.MyProperties;
 
+import java.sql.SQLOutput;
+
 public class EmailVerification implements IVerification{
 
     String emailSender;
@@ -22,12 +24,24 @@ public class EmailVerification implements IVerification{
         iNotification.sendNotification(emailSender, userEmail, messageSubject, body);
     }
 
+    @Override
+    public boolean verifyCode(String code) {
+        System.out.println("----- in verifyCode ---------");
+        System.out.println("uniqueNumber: "+ uniqueNumber);
+        System.out.println("code: "+ code);
+        if (uniqueNumber == Integer.parseInt(code)) {
+            return true;
+        }
+        return false;
+    }
+
+
     private int generateNumber() {
         int min = 1000;
         int max = 9999;
-        int range = (max-min+1)+min;
+        int range = (max-min+1);
         double random = Math.random();
-        double finalNumber = Math.floor(random*range);
+        double finalNumber = Math.floor((random * range) + min);
 //        int number = (int)Math.floor(Math.random()*(max-min+1)+min);
         return (int) finalNumber;
     }
