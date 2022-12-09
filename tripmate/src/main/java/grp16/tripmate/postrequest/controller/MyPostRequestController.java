@@ -1,5 +1,7 @@
 package grp16.tripmate.postrequest.controller;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.database.MyPostRequestDB;
@@ -20,24 +22,25 @@ public class MyPostRequestController {
     private IMyPostRequestDB iMyPostRequestDB;
     private MyPostRequest myPostRequest;
     private String query;
+    private ILogger logger;
 
     MyPostRequestController() {
         iMyPostRequestDB = MyPostRequestDB.getInstance();
         myPostRequest = new MyPostRequest();
+        logger = new MyLoggerAdapter(this);
     }
 
     @GetMapping("/post_requests")
     public String postRequest(Model model) {
         model.addAttribute("title", "Post Request");
-
         try {
             query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
             List<MyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
             model.addAttribute("requests_count", postRequests.size());
-
             model.addAttribute("postRequests", postRequests);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            logger.error(e.getMessage());
         }
         return "post_requests";
     }

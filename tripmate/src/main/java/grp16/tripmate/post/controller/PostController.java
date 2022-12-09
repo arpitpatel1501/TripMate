@@ -53,6 +53,7 @@ public class PostController implements IPostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            logger.error(e.getMessage());
             return "createpost";
         }
     }
@@ -66,6 +67,7 @@ public class PostController implements IPostController {
             model.addAttribute("posts", posts);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            logger.error(e.getMessage());
         }
         return "listposts";
     }
@@ -83,6 +85,7 @@ public class PostController implements IPostController {
             model.addAttribute("feedbacks", myPost.getFeedbacks());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            logger.error(e.getMessage());
         }
         return "viewpost";
 
