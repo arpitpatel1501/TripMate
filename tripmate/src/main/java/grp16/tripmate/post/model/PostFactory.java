@@ -35,7 +35,7 @@ public class PostFactory implements IPostFactory {
 
     @Override
     public IPost getNewPost() {
-        return new Post(getInstance());
+        return new Post(postDatabase);
     }
 
     @Override

@@ -22,7 +22,6 @@ import java.util.List;
 public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IPostDatabase database;
-    private final IPostFactory postFactory;
 
     private int id;
     private User owner;
@@ -37,9 +36,8 @@ public class Post implements IPost {
     private String description;
     private boolean isHidden;
 
-    public Post(IPostFactory postFactory) {
-        this.postFactory = postFactory;
-        this.database = postFactory.getPostDatabase();
+    public Post(IPostDatabase postDatabase) {
+        this.database = postDatabase;
         this.setStartDate(new Date());
         this.setEndDate(new Date());
     }

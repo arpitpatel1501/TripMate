@@ -40,9 +40,7 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
                 feedback.getRating() + ")";
 
         logger.info(query);
-
         return query;
-
     }
 
     public String deleteFeedbackByPostId(int postid) {
