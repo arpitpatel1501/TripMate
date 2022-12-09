@@ -60,23 +60,32 @@ public class PostController implements IPostController {
     }
 
     @GetMapping("/myposts")
-    public String getUserPosts(Model model) throws Exception {
+    public String getUserPosts(Model model) {
         model.addAttribute("title", "My Posts");
-        List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        model.addAttribute("posts", posts);
+        try {
+            List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("posts", posts);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "listposts";
     }
 
     @GetMapping("/viewpost/{id}")
-    public String viewPost(Model model, @PathVariable("id") int postid) throws Exception {
+    public String viewPost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "View Post");
-        Post myPost = post.getPostByPostId(postid);
-        logger.info(myPost.toString());
-        model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        model.addAttribute("post", myPost);
-        model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
-        model.addAttribute("feedbacks", myPost.getFeedbacks());
+        try {
+            Post myPost = post.getPostByPostId(postid);
+            logger.info(myPost.toString());
+            model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("post", myPost);
+            model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+            model.addAttribute("feedbacks", myPost.getFeedbacks());
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "viewpost";
+
     }
 
     @GetMapping("/editpost/{id}")
@@ -106,5 +115,11 @@ public class PostController implements IPostController {
         model.addAttribute("title", "Hide Post");
         post.hidePost();
         return "redirect:/dashboard";
+    }
+
+    @GetMapping("/error")
+    public String hidePost(Model model) {
+        model.addAttribute("error", "Some error has occurred");
+        return "error";
     }
 }
