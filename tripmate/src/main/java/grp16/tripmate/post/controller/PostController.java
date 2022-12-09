@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+/*
+**References
+**https://www.baeldung.com/spring-thymeleaf-request-parameters
+ */
+
 @Controller
 public class PostController implements IPostController {
     private final ILogger logger = new MyLoggerAdapter(this);
