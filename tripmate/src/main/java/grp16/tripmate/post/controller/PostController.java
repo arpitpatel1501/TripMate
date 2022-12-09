@@ -24,8 +24,9 @@ public class PostController implements IPostController {
     private final IPostFactory postFactory;
 
     PostController() {
-        logger = new MyLoggerAdapter(this);
         postFactory = PostFactory.getInstance();
+        logger = postFactory.getLogger(this);
+
     }
 
     @GetMapping("/dashboard")

@@ -1,5 +1,7 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryBuilder;
 import grp16.tripmate.post.database.PostDatabase;
@@ -61,5 +63,10 @@ public class PostFactory implements IPostFactory {
     @Override
     public IFeedbackQueryBuilder getFeedbackQueryBuilder() {
         return feedbackQueryBuilder;
+    }
+
+    @Override
+    public ILogger getLogger(Object classObj) {
+        return new MyLoggerAdapter(classObj);
     }
 }
