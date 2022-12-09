@@ -20,12 +20,14 @@ public class PostFactory implements IPostFactory {
     private final IPostsQueryBuilder postQueryBuilder;
     private final IFeedbackDatabase feedbackDatabase;
     private final IFeedbackQueryBuilder feedbackQueryBuilder;
+    private ILogger logger;
 
     private PostFactory() {
         postDatabase = new PostDatabase();
         postQueryBuilder = PostsQueryBuilder.getInstance();
         feedbackDatabase = new FeedbackDatabase();
         feedbackQueryBuilder = FeedbackQueryBuilder.getInstance();
+        logger = new MyLoggerAdapter(this);
     }
 
     public static IPostFactory getInstance() {

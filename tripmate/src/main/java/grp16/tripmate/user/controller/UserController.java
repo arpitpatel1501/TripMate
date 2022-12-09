@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class UserController {
@@ -32,17 +34,23 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String userLogin(@ModelAttribute User user) throws Exception {
+    public String userLogin(Model model, @ModelAttribute User user) {
         logger.info(user.toString());
-        boolean isValidUser = user.validateUser();
+        try {
+            boolean isValidUser = user.validateUser();
 
-        if (isValidUser) {
-            logger.info(user.getUsername() + " Login SUCCESS");
-            return "redirect:/dashboard";
-        } else {
-            logger.error(user.getUsername() + " Login FAILED");
-            return "error";
+            if (isValidUser) {
+                logger.info(user.getUsername() + " Login SUCCESS");
+                return "redirect:/dashboard";
+            }
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("Username doesn't exists");
+            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
+        return "redirect:/error";
     }
 
     @GetMapping("/register")
@@ -58,38 +66,40 @@ public class UserController {
         iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
         iVerification.verification(user.getUsername());
 
-        System.out.println("in userVerification");
         this.user = user;
 
         return "user_verification";
-//        boolean isUserCreatedSuccessfully = user.createUser();
-//        if (isUserCreatedSuccessfully) {
-//            logger.info(user.getUsername() + " Register SUCCESS");
-//            return "login";
-//        } else {
-//            logger.error("Register FAILED");
-//            return "error";
-//        }
     }
 
-//    @PostMapping("/verify")
-//    public String usVerification(HttpServletRequest request) throws Exception {
-//        String code = request.getParameter("code");
-//        System.out.println("code"+code);
-//        return "verify";
-//    }
-
     @PostMapping("/verify")
-    public String userVerificationCode(HttpServletRequest request) {
+    public String userVerificationCode(Model model, HttpServletRequest request) {
 
         String code = request.getParameter("code");
 
         if (this.iVerification.verifyCode(code)) {
-            return "redirect:/dashboard";
+            try {
+                boolean isUserCreatedSuccessfully = this.user.createUser();
+                if (isUserCreatedSuccessfully) {
+                    logger.info(this.user.getUsername() + " Register SUCCESS");
+                    return "redirect:/login";
+                } else {
+                    logger.error("Register FAILED");
+                    return "redirect:/error";
+                }
+            } catch (SQLIntegrityConstraintViolationException e) {
+                model.addAttribute("error", "User Already exists");
+                logger.info(e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                e.printStackTrace();
+                return "redirect:/error";
+            }
         } else {
             logger.error("Register FAILED");
-            return "error";
+            return "redirect:/error";
         }
+        return "redirect:/error";
     }
 
     @GetMapping("/profile")

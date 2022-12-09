@@ -69,12 +69,12 @@ public class Post implements IPost {
 
     @Override
     public boolean deletePost() {
-        return database.deletePost(this);
+        return database.deletePost(this.getId());
     }
 
     @Override
     public boolean hidePost() {
-        return database.hidePost(this);
+        return database.hidePost(this.getId());
     }
 
     @Override
@@ -220,6 +220,35 @@ public class Post implements IPost {
 
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", owner=" + owner + ", title='" + title + '\'' + ", capacity=" + capacity + ", source='" + source + '\'' + ", destination='" + destination + '\'' + ", startDate=" + startDate + ", endDate=" + endDate + ", minAge=" + minAge + ", maxAge=" + maxAge + ", description='" + description + '\'' + ", isHidden=" + isHidden + '}';
+        return "Post{" +
+                ", database=" + database +
+                ", id=" + id +
+                ", owner=" + owner +
+                ", title='" + title + '\'' +
+                ", capacity=" + capacity +
+                ", source='" + source + '\'' +
+                ", destination='" + destination + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", minAge=" + minAge +
+                ", maxAge=" + maxAge +
+                ", description='" + description + '\'' +
+                ", isHidden=" + isHidden +
+                '}';
+    }
+
+    public Post copy(Post post) {
+        this.setCapacity(post.capacity);
+        this.setDescription(post.description);
+        this.setEndDate(post.endDate);
+        this.setDestination(post.destination);
+        this.setHidden(post.isHidden);
+        this.setMaxAge(post.maxAge);
+        this.setMinAge(post.minAge);
+        this.setSource(post.source);
+        this.setStartDate(post.startDate);
+        this.setTitle(post.title);
+        this.setId(post.id);
+        return this;
     }
 }
