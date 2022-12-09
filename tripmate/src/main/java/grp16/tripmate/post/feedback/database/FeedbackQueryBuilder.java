@@ -34,7 +34,7 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
                 ")" +
                 " VALUES " +
                 "(" +
-                feedback.getPost().getId() + "," +
+                feedback.getPostId() + "," +
                 feedback.getUser().getId() + "," +
                 " '" + feedback.getFeedback() + "' " + "," +
                 feedback.getRating() + ")";

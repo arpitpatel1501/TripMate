@@ -4,6 +4,8 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.db.properties.DatabaseProperties;
 import grp16.tripmate.db.sql.LoadSQLProfile;
+import grp16.tripmate.post.model.IPostFactory;
+import grp16.tripmate.post.model.PostFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.ui.Model;

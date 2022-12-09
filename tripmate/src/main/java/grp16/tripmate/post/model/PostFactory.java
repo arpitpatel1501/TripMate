@@ -13,11 +13,11 @@ import grp16.tripmate.post.feedback.model.IFeedback;
 
 public class PostFactory implements IPostFactory {
 
-    private static IPostFactory instance = null;
-    private IPostDatabase postDatabase;
-    private IPostsQueryBuilder postQueryBuilder;
-    private IFeedbackDatabase feedbackDatabase;
-    private IFeedbackQueryBuilder feedbackQueryBuilder;
+    private static IPostFactory instance;
+    private final IPostDatabase postDatabase;
+    private final IPostsQueryBuilder postQueryBuilder;
+    private final IFeedbackDatabase feedbackDatabase;
+    private final IFeedbackQueryBuilder feedbackQueryBuilder;
 
     private PostFactory() {
         postDatabase = new PostDatabase();
@@ -35,7 +35,7 @@ public class PostFactory implements IPostFactory {
 
     @Override
     public IPost getNewPost() {
-        return new Post();
+        return new Post(getInstance());
     }
 
     @Override

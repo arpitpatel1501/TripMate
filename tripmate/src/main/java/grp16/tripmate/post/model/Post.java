@@ -1,25 +1,16 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.IPostsQueryBuilder;
-import grp16.tripmate.post.database.PostDatabase;
-import grp16.tripmate.post.database.PostsQueryBuilder;
 import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +22,6 @@ import java.util.List;
 public class Post implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IPostDatabase database;
-    private final IDatabaseConnection dbConnection;
-    private final IPostsQueryBuilder queryBuilder;
     private final IPostFactory postFactory;
 
     private int id;
@@ -48,11 +37,9 @@ public class Post implements IPost {
     private String description;
     private boolean isHidden;
 
-    public Post() {
-        postFactory = PostFactory.getInstance();
-        database = postFactory.getPostDatabase();
-        queryBuilder = postFactory.getPostQueryBuilder();
-        dbConnection = new DatabaseConnection();
+    public Post(IPostFactory postFactory) {
+        this.postFactory = postFactory;
+        this.database = postFactory.getPostDatabase();
         this.setStartDate(new Date());
         this.setEndDate(new Date());
     }
