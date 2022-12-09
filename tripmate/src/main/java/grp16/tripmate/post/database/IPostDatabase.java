@@ -10,9 +10,9 @@ public interface IPostDatabase {
 
     boolean updatePost(Post post);
 
-    boolean deletePost(Post post);
+    boolean deletePost(int post_id);
 
-    boolean hidePost(Post post);
+    boolean hidePost(int post_id);
 
     boolean createPost(Post post) throws Exception;
 
@@ -22,7 +22,7 @@ public interface IPostDatabase {
 
     List<Post> getAllPosts();
 
-    Post getPostByPostId(int postid);
+    Post getPostByPostId(int post_id);
 
     List<Feedback> getFeedbacks(int post_id);
 }
