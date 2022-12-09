@@ -4,7 +4,7 @@
     <title th:text="${title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/menubar.css">
-
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 
 <body>
@@ -54,5 +54,6 @@
     <p>Rating: <input step="0.01" type="number" th:field="*{rating}" required/></p>
     <button type="submit">Give Feedback</button>
 </form>
+<h2 class="error" th:text="${error}"></h2>
 </body>
 </html>

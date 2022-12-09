@@ -9,6 +9,7 @@
         }
     </script>
     <link rel="stylesheet" href="/css/menubar.css">
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
@@ -92,6 +93,6 @@
         <td th:text="${feedback.feedback}"/>
     </tr>
 </table>
-
+<h2 class="error" th:text="${error}"></h2>
 </body>
 </html>
