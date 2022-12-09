@@ -3,6 +3,8 @@
 <head>
     <title th:text="${title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/menubar.css">
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
@@ -16,5 +18,6 @@
     <p>Birth Date: <input type="date" th:field="*{birthDate}" required/></p>
     <p><input type="submit" value="Submit"/> <input type="reset" value="Clear"/></p>
 </form>
+<h2 class="error" th:text="${error}"></h2>
 </body>
 </html>

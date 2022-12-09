@@ -4,6 +4,8 @@
 <head>
     <title th:text="${title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/menubar.css">
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 
 <body>
@@ -22,6 +24,6 @@
     <p>Description : <input type="text" th:field="*{description}" th:value="${post.getDescription()}"></p>
     <button type="submit">Update</button>
 </form>
-
+<h2 class="error" th:text="${error}"></h2>
 </body>
 </html>

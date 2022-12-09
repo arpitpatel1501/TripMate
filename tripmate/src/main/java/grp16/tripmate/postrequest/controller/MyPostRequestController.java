@@ -27,14 +27,18 @@ public class MyPostRequestController {
     }
 
     @GetMapping("/post_requests")
-    public String postRequest(Model model) throws Exception {
+    public String postRequest(Model model) {
         model.addAttribute("title", "Post Request");
 
-        query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        List<MyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
-        model.addAttribute("requests_count", postRequests.size());
+        try {
+            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            List<MyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
+            model.addAttribute("requests_count", postRequests.size());
 
-        model.addAttribute("postRequests", postRequests);
+            model.addAttribute("postRequests", postRequests);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "post_requests";
     }
 

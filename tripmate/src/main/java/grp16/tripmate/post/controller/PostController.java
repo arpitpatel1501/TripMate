@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+/*
+ **References
+ **https://www.baeldung.com/spring-thymeleaf-request-parameters
+ */
+
 @Controller
 public class PostController implements IPostController {
     private final ILogger logger = new MyLoggerAdapter(this);
-
-    final private IPostFactory postFactory;
-
+    private final IPostFactory postFactory;
     private final IPost post;
 
     PostController() {
@@ -45,29 +48,44 @@ public class PostController implements IPostController {
     }
 
     @PostMapping("/createpost")
-    public String createPost(Model model, @ModelAttribute Post post) throws Exception {
+    public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
-        post.createPost();
-        return "redirect:/dashboard";
+        try {
+            post.createPost();
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "createpost";
+        }
     }
 
     @GetMapping("/myposts")
-    public String getUserPosts(Model model) throws Exception {
+    public String getUserPosts(Model model) {
         model.addAttribute("title", "My Posts");
-        List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        model.addAttribute("posts", posts);
+        try {
+            List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("posts", posts);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "listposts";
     }
 
     @GetMapping("/viewpost/{id}")
-    public String viewPost(Model model, @PathVariable("id") int postid) throws Exception {
+    public String viewPost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "View Post");
-        Post myPost = post.getPostByPostId(postid);
-        logger.info(myPost.toString());
-        model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        model.addAttribute("post", myPost);
-        model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+        try {
+            Post myPost = post.getPostByPostId(postid);
+            logger.info(myPost.toString());
+            model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("post", myPost);
+            model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
+            model.addAttribute("feedbacks", myPost.getFeedbacks());
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "viewpost";
+
     }
 
     @GetMapping("/editpost/{id}")
@@ -97,5 +115,11 @@ public class PostController implements IPostController {
         model.addAttribute("title", "Hide Post");
         post.hidePost();
         return "redirect:/dashboard";
+    }
+
+    @GetMapping("/error")
+    public String hidePost(Model model) {
+        model.addAttribute("error", "Some error has occurred");
+        return "error";
     }
 }

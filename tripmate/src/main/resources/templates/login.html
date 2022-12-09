@@ -4,6 +4,8 @@
 <head>
     <title th:text="${title}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/menubar.css">
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 
 <body>
@@ -17,6 +19,6 @@
 <form action="#" th:action="@{/register}" method="get">
     <input type="submit" value="Register"/>
 </form>
+<h2 class="error" th:text="${error}"></h2>
 </body>
-
 </html>

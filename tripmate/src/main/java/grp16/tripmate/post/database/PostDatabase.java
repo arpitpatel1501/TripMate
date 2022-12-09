@@ -4,10 +4,8 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.feedback.database.FeedbackDatabase;
-import grp16.tripmate.post.feedback.database.FeedbackQueryBuilder;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.post.feedback.database.IFeedbackQueryBuilder;
+import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostDbColumnNames;
@@ -23,20 +21,46 @@ import java.util.List;
 
 public class PostDatabase implements IPostDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
-
-    IPostsQueryBuilder queryBuilder;
-
-    IFeedbackDatabase feedbackDatabase;
-
-    private final IDatabaseConnection dbConnection;
-
     private final IPostFactory factory;
+    private final IPostsQueryBuilder queryBuilder;
+    private final IFeedbackDatabase feedbackDatabase;
+    private final IDatabaseConnection dbConnection;
 
     public PostDatabase() {
         queryBuilder = PostsQueryBuilder.getInstance();
         dbConnection = new DatabaseConnection();
         factory = PostFactory.getInstance();
         feedbackDatabase = factory.getFeedbackDatabase();
+    }
+
+    @Override
+    public boolean createPost(Post post) throws Exception {
+        post.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        String query = queryBuilder.getCreatePostQuery(post);
+        return executeQuery(query);
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userid) {
+        String query = queryBuilder.getPostsByUserId(userid);
+        return selectQueryExecute(query);
+    }
+
+    @Override
+    public List<Post> getAllPosts() {
+        String query = queryBuilder.getAllPosts();
+        return selectQueryExecute(query);
+    }
+
+    @Override
+    public Post getPostByPostId(int postid) {
+        String query = queryBuilder.getPostByPostId(postid);
+        List<Post> posts = selectQueryExecute(query);
+        if (posts != null) {
+            return posts.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -59,25 +83,8 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public boolean createPost(Post post) throws Exception {
-        post.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        String query = queryBuilder.getCreatePostQuery(post);
-        return executeQuery(query);
-    }
-
-    private boolean executeQuery(String query) {
-        Connection connection;
-        boolean isSuccess = false;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-            isSuccess = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isSuccess;
+    public List<Feedback> getFeedbacks(int post_id) {
+        return feedbackDatabase.getFeedbacksByPostId(post_id);
     }
 
     @Override
@@ -102,27 +109,19 @@ public class PostDatabase implements IPostDatabase {
         return results;
     }
 
-    @Override
-    public List<Post> getPostsByUserId(int userid) {
-        String query = queryBuilder.getPostsByUserId(userid);
-        return selectQueryExecute(query);
-    }
-
-    @Override
-    public List<Post> getAllPosts() {
-        String query = queryBuilder.getAllPosts();
-        return selectQueryExecute(query);
-    }
-
-    @Override
-    public Post getPostByPostId(int postid) {
-        String query = queryBuilder.getPostByPostId(postid);
-        List<Post> posts = selectQueryExecute(query);
-        if (posts != null) {
-            return posts.get(0);
-        } else {
-            return null;
+    private boolean executeQuery(String query) {
+        Connection connection;
+        boolean isSuccess = false;
+        try {
+            connection = dbConnection.getDatabaseConnection();
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+            isSuccess = true;
+            connection.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        return isSuccess;
     }
 
     private List<Post> selectQueryExecute(String query) {
