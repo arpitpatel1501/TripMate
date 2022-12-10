@@ -52,38 +52,6 @@ public class UserController {
         return "register";
     }
 
-    @PostMapping("/register")
-    public String userVerification(@ModelAttribute User user) throws Exception {
-
-        iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
-        iVerification.verification(user.getUsername());
-
-        this.user = user;
-
-        return "user_verification";
-//        boolean isUserCreatedSuccessfully = user.createUser();
-//        if (isUserCreatedSuccessfully) {
-//            logger.info(user.getUsername() + " Register SUCCESS");
-//            return "login";
-//        } else {
-//            logger.error("Register FAILED");
-//            return "error";
-//        }
-    }
-
-    @PostMapping("/verify")
-    public String userVerificationCode(HttpServletRequest request) {
-
-        String code = request.getParameter("code");
-
-        if (this.iVerification.verifyCode(code)) {
-            return "redirect:/dashboard";
-        } else {
-            logger.error("Register FAILED");
-            return "error";
-        }
-    }
-
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
         User loggedInUser = userFactory.getNewUser().getLoggedInUser();
