@@ -6,10 +6,12 @@ import grp16.tripmate.user.model.EmailVerificationFactory;
 import grp16.tripmate.user.model.IVerification;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class VerificationController {
@@ -27,23 +29,35 @@ public class VerificationController {
 
         return "user_verification";
     }
+
     @PostMapping("/verify")
-    public String userVerificationCode(HttpServletRequest request) throws Exception {
+    public String userVerificationCode(Model model, HttpServletRequest request) {
 
         String code = request.getParameter("code");
 
         if (this.iVerification.verifyCode(code)) {
-            boolean isUserCreatedSuccessfully = this.user.createUser();
-            if (isUserCreatedSuccessfully) {
-                logger.info(user.getUsername() + " Register SUCCESS");
-                return "redirect:/login";
-            } else {
-                logger.error("Register FAILED");
-                return "error";
+            try {
+                boolean isUserCreatedSuccessfully = this.user.createUser();
+                if (isUserCreatedSuccessfully) {
+                    logger.info(this.user.getUsername() + " Register SUCCESS");
+                    return "redirect:/login";
+                } else {
+                    logger.error("Register FAILED");
+                    return "redirect:/error";
+                }
+            } catch (SQLIntegrityConstraintViolationException e) {
+                model.addAttribute("error", "User Already exists");
+                logger.info(e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                e.printStackTrace();
+                return "redirect:/error";
             }
         } else {
             logger.error("Register FAILED");
-            return "error";
+            return "redirect:/error";
         }
+        return "redirect:/error";
     }
 }

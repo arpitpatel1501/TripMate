@@ -60,48 +60,6 @@ public class UserController {
         return "register";
     }
 
-    @PostMapping("/register")
-    public String userVerification(@ModelAttribute User user) throws Exception {
-
-        iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
-        iVerification.verification(user.getUsername());
-
-        this.user = user;
-
-        return "user_verification";
-    }
-
-    @PostMapping("/verify")
-    public String userVerificationCode(Model model, HttpServletRequest request) {
-
-        String code = request.getParameter("code");
-
-        if (this.iVerification.verifyCode(code)) {
-            try {
-                boolean isUserCreatedSuccessfully = this.user.createUser();
-                if (isUserCreatedSuccessfully) {
-                    logger.info(this.user.getUsername() + " Register SUCCESS");
-                    return "redirect:/login";
-                } else {
-                    logger.error("Register FAILED");
-                    return "redirect:/error";
-                }
-            } catch (SQLIntegrityConstraintViolationException e) {
-                model.addAttribute("error", "User Already exists");
-                logger.info(e.getMessage());
-                e.printStackTrace();
-            } catch (Exception e) {
-                logger.info(e.getMessage());
-                e.printStackTrace();
-                return "redirect:/error";
-            }
-        } else {
-            logger.error("Register FAILED");
-            return "redirect:/error";
-        }
-        return "redirect:/error";
-    }
-
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
         User loggedInUser = userFactory.getNewUser().getLoggedInUser();
