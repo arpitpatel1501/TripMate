@@ -5,17 +5,17 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostDbColumnNames;
 
-public class PostsQueryBuilder implements IPostsQueryBuilder {
+public class PostsQueryGenerator implements IPostsQueryGenerator {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private static PostsQueryBuilder instance;
+    private static PostsQueryGenerator instance;
 
-    private PostsQueryBuilder() {
+    private PostsQueryGenerator() {
 
     }
 
-    public static PostsQueryBuilder getInstance() {
+    public static PostsQueryGenerator getInstance() {
         if (instance == null) {
-            instance = new PostsQueryBuilder();
+            instance = new PostsQueryGenerator();
         }
         return instance;
     }

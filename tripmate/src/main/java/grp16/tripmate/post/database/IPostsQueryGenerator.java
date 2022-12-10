@@ -2,7 +2,7 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.post.model.Post;
 
-public interface IPostsQueryBuilder {
+public interface IPostsQueryGenerator {
 
     String getCreatePostQuery(Post post);
 

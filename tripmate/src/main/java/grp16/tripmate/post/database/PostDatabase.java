@@ -17,11 +17,11 @@ import java.util.List;
 
 public class PostDatabase implements IPostDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IPostsQueryBuilder queryBuilder;
+    private final IPostsQueryGenerator queryBuilder;
     private final IDatabaseConnection dbConnection;
 
     public PostDatabase() {
-        queryBuilder = PostsQueryBuilder.getInstance();
+        queryBuilder = PostsQueryGenerator.getInstance();
         dbConnection = new DatabaseConnection();
     }
 
