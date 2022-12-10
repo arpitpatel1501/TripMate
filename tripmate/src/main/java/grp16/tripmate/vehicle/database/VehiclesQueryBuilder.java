@@ -13,6 +13,7 @@ public class VehiclesQueryBuilder implements IVehicleQueryBuilder
 
     private VehiclesQueryBuilder()
     {
+        // For commit - remove this comment when you see
 
     }
 
