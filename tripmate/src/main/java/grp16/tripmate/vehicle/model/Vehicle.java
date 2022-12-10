@@ -1,7 +1,14 @@
 package grp16.tripmate.vehicle.model;
 
+import grp16.tripmate.db.connection.DatabaseConnection;
+import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.database.IPostsQueryBuilder;
+import grp16.tripmate.post.model.IPostFactory;
+import grp16.tripmate.vehicle.database.IVehicleDatabase;
+import grp16.tripmate.vehicle.database.IVehicleQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +25,26 @@ public class Vehicle implements IVehicle
     private boolean isForLongJourney;
     private float ratePerKm;
     private String description;
+    private final IDatabaseConnection dbConnection;
+    private final IVehicleQueryBuilder queryBuilder;
 
-    public boolean isAvailable() {
+    private static IVehicleFactory vehicleFactory = null;
+
+    private final IVehicleDatabase database;
+
+    public Vehicle()
+    {
+        vehicleFactory = VehicleFactory.getInstance();
+        database = vehicleFactory.getVehicleDataBase();
+        queryBuilder = vehicleFactory.getVehicleQueryBuilder();
+        dbConnection = new DatabaseConnection();
+    }
+
+    public boolean getIsAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
+    public void setIsAvailable(boolean available) {
         isAvailable = available;
     }
 
@@ -49,8 +70,9 @@ public class Vehicle implements IVehicle
         return vehicleCategory.getName();
     }
 
-    public void setVehicleCategory(VehicleCategory vehicleCategory) {
-        this.vehicleCategory = vehicleCategory;
+    public void setVehicleCategory(int vehicleCategoryId)
+    {
+        this.vehicleCategory = new VehicleCategory(vehicleCategoryId);
     }
 
     public int getId() {
@@ -85,16 +107,16 @@ public class Vehicle implements IVehicle
         this.registrationNumber = registrationNumber;
     }
 
-    public boolean isForLongJourney() {
+    public boolean getIsForLongJourney() {
         return isForLongJourney;
     }
 
-    public void setForLongJourney(boolean forLongJourney) {
+    public void setIsForLongJourney(boolean forLongJourney) {
         isForLongJourney = forLongJourney;
     }
     public List<Vehicle> getAllVehicles()
     {
-        return new ArrayList<>();
+        return database.getAllVehicles();
     }
 
     public Vehicle getVehicleById(int vehicleId)

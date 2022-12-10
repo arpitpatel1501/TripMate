@@ -7,4 +7,6 @@ public interface IVehicleCategory
 
     VehicleCategory getVehicleCategoryByVehicleId(int vehicleId);
 
+    String getCategoryNameByCategoryId(int categoryId);
+
 }

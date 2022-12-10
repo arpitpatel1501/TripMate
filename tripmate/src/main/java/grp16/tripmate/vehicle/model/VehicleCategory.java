@@ -25,13 +25,15 @@ public class VehicleCategory implements IVehicleCategory
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName()
+    {
+        this.name = this.getCategoryNameByCategoryId(this.id);
     }
 
-    public VehicleCategory()
+    public VehicleCategory(int categoryId)
     {
-
+        this.id = categoryId;
+        this.setName();
     }
 
     public List<VehicleCategory> getAllVehicleCategory()
@@ -41,6 +43,10 @@ public class VehicleCategory implements IVehicleCategory
 
     public VehicleCategory getVehicleCategoryByVehicleId(int vehicleId)
     {
-        return new VehicleCategory();
+        return new VehicleCategory(1);
+    }
+    public String getCategoryNameByCategoryId(int categoryId)
+    {
+        return "";
     }
 }
