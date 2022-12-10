@@ -18,13 +18,7 @@ public interface IPost {
 
     boolean deletePost();
 
-    boolean isEligibleForFeedback();
-
     List<Feedback> getFeedbacks();
 
     boolean hidePost();
-
-    boolean isEligibleToJoin() throws Exception;
-
-    Post copy(Post post);
 }
