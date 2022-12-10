@@ -14,13 +14,39 @@ public class Vehicle implements IVehicle
     private String name;
     private int numberOfSeats;
     private String registrationNumber;
-    private boolean isReadyToUse;
+    private boolean isAvailable;
     private boolean isForLongJourney;
+    private float ratePerKm;
+    private String description;
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public float getRatePerKm() {
+        return ratePerKm;
+    }
+
+    public void setRatePerKm(float ratePerKm) {
+        this.ratePerKm = ratePerKm;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     private VehicleCategory vehicleCategory;
 
-    public VehicleCategory getVehicleCategory() {
-        return vehicleCategory;
+    public String getVehicleCategory() {
+        return vehicleCategory.getName();
     }
 
     public void setVehicleCategory(VehicleCategory vehicleCategory) {
@@ -57,14 +83,6 @@ public class Vehicle implements IVehicle
 
     public void setRegistrationNumber(String registrationNumber) {
         this.registrationNumber = registrationNumber;
-    }
-
-    public boolean isReadyToUse() {
-        return isReadyToUse;
-    }
-
-    public void setReadyToUse(boolean readyToUse) {
-        isReadyToUse = readyToUse;
     }
 
     public boolean isForLongJourney() {
