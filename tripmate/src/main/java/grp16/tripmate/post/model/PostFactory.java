@@ -3,9 +3,9 @@ package grp16.tripmate.post.model;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.IPostsQueryBuilder;
+import grp16.tripmate.post.database.IPostsQueryGenerator;
 import grp16.tripmate.post.database.PostDatabase;
-import grp16.tripmate.post.database.PostsQueryBuilder;
+import grp16.tripmate.post.database.PostsQueryGenerator;
 import grp16.tripmate.post.feedback.database.FeedbackDatabase;
 import grp16.tripmate.post.feedback.database.FeedbackQueryBuilder;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
@@ -17,14 +17,14 @@ public class PostFactory implements IPostFactory {
 
     private static IPostFactory instance;
     private final IPostDatabase postDatabase;
-    private final IPostsQueryBuilder postQueryBuilder;
+    private final IPostsQueryGenerator postQueryBuilder;
     private final IFeedbackDatabase feedbackDatabase;
     private final IFeedbackQueryBuilder feedbackQueryBuilder;
     private ILogger logger;
 
     private PostFactory() {
         postDatabase = new PostDatabase();
-        postQueryBuilder = PostsQueryBuilder.getInstance();
+        postQueryBuilder = PostsQueryGenerator.getInstance();
         feedbackDatabase = new FeedbackDatabase();
         feedbackQueryBuilder = FeedbackQueryBuilder.getInstance();
         logger = new MyLoggerAdapter(this);
@@ -48,7 +48,7 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IPostsQueryBuilder getPostQueryBuilder() {
+    public IPostsQueryGenerator getPostQueryBuilder() {
         return postQueryBuilder;
     }
 
