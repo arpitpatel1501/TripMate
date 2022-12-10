@@ -9,9 +9,8 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
     private final ILogger logger = new MyLoggerAdapter(this);
     private static PostsQueryBuilder instance;
 
-
     private PostsQueryBuilder() {
-        //Required empty constructor
+
     }
 
     public static PostsQueryBuilder getInstance() {
@@ -34,76 +33,82 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
                 PostDbColumnNames.MAXAGE + "," +
                 PostDbColumnNames.CAPACITY + "," +
                 PostDbColumnNames.DESCRIPTION + ") \n" +
-                "VALUES \n" +
-                "( \n" +
-                post.getOwner().getId() + ",\n" +
+                "VALUES (\n" +
+                      post.getOwner().getId() + ",\n" +
                 "'" + post.getTitle() + "',\n" +
                 "'" + post.getSource() + "',\n" +
                 "'" + post.getDestination() + "',\n" +
                 "'" + post.getStartDate() + "',\n" +
                 "'" + post.getEndDate() + "',\n" +
-                post.getMinAge() + ",\n" +
-                post.getMaxAge() + ",\n" +
-                post.getCapacity() + ",\n" +
-                "'" + post.getDescription() + "'\n );";
+                      post.getMinAge() + ",\n" +
+                      post.getMaxAge() + ",\n" +
+                      post.getCapacity() + ",\n" +
+                "'" + post.getDescription() + "' );";
         logger.info(query);
         return query;
     }
 
     @Override
     public String getAllPosts() {
-        String query = "SELECT `Post`.`id`,\n" +
-                "    `Post`.`title`,\n" +
-                "    `Post`.`source_location`,\n" +
-                "    `Post`.`destination_location`,\n" +
-                "    `Post`.`start_ts`,\n" +
-                "    `Post`.`end_ts`,\n" +
-                "    `Post`.`min_age`,\n" +
-                "    `Post`.`max_age`,\n" +
-                "    `Post`.`is_hidden`,\n" +
-                "    `Post`.`capacity`,\n" +
-                "    `Post`.`created_by`,\n" +
-                "    `Post`.`description`\n" +
-                "FROM `CSCI5308_16_DEVINT`.`Post`" +
-                " where " + PostDbColumnNames.ISHIDDEN + " != 1";
-
+        String query = "SELECT \n" +
+                PostDbColumnNames.ID + ", \n" +
+                PostDbColumnNames.OWNER + ", \n" +
+                PostDbColumnNames.TITLE + ", \n" +
+                PostDbColumnNames.SOURCE + ", \n" +
+                PostDbColumnNames.DESTINATION + ", \n" +
+                PostDbColumnNames.STARTDATE + ", \n" +
+                PostDbColumnNames.ENDDATE + ", \n" +
+                PostDbColumnNames.MINAGE + ", \n" +
+                PostDbColumnNames.MAXAGE + ", \n" +
+                PostDbColumnNames.CAPACITY + ", \n" +
+                PostDbColumnNames.ISHIDDEN + ", \n" +
+                PostDbColumnNames.DESCRIPTION + " \n" +
+                "FROM " + PostDbColumnNames.TABLENAME + "\n" +
+                "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1";
         logger.info(query);
-
         return query;
     }
 
     @Override
-    public String getPostsByUserId(int userid) {
-        return "SELECT `id`,\n" +
-                "    `title`,\n" +
-                "    `source_location`,\n" +
-                "    `destination_location`,\n" +
-                "    `start_ts`,\n" +
-                "    `end_ts`,\n" +
-                "    `min_age`,\n" +
-                "    `max_age`,\n" +
-                "    `capacity`,\n" +
-                "    `created_by`,\n" +
-                "    `description`\n" +
-                "FROM `Post` where `is_hidden` != 1 and `created_by` = " + userid;
+    public String getPostsByUserId(int userId) {
+        String query = "SELECT \n" +
+                PostDbColumnNames.ID + ", \n" +
+                PostDbColumnNames.OWNER + ", \n" +
+                PostDbColumnNames.TITLE + ", \n" +
+                PostDbColumnNames.SOURCE + ", \n" +
+                PostDbColumnNames.DESTINATION + ", \n" +
+                PostDbColumnNames.STARTDATE + ", \n" +
+                PostDbColumnNames.ENDDATE + ", \n" +
+                PostDbColumnNames.MINAGE + ", \n" +
+                PostDbColumnNames.MAXAGE + ", \n" +
+                PostDbColumnNames.CAPACITY + ", \n" +
+                PostDbColumnNames.ISHIDDEN + ", \n" +
+                PostDbColumnNames.DESCRIPTION + " \n" +
+                "FROM " + PostDbColumnNames.TABLENAME + "\n" +
+                "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1 AND \n" +
+                PostDbColumnNames.OWNER + " = " + userId;
+        logger.info(query);
+        return query;
     }
 
 
     @Override
-    public String getPostByPostId(int postid) {
-        String query = "SELECT `id`,\n" +
-                "    `title`,\n" +
-                "    `source_location`,\n" +
-                "    `destination_location`,\n" +
-                "    `start_ts`,\n" +
-                "    `end_ts`,\n" +
-                "    `min_age`,\n" +
-                "    `max_age`,\n" +
-                "    `capacity`,\n" +
-                "    `created_by`,\n" +
-                "    `description` ,\n " +
-                PostDbColumnNames.ISHIDDEN +
-                " FROM `Post` where `id` = " + postid;
+    public String getPostByPostId(int postId) {
+        String query = "SELECT \n" +
+                PostDbColumnNames.ID + ", \n" +
+                PostDbColumnNames.OWNER + ", \n" +
+                PostDbColumnNames.TITLE + ", \n" +
+                PostDbColumnNames.SOURCE + ", \n" +
+                PostDbColumnNames.DESTINATION + ", \n" +
+                PostDbColumnNames.STARTDATE + ", \n" +
+                PostDbColumnNames.ENDDATE + ", \n" +
+                PostDbColumnNames.MINAGE + ", \n" +
+                PostDbColumnNames.MAXAGE + ", \n" +
+                PostDbColumnNames.CAPACITY + ", \n" +
+                PostDbColumnNames.ISHIDDEN + ", \n" +
+                PostDbColumnNames.DESCRIPTION + " \n" +
+                "FROM " + PostDbColumnNames.TABLENAME + "\n" +
+                "WHERE " + PostDbColumnNames.ID + " = " + postId;
         logger.info(query);
         return query;
     }
@@ -146,17 +151,19 @@ public class PostsQueryBuilder implements IPostsQueryBuilder {
     }
 
     @Override
-    public String deletePostQuery(int postid) {
-        String query = "DELETE FROM " + PostDbColumnNames.TABLENAME + " WHERE " + PostDbColumnNames.ID + " = " + postid;
+    public String deletePostQuery(int postId) {
+        String query = "DELETE FROM " +
+                PostDbColumnNames.TABLENAME +
+                " WHERE " + PostDbColumnNames.ID + " = " + postId;
         logger.info(query);
         return query;
     }
 
     @Override
-    public String hidePostQuery(int postid) {
+    public String hidePostQuery(int postId) {
         String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
                 "    SET " + PostDbColumnNames.ISHIDDEN + "=" + true + "\n" +
-                "    WHERE " + PostDbColumnNames.ID + "=" + postid;
+                "    WHERE " + PostDbColumnNames.ID + "=" + postId;
         logger.info(query);
         return query;
     }
