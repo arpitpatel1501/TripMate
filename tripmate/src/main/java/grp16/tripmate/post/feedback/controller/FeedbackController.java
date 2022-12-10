@@ -35,9 +35,9 @@ public class FeedbackController {
 
 
     @PostMapping("/feedback/{id}")
-    public String createFeedback(Model model, @PathVariable("id") int postid, @ModelAttribute Feedback feedback) {
+    public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
-            feedback.setPostId(postid);
+            feedback.setPostId(postId);
             feedback.setUser((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
             feedback.createFeedback();
         } catch (Exception e) {

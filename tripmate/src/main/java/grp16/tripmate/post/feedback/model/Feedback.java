@@ -2,24 +2,16 @@ package grp16.tripmate.post.feedback.model;
 
 import grp16.tripmate.post.feedback.database.FeedbackDatabase;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.model.Post;
 import grp16.tripmate.user.model.User;
 
 public class Feedback implements IFeedback {
-
-    private final ILogger logger = new MyLoggerAdapter(this);
-
+    private IFeedbackDatabase database;
 
     private int id;
     private int postId;
     private User user;
     private String feedback;
-
     private float rating;
-
-    private IFeedbackDatabase database;
 
     public Feedback() {
         database = new FeedbackDatabase();
@@ -64,7 +56,6 @@ public class Feedback implements IFeedback {
     public void setRating(float rating) {
         this.rating = rating;
     }
-
 
     public void createFeedback() {
         database.createFeedback(this);
