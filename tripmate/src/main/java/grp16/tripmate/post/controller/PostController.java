@@ -27,6 +27,7 @@ public class PostController implements IPostController {
         logger = postFactory.getLogger(this);
     }
 
+    @Override
     @GetMapping("/dashboard")
     public String getAllPosts(Model model) {
         model.addAttribute("title", "Dashboard");
@@ -36,6 +37,7 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
+    @Override
     @GetMapping("/createpost")
     public String getNewPost(Model model) {
         Post myPost = (Post) postFactory.getNewPost();
@@ -58,6 +60,7 @@ public class PostController implements IPostController {
         }
     }
 
+    @Override
     @GetMapping("/myposts")
     public String getUserPosts(Model model) {
         model.addAttribute("title", "My Posts");
@@ -72,6 +75,7 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
+    @Override
     @GetMapping("/viewpost/{id}")
     public String viewPost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "View Post");
@@ -91,6 +95,7 @@ public class PostController implements IPostController {
 
     }
 
+    @Override
     @GetMapping("/editpost/{id}")
     public String editPost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Edit Post");
@@ -108,6 +113,7 @@ public class PostController implements IPostController {
         return "redirect:/dashboard";
     }
 
+    @Override
     @PostMapping("/deletepost/{id}")
     public String deletePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Delete Post");
@@ -117,6 +123,7 @@ public class PostController implements IPostController {
         return "redirect:/dashboard";
     }
 
+    @Override
     @PostMapping("/hidepost/{id}")
     public String hidePost(Model model, @PathVariable("id") int postid) {
         model.addAttribute("title", "Hide Post");
@@ -126,8 +133,9 @@ public class PostController implements IPostController {
         return "redirect:/dashboard";
     }
 
+    @Override
     @GetMapping("/error")
-    public String hidePost(Model model) {
+    public String displayError(Model model) {
         model.addAttribute("error", "Some error has occurred");
         return "error";
     }

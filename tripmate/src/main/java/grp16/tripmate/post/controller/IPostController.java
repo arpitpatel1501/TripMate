@@ -11,4 +11,5 @@ public interface IPostController {
     String editPost(Model model, @PathVariable("id") int postid);
     String deletePost(Model model, @PathVariable("id") int postid);
     String hidePost(Model model, @PathVariable("id") int postid);
+    String displayError(Model model);
 }
