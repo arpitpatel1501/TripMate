@@ -60,12 +60,12 @@
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{/deletepost}" method="post">
+            <form action="#" th:action="@{/deletepost/{id}(id=${post.getId()})}" method="post">
                 <button type="submit">Delete</button>
             </form>
         </td>
         <td>
-            <form action="#" th:action="@{/hidepost}" method="post">
+            <form action="#" th:action="@{/hidepost/{id}(id=${post.getId()})}" method="post">
                 <button type="submit">Hide</button>
             </form>
         </td>

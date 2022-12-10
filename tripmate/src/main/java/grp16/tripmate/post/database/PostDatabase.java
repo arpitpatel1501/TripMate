@@ -45,8 +45,8 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public Post getPostByPostId(int postid) {
-        String query = queryBuilder.getPostByPostId(postid);
+    public Post getPostByPostId(int post_id) {
+        String query = queryBuilder.getPostByPostId(post_id);
         List<Post> posts = selectQueryExecute(query);
         if (posts != null) {
             return posts.get(0);
@@ -62,15 +62,15 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public boolean deletePost(Post post) {
-        PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post.getId());
-        String query = queryBuilder.deletePostQuery(post.getId());
+    public boolean deletePost(int post_id) {
+        PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post_id);
+        String query = queryBuilder.deletePostQuery(post_id);
         return executeQuery(query);
     }
 
     @Override
-    public boolean hidePost(Post post) {
-        String query = queryBuilder.hidePostQuery(post.getId());
+    public boolean hidePost(int post_id) {
+        String query = queryBuilder.hidePostQuery(post_id);
         return executeQuery(query);
     }
 
