@@ -1,22 +1,23 @@
 package grp16.tripmate.post.database;
 
+import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 
 public interface IPostsQueryGenerator {
 
-    String getCreatePostQuery(Post post);
+    String getCreatePostQuery(IPost post);
 
     String getAllPosts();
 
-    String getPostsByUserId(int userid);
+    String getPostsByUserId(int userId);
 
-    String getPostByPostId(int postid);
+    String getPostByPostId(int postId);
 
-    String getUpdatePostQuery(Post post);
+    String getUpdatePostQuery(IPost post);
 
-    String deletePostQuery(int postid);
+    String deletePostQuery(int postId);
 
-    String hidePostQuery(int postid);
+    String hidePostQuery(int postId);
 
     String getFeedbackPosts();
 }

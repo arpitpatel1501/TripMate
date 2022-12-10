@@ -2,6 +2,7 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostDbColumnNames;
 
@@ -21,7 +22,8 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
     }
 
     @Override
-    public String getCreatePostQuery(Post post) {
+    public String getCreatePostQuery(IPost postToCreate) {
+        Post post = (Post) postToCreate;
         String query = "INSERT INTO " + PostDbColumnNames.TABLENAME + "( \n" +
                 PostDbColumnNames.OWNER + "," +
                 PostDbColumnNames.TITLE + "," +
@@ -114,7 +116,8 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
     }
 
     @Override
-    public String getUpdatePostQuery(Post post) {
+    public String getUpdatePostQuery(IPost postToUpdate) {
+        Post post = (Post) postToUpdate;
         String query = "UPDATE " + PostDbColumnNames.TABLENAME + "    SET " +
                 PostDbColumnNames.TITLE + "='" + post.getTitle() + "',\n" +
                 PostDbColumnNames.SOURCE + "='" + post.getSource() + "',\n" +
@@ -126,6 +129,24 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 PostDbColumnNames.CAPACITY + "=" + post.getCapacity() + ",\n" +
                 PostDbColumnNames.DESCRIPTION + "='" + post.getDescription() + "'\n" +
                 "    WHERE " + PostDbColumnNames.ID + "=" + post.getId();
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String deletePostQuery(int postId) {
+        String query = "DELETE FROM " +
+                PostDbColumnNames.TABLENAME +
+                " WHERE " + PostDbColumnNames.ID + " = " + postId;
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String hidePostQuery(int postId) {
+        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
+                "    SET " + PostDbColumnNames.ISHIDDEN + "=" + true + "\n" +
+                "    WHERE " + PostDbColumnNames.ID + "=" + postId;
         logger.info(query);
         return query;
     }
@@ -146,24 +167,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 PostDbColumnNames.DESCRIPTION +
                 "FROM " + PostDbColumnNames.TABLENAME +
                 "where " + PostDbColumnNames.ENDDATE + "< now()";
-        logger.info(query);
-        return query;
-    }
-
-    @Override
-    public String deletePostQuery(int postId) {
-        String query = "DELETE FROM " +
-                PostDbColumnNames.TABLENAME +
-                " WHERE " + PostDbColumnNames.ID + " = " + postId;
-        logger.info(query);
-        return query;
-    }
-
-    @Override
-    public String hidePostQuery(int postId) {
-        String query = "UPDATE " + PostDbColumnNames.TABLENAME + "\n" +
-                "    SET " + PostDbColumnNames.ISHIDDEN + "=" + true + "\n" +
-                "    WHERE " + PostDbColumnNames.ID + "=" + postId;
         logger.info(query);
         return query;
     }
