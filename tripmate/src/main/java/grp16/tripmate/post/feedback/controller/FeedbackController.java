@@ -21,13 +21,13 @@ public class FeedbackController {
     private IPostFactory postFactory;
 
     public FeedbackController() {
-        feedback = new Feedback();
         postFactory = PostFactory.getInstance();
+        feedback = postFactory.getNewFeedback();
     }
 
     @GetMapping("/feedback/{id}")
-    public String loadFeedbackPage(Model model, @PathVariable("id") int postid) {
-        model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postid));
+    public String loadFeedbackPage(Model model, @PathVariable("id") int postId) {
+        model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
         model.addAttribute("currentFeedback", new Feedback());
         model.addAttribute("title", "Feedback");
         return "feedback";

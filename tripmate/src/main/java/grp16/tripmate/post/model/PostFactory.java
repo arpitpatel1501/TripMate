@@ -20,7 +20,7 @@ public class PostFactory implements IPostFactory {
     private final IPostsQueryGenerator postQueryBuilder;
     private final IFeedbackDatabase feedbackDatabase;
     private final IFeedbackQueryBuilder feedbackQueryBuilder;
-    private ILogger logger;
+    private final ILogger logger;
 
     private PostFactory() {
         postDatabase = new PostDatabase();
