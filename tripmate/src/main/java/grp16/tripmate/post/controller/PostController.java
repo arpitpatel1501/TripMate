@@ -1,7 +1,6 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
