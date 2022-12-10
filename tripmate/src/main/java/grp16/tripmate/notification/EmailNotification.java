@@ -30,10 +30,6 @@ public class EmailNotification implements INotification{
         javaMailSenderImpl.setPassword(MyProperties.getInstance().getPassword());
 
         Properties properties = javaMailSenderImpl.getJavaMailProperties();
-//        for (Map.Entry<Object, Object> property : MyProperties.getInstance().loadProperties().entrySet()) {
-//            properties.put(property.getKey(), property.getValue());
-//            System.out.println(property.getKey() +" -> "+ property.getValue());
-//        }
 
         for (Map.Entry<String, String> property : this.setMailSenderProperties().entrySet()) {
             properties.put(property.getKey(), property.getValue());
