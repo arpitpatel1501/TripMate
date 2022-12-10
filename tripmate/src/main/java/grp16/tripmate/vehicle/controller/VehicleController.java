@@ -6,6 +6,7 @@ import grp16.tripmate.vehicle.model.IVehicle;
 import grp16.tripmate.vehicle.model.IVehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle;
 import grp16.tripmate.vehicle.model.VehicleFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-public class VehicleController implements IVehicleController
-{
+@Controller
+public class VehicleController implements IVehicleController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     final private IVehicleFactory vehicleFactory;
