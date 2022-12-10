@@ -2,9 +2,9 @@ package grp16.tripmate.postrequest.model;
 
 public class MyPostRequestFactory implements IMyPostRequestFactory{
 
-    private IMyPostRequestFactory instance = null;
+    private static IMyPostRequestFactory instance = null;
 
-    public IMyPostRequestFactory getInstance() {
+    public static IMyPostRequestFactory getInstance() {
         if (instance == null) {
             instance = new MyPostRequestFactory();
         }
