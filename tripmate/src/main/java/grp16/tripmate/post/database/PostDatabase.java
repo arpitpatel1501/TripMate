@@ -11,7 +11,7 @@ import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +103,7 @@ public class PostDatabase implements IPostDatabase {
     }
 
     private Date localDateTimeToDate(LocalDateTime ldt) {
-        Instant instant = ldt.toInstant(ZoneOffset.UTC);
+        Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }
 }
