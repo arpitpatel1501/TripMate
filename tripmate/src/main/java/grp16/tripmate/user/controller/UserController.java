@@ -15,6 +15,7 @@ public class UserController {
 
     IVerification iVerification;
     private final IUserFactory userFactory;
+
     private User user;
 
     public UserController() {
