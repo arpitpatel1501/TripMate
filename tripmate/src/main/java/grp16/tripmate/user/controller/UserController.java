@@ -2,17 +2,12 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.notification.EmailNotificationFactory;
+import grp16.tripmate.notification.IVerification;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class UserController {
