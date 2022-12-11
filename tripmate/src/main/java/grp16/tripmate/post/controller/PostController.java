@@ -117,7 +117,7 @@ public class PostController implements IPostController {
     }
 
     @PostMapping("/updatepost")
-    public String udpatePost(Model model, @ModelAttribute Post post) {
+    public String updatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
         post.setDatabase(postFactory.getPostDatabase());
         post.updatePost();
