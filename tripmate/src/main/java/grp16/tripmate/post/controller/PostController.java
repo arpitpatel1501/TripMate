@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -63,8 +61,8 @@ public class PostController implements IPostController {
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             logger.error(e.getMessage());
-            return "createpost";
         }
+        return "createpost";
     }
 
     @Override
@@ -99,7 +97,6 @@ public class PostController implements IPostController {
             logger.error(e.getMessage());
         }
         return "viewpost";
-
     }
 
     @Override
@@ -130,7 +127,7 @@ public class PostController implements IPostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatePost";
+        return "updatepost";
     }
 
     @Override

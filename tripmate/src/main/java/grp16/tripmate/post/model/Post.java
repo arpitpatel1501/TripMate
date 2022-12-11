@@ -217,7 +217,6 @@ public class Post extends PostSubject implements IPost {
         isHidden = i == 0;
     }
 
-
     public User getOwner() {
         return owner;
     }
@@ -233,10 +232,6 @@ public class Post extends PostSubject implements IPost {
 
     public void setDatabase(IPostDatabase database) {
         this.database = database;
-    }
-
-    public PostValidator getValidator() {
-        return validator;
     }
 
     public void setValidator(PostValidator validator) {

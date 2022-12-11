@@ -6,7 +6,6 @@ import java.util.Date;
 public class PostValidator {
     public void isStarDateBeforeToday(Post post) throws ParseException, StartDateBeforeTodayException {
         Date startDate = post.getJavaDate(post.getStartDate());
-        Date endDate = post.getJavaDate(post.getEndDate());
         if(startDate.before(new Date())){
             throw new StartDateBeforeTodayException();
         }
@@ -17,7 +16,7 @@ public class PostValidator {
         Date endDate = post.getJavaDate(post.getEndDate());
         if(startDate.after(endDate)){
             throw new StartDateAfterEndDateException();
-        };
+        }
     }
 
     public void isMinAgeLessThanMaxAge(Post post) throws MinAgeGreaterThanMaxAgeException {
@@ -25,6 +24,6 @@ public class PostValidator {
         int maxAge = post.getMaxAge();
         if(minAge > maxAge){
             throw new MinAgeGreaterThanMaxAgeException();
-        };
+        }
     }
 }
