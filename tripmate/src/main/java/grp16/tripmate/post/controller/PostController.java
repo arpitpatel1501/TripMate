@@ -64,7 +64,6 @@ public class PostController implements IPostController {
         }
         return "createpost";
     }
-    }
 
     @Override
     @GetMapping("/myposts")
