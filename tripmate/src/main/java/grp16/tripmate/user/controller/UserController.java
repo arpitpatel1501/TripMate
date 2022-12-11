@@ -78,7 +78,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-        SessionManager.Instance().removeValue(UserDbColumnNames.id);
+        SessionManager.Instance().removeValue(UserDbColumnNames.ID);
         return "redirect:/login";
     }
 }

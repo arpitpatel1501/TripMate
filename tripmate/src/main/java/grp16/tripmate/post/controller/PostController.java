@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -73,7 +72,7 @@ public class PostController implements IPostController {
         model.addAttribute("title", "My Posts");
         try {
             Post post = (Post) postFactory.getNewPost();
-            List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             model.addAttribute("posts", posts);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -90,7 +89,7 @@ public class PostController implements IPostController {
             Post post = (Post) postFactory.getNewPost();
             Post myPost = post.getPostByPostId(postId);
             logger.info(myPost.toString());
-            model.addAttribute("isUpdateButtonVisible", myPost.getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("isUpdateButtonVisible", myPost.getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             model.addAttribute("post", myPost);
             model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
             model.addAttribute("feedbacks", myPost.getFeedbacks());

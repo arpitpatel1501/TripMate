@@ -29,7 +29,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean createPost(Post post) throws Exception {
-        post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecution.executeInsertQuery(query);
     }

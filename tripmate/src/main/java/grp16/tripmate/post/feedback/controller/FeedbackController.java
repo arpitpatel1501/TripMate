@@ -47,7 +47,7 @@ public class FeedbackController {
     public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
             feedback.setPostId(postId);
-            feedback.setUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            feedback.setUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             feedback.createFeedback(database);
         } catch (Exception e) {
             return "redirect:/error";
