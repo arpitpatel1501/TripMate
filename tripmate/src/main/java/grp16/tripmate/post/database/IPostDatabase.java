@@ -16,11 +16,11 @@ public interface IPostDatabase {
 
     boolean createPost(Post post) throws Exception;
 
-    List<Post> getPostsByUserId(int userid);
+    List<Post> getPostsByUserId(int userid) throws Exception;
 
-    List<Post> getAllPosts();
+    List<Post> getAllPosts() throws Exception;
 
-    Post getPostByPostId(int post_id);
+    Post getPostByPostId(int post_id) throws Exception;
 
     List<Feedback> getFeedbacks(int post_id);
 }

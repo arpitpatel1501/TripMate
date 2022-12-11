@@ -27,9 +27,14 @@ public class FeedbackController {
 
     @GetMapping("/feedback/{id}")
     public String loadFeedbackPage(Model model, @PathVariable("id") int postId) {
-        model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
-        model.addAttribute("currentFeedback", new Feedback());
-        model.addAttribute("title", "Feedback");
+        try {
+            model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
+            model.addAttribute("currentFeedback", new Feedback());
+            model.addAttribute("title", "Feedback");
+        } catch (Exception e) {
+            model.addAttribute("error", "Post not found " + e.getMessage());
+            e.printStackTrace();
+        }
         return "feedback";
     }
 

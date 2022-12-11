@@ -48,17 +48,17 @@ public class Post implements IPost {
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) {
+    public List<Post> getPostsByUserId(int userid) throws Exception {
         return database.getPostsByUserId(userid);
     }
 
     @Override
-    public List<Post> getAllPosts() {
+    public List<Post> getAllPosts() throws Exception {
         return database.getAllPosts();
     }
 
     @Override
-    public Post getPostByPostId(int postId) {
+    public Post getPostByPostId(int postId) throws Exception {
         return database.getPostByPostId(postId);
     }
 
@@ -199,6 +199,11 @@ public class Post implements IPost {
         isHidden = hidden;
     }
 
+    public void setHidden(int i) {
+        isHidden = i == 0;
+    }
+
+
     public User getOwner() {
         return owner;
     }
@@ -212,7 +217,7 @@ public class Post implements IPost {
         return database;
     }
 
-    public void setDatabase(IPostDatabase database){
+    public void setDatabase(IPostDatabase database) {
         this.database = database;
     }
 
