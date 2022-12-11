@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -48,9 +49,10 @@ public class MyPostRequestController {
         return "post_requests";
     }
 
-    @PostMapping("/join")
-    public String join(Model model, @ModelAttribute Post post) {
-        SessionManager.Instance().removeValue(UserDbColumnNames.id);
-        return "redirect:/login";
+    @PostMapping("/join/{id}")
+    public String join(Model model, @ModelAttribute Post post, @PathVariable("id") int post_id) throws Exception {
+        query = iMyPostRequestDB.createJoinRequest(post_id, (Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        myPostRequest.executeQuery(query);
+        return "redirect:/post_requests";
     }
 }

@@ -93,6 +93,7 @@ public class PostController implements IPostController {
             model.addAttribute("post", myPost);
             model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
             model.addAttribute("feedbacks", myPost.getFeedbacks());
+            model.addAttribute("canJoin", myPost.isEligibleToJoin());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             logger.error(e.getMessage());

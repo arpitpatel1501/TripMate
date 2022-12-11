@@ -19,7 +19,7 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post extends PostSubject implements IPost  {
+public class Post extends PostSubject implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
     private IPostDatabase database;
 
@@ -88,7 +88,7 @@ public class Post extends PostSubject implements IPost  {
     }
 
     public boolean isEligibleToJoin() throws Exception {
-        boolean isPastDate = endDate.equals(new Date());
+        boolean isPastDate = endDate.before(new Date());
         boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
         logger.info(String.valueOf(isPastDate));
         logger.info(String.valueOf(isOwner));
