@@ -19,7 +19,7 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post implements IPost {
+public class Post extends PostSubject implements IPost  {
     private final ILogger logger = new MyLoggerAdapter(this);
     private IPostDatabase database;
 
@@ -37,6 +37,7 @@ public class Post implements IPost {
     private boolean isHidden;
 
     public Post(IPostDatabase postDatabase) {
+        super();
         this.database = postDatabase;
         this.setStartDate(new Date());
         this.setEndDate(new Date());
@@ -44,7 +45,11 @@ public class Post implements IPost {
 
     @Override
     public boolean createPost() throws Exception {
-        return database.createPost(this);
+        boolean isPostCreated = database.createPost(this);
+        if (isPostCreated) {
+            notifyObservers();
+        }
+        return isPostCreated;
     }
 
     @Override
