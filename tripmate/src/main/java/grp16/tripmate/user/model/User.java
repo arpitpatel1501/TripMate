@@ -1,28 +1,14 @@
 package grp16.tripmate.user.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.UserDatabase;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserQueryBuilder;
-import grp16.tripmate.user.database.UserQueryBuilder;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class User implements IUser {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -35,8 +21,6 @@ public class User implements IUser {
     private Date birthDate;
     private String gender;
 
-
-    private final IUserDatabase userDatabase;
 
     public int getId() {
         return id;
@@ -100,7 +84,6 @@ public class User implements IUser {
     }
 
     public User() {
-        userDatabase = new UserDatabase();
     }
 
     @Override
@@ -108,17 +91,17 @@ public class User implements IUser {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 
-    public boolean validateUser() throws Exception {
+    public boolean validateUser(IUserDatabase userDatabase) throws Exception {
         return userDatabase.validateUser(this);
     }
 
     @Override
-    public boolean createUser() throws Exception {
+    public boolean createUser(IUserDatabase userDatabase) throws Exception {
         return userDatabase.createUser(this);
     }
 
     @Override
-    public User getLoggedInUser() throws Exception {
+    public User getLoggedInUser(IUserDatabase userDatabase) throws Exception {
         return userDatabase.getLoggedInUser();
     }
 
@@ -132,12 +115,12 @@ public class User implements IUser {
         return "";
     }
 
-    public boolean changeUserDetails() throws Exception {
+    public boolean changeUserDetails(IUserDatabase userDatabase) throws Exception {
         return userDatabase.changeUserDetails(this);
     }
 
     @Override
-    public User getUserById(int userid) throws Exception {
-        return userDatabase.getUserById(userid);
+    public User getUserById(IUserDatabase userDatabase, int userId) throws Exception {
+        return userDatabase.getUserById(userId);
     }
 }

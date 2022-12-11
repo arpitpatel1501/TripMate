@@ -36,15 +36,15 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 PostDbColumnNames.CAPACITY + "," +
                 PostDbColumnNames.DESCRIPTION + ") \n" +
                 "VALUES (\n" +
-                      post.getOwner().getId() + ",\n" +
+                post.getOwner_id() + ",\n" +
                 "'" + post.getTitle() + "',\n" +
                 "'" + post.getSource() + "',\n" +
                 "'" + post.getDestination() + "',\n" +
                 "'" + post.getStartDate() + "',\n" +
                 "'" + post.getEndDate() + "',\n" +
-                      post.getMinAge() + ",\n" +
-                      post.getMaxAge() + ",\n" +
-                      post.getCapacity() + ",\n" +
+                post.getMinAge() + ",\n" +
+                post.getMaxAge() + ",\n" +
+                post.getCapacity() + ",\n" +
                 "'" + post.getDescription() + "' );";
         logger.info(query);
         return query;

@@ -1,20 +1,15 @@
 package grp16.tripmate.post.feedback.model;
 
-import grp16.tripmate.post.feedback.database.FeedbackDatabase;
 import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.user.model.User;
 
 public class Feedback implements IFeedback {
-    private IFeedbackDatabase database;
-
     private int id;
     private int postId;
-    private User user;
+    private int userId;
     private String feedback;
     private float rating;
 
     public Feedback() {
-        database = new FeedbackDatabase();
     }
 
     public int getId() {
@@ -33,12 +28,12 @@ public class Feedback implements IFeedback {
         this.postId = postId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(int userId) throws Exception {
-        this.user = new User().getUserById(userId);
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getFeedback() {
@@ -57,7 +52,7 @@ public class Feedback implements IFeedback {
         this.rating = rating;
     }
 
-    public void createFeedback() {
+    public void createFeedback(IFeedbackDatabase database) {
         database.createFeedback(this);
     }
 }
