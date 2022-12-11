@@ -1,9 +1,7 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.post.model.IPostFactory;
-import grp16.tripmate.post.model.Post;
-import grp16.tripmate.post.model.PostFactory;
+import grp16.tripmate.post.model.*;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
@@ -11,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -122,8 +121,16 @@ public class PostController implements IPostController {
     public String updatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
         post.setDatabase(postFactory.getPostDatabase());
-        post.updatePost();
-        return "redirect:/dashboard";
+        post.setValidator(postFactory.getPostValidator());
+        try {
+            post.validatePost();
+            post.updatePost();
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            e.printStackTrace();
+        }
+        return "updatePost";
     }
 
     @Override

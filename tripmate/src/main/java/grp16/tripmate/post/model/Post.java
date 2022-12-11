@@ -98,7 +98,8 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException {
+    public void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException {
+        validator.isStarDateBeforeToday(this);
         validator.isStartDateBeforeEndDate(this);
         validator.isMinAgeLessThanMaxAge(this);
     }

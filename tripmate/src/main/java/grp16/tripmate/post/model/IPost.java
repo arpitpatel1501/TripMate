@@ -23,5 +23,5 @@ public interface IPost {
 
     boolean hidePost();
 
-    void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException;
+    void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException;
 }
