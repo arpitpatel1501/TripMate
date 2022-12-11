@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface IVehicleBooking
 {
-    List<VehicleBooking> getVehicleBookingsByUserId(int userId);
+    List<VehicleBooking> getVehicleBookingByUserId(int userId);
 
-    List<VehicleBooking> getVehicleBookingsByPostId(int postId);
+    List<VehicleBooking> getVehicleBookingByPostId(int postId);
 
     VehicleBooking getVehicleBookingByBookingId(int bookingId);
 }

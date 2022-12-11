@@ -8,11 +8,7 @@ import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.database.IVehicleBookingQueryBuilder;
 
 import java.util.List;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class VehicleBooking implements IVehicleBooking
 {
@@ -21,10 +17,10 @@ public class VehicleBooking implements IVehicleBooking
     private int id;
     private Vehicle vehicleObj;
     private Post postObj;
-    private float total_km;
+    private float totalKm;
     private Date bookingStartDate;
     private Date bookingEndDate;
-    private boolean has_paid;
+    private boolean hasPaid;
     private final IDatabaseConnection dbConnection;
     private final IVehicleBookingQueryBuilder queryBuilder;
 
@@ -64,14 +60,6 @@ public class VehicleBooking implements IVehicleBooking
         this.postObj = postObj;
     }
 
-    public float getTotal_km() {
-        return total_km;
-    }
-
-    public void setTotal_km(float total_km) {
-        this.total_km = total_km;
-    }
-
     public Date getBookingStartDate() {
         return bookingStartDate;
     }
@@ -84,25 +72,33 @@ public class VehicleBooking implements IVehicleBooking
         return bookingEndDate;
     }
 
+    public float getTotalKm() {
+        return totalKm;
+    }
+
+    public void setTotalKm(float totalKm) {
+        this.totalKm = totalKm;
+    }
+
+    public boolean getHasPaid() {
+        return hasPaid;
+    }
+
+    public void setHasPaid(boolean hasPaid) {
+        this.hasPaid = hasPaid;
+    }
+
     public void setBookingEndDate(Date bookingEndDate) {
         this.bookingEndDate = bookingEndDate;
     }
-
-    public boolean get_hasPaid() {
-        return has_paid;
-    }
-
-    public void set_hasPaid(boolean has_paid) {
-        this.has_paid = has_paid;
-    }
     @Override
-    public List<VehicleBooking> getVehicleBookingsByUserId(int userId)
+    public List<VehicleBooking> getVehicleBookingByUserId(int userId)
     {
         return null;
     }
 
     @Override
-    public List<VehicleBooking> getVehicleBookingsByPostId(int postId)
+    public List<VehicleBooking> getVehicleBookingByPostId(int postId)
     {
         return null;
     }
