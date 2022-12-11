@@ -2,6 +2,8 @@ package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.post.model.*;
+import grp16.tripmate.post.model.factory.IPostFactory;
+import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
