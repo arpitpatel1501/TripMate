@@ -1,6 +1,7 @@
 package grp16.tripmate.postrequest.model;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IMyPostRequest {
@@ -15,7 +16,10 @@ public interface IMyPostRequest {
     public void setFirstNameCreator(String firstNameCreator);
 
     public void setLastNameCreator(String lastNameCreator);
+
     public ResultSet resultExecuteQuery(String query) throws Exception;
+
     public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception;
 
+    boolean executeQuery(String query) throws Exception;
 }

@@ -7,6 +7,7 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,12 @@ public class MyPostRequest implements IMyPostRequest {
         resultSet = statement.executeQuery(query);
 
         return resultSet;
+    }
+
+    public boolean executeQuery(String query) throws Exception {
+        statement = getConnection();
+        boolean returnResult = statement.execute(query);
+        return returnResult;
     }
 
     public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception {

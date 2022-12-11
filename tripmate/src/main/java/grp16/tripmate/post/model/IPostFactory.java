@@ -13,6 +13,8 @@ public interface IPostFactory {
 
     IPostDatabase getPostDatabase();
 
+    PostValidator getPostValidator();
+
     IPostsQueryGenerator getPostQueryBuilder();
 
     IFeedback getNewFeedback();
