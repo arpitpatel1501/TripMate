@@ -56,7 +56,9 @@ public class PostController implements IPostController {
     public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
         post.setDatabase(postFactory.getPostDatabase());
+        post.setValidator(postFactory.getPostValidator());
         try {
+            post.validatePost();
             post.createPost();
             return "redirect:/dashboard";
         } catch (Exception e) {

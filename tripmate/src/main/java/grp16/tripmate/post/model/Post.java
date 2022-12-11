@@ -19,9 +19,10 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post extends PostSubject implements IPost  {
+public class Post extends PostSubject implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
     private IPostDatabase database;
+    private PostValidator validator;
 
     private int id;
     private User owner;
@@ -39,6 +40,7 @@ public class Post extends PostSubject implements IPost  {
     public Post(IPostDatabase postDatabase) {
         super();
         this.database = postDatabase;
+        this.validator = new PostValidator();
         this.setStartDate(new Date());
         this.setEndDate(new Date());
     }
@@ -93,6 +95,12 @@ public class Post extends PostSubject implements IPost  {
         logger.info(String.valueOf(isPastDate));
         logger.info(String.valueOf(isOwner));
         return !isPastDate && !isOwner;
+    }
+
+    @Override
+    public void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException {
+        validator.isStartDateBeforeEndDate(this);
+        validator.isMinAgeLessThanMaxAge(this);
     }
 
     public boolean isEligibleForFeedback() {
@@ -168,7 +176,7 @@ public class Post extends PostSubject implements IPost  {
         return dateFormat.format(date);
     }
 
-    private Date getJavaDate(String date) throws ParseException {
+    protected Date getJavaDate(String date) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
 
@@ -224,6 +232,14 @@ public class Post extends PostSubject implements IPost  {
 
     public void setDatabase(IPostDatabase database) {
         this.database = database;
+    }
+
+    public PostValidator getValidator() {
+        return validator;
+    }
+
+    public void setValidator(PostValidator validator) {
+        this.validator = validator;
     }
 
     @Override
