@@ -20,6 +20,7 @@ public class PostFactory implements IPostFactory {
     private final IPostsQueryGenerator postQueryBuilder;
     private final IFeedbackDatabase feedbackDatabase;
     private final IFeedbackQueryBuilder feedbackQueryBuilder;
+    private final PostValidator postValidator;
     private final ILogger logger;
 
     private PostFactory() {
@@ -27,6 +28,7 @@ public class PostFactory implements IPostFactory {
         postQueryBuilder = PostsQueryGenerator.getInstance();
         feedbackDatabase = new FeedbackDatabase();
         feedbackQueryBuilder = FeedbackQueryBuilder.getInstance();
+        postValidator = new PostValidator();
         logger = new MyLoggerAdapter(this);
     }
 
@@ -65,6 +67,11 @@ public class PostFactory implements IPostFactory {
     @Override
     public IFeedbackQueryBuilder getFeedbackQueryBuilder() {
         return feedbackQueryBuilder;
+    }
+
+    @Override
+    public PostValidator getPostValidator() {
+        return postValidator;
     }
 
     @Override

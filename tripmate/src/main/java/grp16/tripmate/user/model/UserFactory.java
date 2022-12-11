@@ -27,5 +27,10 @@ public class UserFactory implements IUserFactory {
         return new UserDatabase();
     }
 
+    @Override
+    public IUserDatabase getUserDatabase() {
+        return new UserDatabase();
+    }
+
 
 }
