@@ -20,36 +20,36 @@ import java.util.Map;
 public class PostDatabase implements IPostDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IPostsQueryGenerator queryGenerator;
-    private final IDatabaseExecution databaseExecution;
+    private final IDatabaseExecution databaseExecutor;
 
     public PostDatabase() {
         queryGenerator = PostsQueryGenerator.getInstance();
-        databaseExecution = new DatabaseExecution();
+        databaseExecutor = new DatabaseExecution();
     }
 
     @Override
     public boolean createPost(Post post) throws Exception {
         post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
         String query = queryGenerator.getCreatePostQuery(post);
-        return databaseExecution.executeInsertQuery(query);
+        return databaseExecutor.executeInsertQuery(query);
     }
 
     @Override
     public List<Post> getPostsByUserId(int userid) throws Exception {
         String query = queryGenerator.getPostsByUserId(userid);
-        return listToPosts(databaseExecution.executeSelectQuery(query));
+        return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
     public List<Post> getAllPosts() throws Exception {
         String query = queryGenerator.getAllPosts();
-        return listToPosts(databaseExecution.executeSelectQuery(query));
+        return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
     public Post getPostByPostId(int post_id) throws Exception {
         String query = queryGenerator.getPostByPostId(post_id);
-        List<Post> posts = listToPosts(databaseExecution.executeSelectQuery(query));
+        List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
         if (posts != null) {
             return posts.get(0);
         } else {
@@ -60,20 +60,20 @@ public class PostDatabase implements IPostDatabase {
     @Override
     public boolean updatePost(Post post) {
         String query = queryGenerator.getUpdatePostQuery(post);
-        return databaseExecution.executeUpdateQuery(query);
+        return databaseExecutor.executeUpdateQuery(query);
     }
 
     @Override
     public boolean deletePost(int post_id) {
         PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post_id);
         String query = queryGenerator.deletePostQuery(post_id);
-        return databaseExecution.executeDeleteQuery(query);
+        return databaseExecutor.executeDeleteQuery(query);
     }
 
     @Override
     public boolean hidePost(int post_id) {
         String query = queryGenerator.hidePostQuery(post_id);
-        return databaseExecution.executeUpdateQuery(query);
+        return databaseExecutor.executeUpdateQuery(query);
     }
 
     @Override
