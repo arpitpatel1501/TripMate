@@ -90,7 +90,7 @@ public class PostController implements IPostController {
             Post post = (Post) postFactory.getNewPost();
             Post myPost = post.getPostByPostId(postId);
             logger.info(myPost.toString());
-            model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            model.addAttribute("isUpdateButtonVisible", myPost.getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
             model.addAttribute("post", myPost);
             model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
             model.addAttribute("feedbacks", myPost.getFeedbacks());

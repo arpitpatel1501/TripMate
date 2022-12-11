@@ -19,18 +19,11 @@ public class UserFactory implements IUserFactory {
 
     @Override
     public IUser getNewUser() {
-        return new User(getUserDatabase());
+        return new User();
     }
 
     @Override
     public IUserDatabase getUserDatabase() {
         return new UserDatabase();
     }
-
-    @Override
-    public IUserDatabase getUserDatabase() {
-        return new UserDatabase();
-    }
-
-
 }

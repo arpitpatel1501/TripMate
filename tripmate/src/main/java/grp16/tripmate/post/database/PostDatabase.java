@@ -29,7 +29,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean createPost(Post post) throws Exception {
-        post.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecution.executeInsertQuery(query);
     }
@@ -96,7 +96,7 @@ public class PostDatabase implements IPostDatabase {
             post.setMinAge((Integer) responseMap.get(PostDbColumnNames.MINAGE));
             post.setStartDate(localDateTimeToDate((LocalDateTime) responseMap.get(PostDbColumnNames.STARTDATE)));
             post.setSource((String) responseMap.get(PostDbColumnNames.SOURCE));
-            post.setOwner((Integer) responseMap.get(PostDbColumnNames.OWNER));
+            post.setOwner_id((Integer) responseMap.get(PostDbColumnNames.OWNER));
             results.add(post);
         }
         return results;
