@@ -2,6 +2,7 @@ package grp16.tripmate.post.model;
 
 import grp16.tripmate.post.feedback.model.Feedback;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface IPost {
@@ -21,4 +22,6 @@ public interface IPost {
     List<Feedback> getFeedbacks();
 
     boolean hidePost();
+
+    void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException;
 }
