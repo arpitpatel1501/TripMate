@@ -1,5 +1,6 @@
 package grp16.tripmate.post.feedback.controller;
 
+import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
 import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.post.feedback.model.IFeedback;
 import grp16.tripmate.post.model.IPostFactory;
