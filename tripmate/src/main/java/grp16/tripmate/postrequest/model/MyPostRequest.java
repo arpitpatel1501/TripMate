@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostRequest {
+public class MyPostRequest implements IMyPostRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IDatabaseConnection databaseConnection;
@@ -81,19 +81,19 @@ public class MyPostRequest {
     }
 
     public ResultSet resultExecuteQuery(String query) throws Exception {
-//        posts.add(new Post(1, new User(), "title 1", 5, "source 1", "destination 1", new Date(), new Date(), 15, 25, "description 1", false));
         statement = getConnection();
         resultSet = statement.executeQuery(query);
 
         return resultSet;
     }
 
-    public List<MyPostRequest> resultMyPostRequests(String query) throws Exception {
+    public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception {
         resultSet = resultExecuteQuery(query);
 
-        List<MyPostRequest> results = new ArrayList<>();
+        List<IMyPostRequest> results = new ArrayList<>();
         while (resultSet.next()) {
-            MyPostRequest myPostRequest = new MyPostRequest();
+            IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+
             myPostRequest.setFirstNameRequestee(resultSet.getString("firstNameRequestee"));
             myPostRequest.setLastNameRequestee(resultSet.getString("lastNameRequestee"));
             myPostRequest.setPostTitle(resultSet.getString("postTitle"));

@@ -17,7 +17,8 @@ public class MyPostRequestDB implements IMyPostRequestDB {
 
     @Override
     public String getPostRequestByUserId(int userid) {
-        String query = "SELECT u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, p.title as postTitle, p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
+        String query = "SELECT u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, p.title as postTitle, " +
+                "p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
                 "FROM PostRequest pr\n" +
                 "JOIN Post p on pr.Post_id = p.id\n" +
                 "JOIN User u on pr.request_owner = u.id\n" +

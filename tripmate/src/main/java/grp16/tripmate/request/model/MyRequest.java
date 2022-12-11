@@ -4,6 +4,7 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
 
 import java.sql.Connection;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRequest {
+public class MyRequest implements IMyRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IDatabaseConnection databaseConnection;
@@ -70,6 +71,7 @@ public class MyRequest {
         return statement;
     }
 
+    @Override
     public ResultSet resultExecuteQuery(String query) throws Exception {
         statement = getConnection();
         resultSet = statement.executeQuery(query);
@@ -77,12 +79,13 @@ public class MyRequest {
         return resultSet;
     }
 
-    public List<MyRequest> resultMyRequests(String query) throws Exception {
+    @Override
+    public List<IMyRequest> resultMyRequests(String query) throws Exception {
         resultSet = resultExecuteQuery(query);
 
-        List<MyRequest> results = new ArrayList<>();
+        List<IMyRequest> results = new ArrayList<>();
         while (resultSet.next()) {
-            MyRequest myRequest = new MyRequest();
+            IMyRequest myRequest = MyRequestFactory.getInstance().createMyRequest();
             if (resultSet.getString("status").equals("pending")) {
                 myRequest.setStatus(PostRequestStatus.PENDING);
             } else if (resultSet.getString("status").equals("approved")) {

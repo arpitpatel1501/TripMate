@@ -10,19 +10,17 @@ public interface IPostDatabase {
 
     boolean updatePost(Post post);
 
-    boolean deletePost(Post post);
+    boolean deletePost(int post_id);
 
-    boolean hidePost(Post post);
+    boolean hidePost(int post_id);
 
     boolean createPost(Post post) throws Exception;
 
-    List<Post> resultSetToPosts(ResultSet rs) throws Exception;
+    List<Post> getPostsByUserId(int userid) throws Exception;
 
-    List<Post> getPostsByUserId(int userid);
+    List<Post> getAllPosts() throws Exception;
 
-    List<Post> getAllPosts();
-
-    Post getPostByPostId(int postid);
+    Post getPostByPostId(int post_id) throws Exception;
 
     List<Feedback> getFeedbacks(int post_id);
 }

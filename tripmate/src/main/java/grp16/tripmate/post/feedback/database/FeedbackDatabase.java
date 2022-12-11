@@ -69,7 +69,7 @@ public class FeedbackDatabase implements IFeedbackDatabase {
             Feedback feedback = new Feedback();
 
             feedback.setId(rs.getInt(FeedbackDbColumnNames.ID));
-            feedback.setPost(rs.getInt(FeedbackDbColumnNames.POST_ID));
+            feedback.setPostId(rs.getInt(FeedbackDbColumnNames.POST_ID));
             feedback.setUser(rs.getInt(FeedbackDbColumnNames.USER_ID));
             feedback.setFeedback(rs.getString(FeedbackDbColumnNames.FEEDBACK));
             feedback.setRating(rs.getFloat(FeedbackDbColumnNames.RATING));
