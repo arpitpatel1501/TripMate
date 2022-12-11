@@ -13,6 +13,7 @@ before_script:
 stages:
   - build
   - test
+  - deploy
 
 test:
   stage: test
@@ -62,7 +63,7 @@ deploy-non-prod:
     name: staging
     url: https://trip-mate-grp16-test.herokuapp.com/
   only:
-    - develop
+    - nobranch
 
 # Ref: https://docs.gitlab.com/ee/ci/examples/deployment/index.html
 
@@ -81,6 +82,6 @@ deploy-prod:
     name: production
     url: https://trip-mate-grp16.herokuapp.com/
   only:
-    - main
+    - nobranch
 
 # Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
