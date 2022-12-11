@@ -29,9 +29,9 @@ test:
       - tripmate/build/test-results/test
     reports:
       junit: 
-        - tripmate/build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
-        - tripmate/build/test-results/test/TEST-grp16.tripmate.user.database.UserQueryBuilderTest.xml
-        - tripmate/build/test-results/test/TEST-grp16.tripmate.user.model.UserTest.xml
+        - tripmate/build/test-results/test/*.xml
+        # - tripmate/build/test-results/test/TEST-grp16.tripmate.user.database.UserQueryBuilderTest.xml
+        # - tripmate/build/test-results/test/TEST-grp16.tripmate.user.model.UserTest.xml
   only:
     refs:
       - branches
