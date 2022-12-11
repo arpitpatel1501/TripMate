@@ -7,13 +7,11 @@ import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
-import grp16.tripmate.vehicle.model.IVehicle;
-import grp16.tripmate.vehicle.model.IVehicleFactory;
-import grp16.tripmate.vehicle.model.Vehicle;
-import grp16.tripmate.vehicle.model.VehicleFactory;
+import grp16.tripmate.vehicle.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,12 +24,15 @@ public class VehicleController implements IVehicleController {
     private final IVehicleFactory vehicleFactory;
     private final IPostFactory postFactory;
 
+    private final IVehicleBookingFactory vehicleBookingFactory;
+
     private final IVehicle vehicle;
 
     VehicleController() {
         postFactory = PostFactory.getInstance();
         vehicleFactory = VehicleFactory.getInstance();
         vehicle = vehicleFactory.getNewVehicle();
+        vehicleBookingFactory = VehicleBookingFactory.getInstance();
     }
 
     @GetMapping("/all-vehicles")
@@ -54,13 +55,21 @@ public class VehicleController implements IVehicleController {
         List<Post> userPosts = post.getPostsByUserId(userId);
         model.addAttribute("userposts", userPosts);
 
+        VehicleBooking vehicleBookingObj = (VehicleBooking) vehicleBookingFactory.getNewVehicleBooking();
+        model.addAttribute("vehicleBookingObj", vehicleBookingObj);
+
         return "vehicledetails";
     }
 
     @PostMapping("/vehicle/{id}")
-    public String confirmVehicleBooking(Model model, @PathVariable("id") int vehicleId)
+    public String confirmVehicleBooking(Model model,
+                                        @PathVariable("id") int vehicleId,
+                                        @ModelAttribute VehicleBooking vehicleBookingObj,
+                                        @ModelAttribute Post userPost)
     {
-        return "my_vehiclebookings";
+        System.out.println("the vehiclebooking obj is: " + vehicleBookingObj);
+        System.out.println("the User Post obj is: " + userPost);
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/my-vehicle-bookings")
