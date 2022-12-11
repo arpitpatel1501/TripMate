@@ -24,26 +24,26 @@ public class UserQueryBuilder implements IUserQueryBuilder {
 
     @Override
     public String getUserByUsername(String username) {
-        return "SELECT `User`.`id`," +
-                "    `User`.`firstname`," +
-                "    `User`.`lastname`," +
-                "    `User`.`email`," +
-                "    `User`.`password`," +
-                "    `User`.`birthdate`," +
-                "    `User`.`gender`" +
-                "FROM `User` where email = \"" + username + "\"";
+        return "SELECT `" + UserDbColumnNames.id + "`," +
+                "    `" + UserDbColumnNames.firstname + "`," +
+                "    `" + UserDbColumnNames.lastname + "`," +
+                "    `" + UserDbColumnNames.username + "`," +
+                "    `" + UserDbColumnNames.password + "`," +
+                "    `" + UserDbColumnNames.birthDate + "`," +
+                "    `" + UserDbColumnNames.gender + "` " +
+                "FROM `" + UserDbColumnNames.tableName + "` where " + UserDbColumnNames.username + " = \"" + username + "\"";
     }
 
     @Override
     public String getUserByUserID(int userid) {
-        String query = "SELECT `User`.`id`," +
-                "    `User`.`firstname`," +
-                "    `User`.`lastname`," +
-                "    `User`.`email`," +
-                "    `User`.`password`," +
-                "    `User`.`birthdate`," +
-                "    `User`.`gender`" +
-                "FROM `User` where id = " + userid;
+        String query = "SELECT `" + UserDbColumnNames.id + "`," +
+                "    `" + UserDbColumnNames.firstname + "`," +
+                "    `" + UserDbColumnNames.lastname + "`," +
+                "    `" + UserDbColumnNames.username + "`," +
+                "    `" + UserDbColumnNames.password + "`," +
+                "    `" + UserDbColumnNames.birthDate + "`," +
+                "    `" + UserDbColumnNames.gender + "`" +
+                "FROM `" + UserDbColumnNames.tableName + "` where " + UserDbColumnNames.id + " = " + userid;
         logger.info(query);
         return query;
     }

@@ -10,6 +10,7 @@
     </script>
     <link rel="stylesheet" href="/css/menubar.css">
     <link rel="stylesheet" href="/css/error.css">
+    <link rel="stylesheet" href="/css/feedback-table.css">
 </head>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
@@ -79,7 +80,7 @@
     </tr>
     <tr th:if="${canJoin}">
         <td>
-            <form action="#" th:action="@{/join}" method="post">
+            <form action="#" th:action="@{/join/{id}(id=${post.getId()})}" method="post">
                 <button type="submit">Request to join</button>
             </form>
         </td>
@@ -87,10 +88,10 @@
 </table>
 
 <h2 th:if="${feedbacks.size() != 0}">Feedbacks on this post</h2>
-<table>
-    <tr th:each="feedback: ${feedbacks}">
-        <td th:text="${feedback.rating}"/>
-        <td th:text="${feedback.feedback}"/>
+<table class="feedback">
+    <tr class="feedback" th:each="feedback: ${feedbacks}">
+        <td class="feedback" th:text="${feedback.rating}"/>
+        <td class="feedback" th:text="${feedback.feedback}"/>
     </tr>
 </table>
 <h2 class="error" th:text="${error}"></h2>

@@ -40,8 +40,9 @@ public class EmailNotification implements INotification{
     }
 
     @Override
-    public void sendNotification(String sendBy, String sendTo, String subject, String body) {
+    public void sendNotification(String sendTo, String subject, String body) throws Exception {
 
+        String sendBy = MyProperties.getInstance().getMailSender();
         message = new SimpleMailMessage();
         message.setFrom(sendBy);
         message.setTo(sendTo);

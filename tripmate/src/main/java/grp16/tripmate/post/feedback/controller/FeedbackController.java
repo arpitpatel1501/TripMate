@@ -1,5 +1,6 @@
 package grp16.tripmate.post.feedback.controller;
 
+import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
 import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.post.feedback.model.IFeedback;
 import grp16.tripmate.post.model.IPostFactory;
@@ -20,9 +21,12 @@ public class FeedbackController {
 
     private IPostFactory postFactory;
 
+    private IFeedbackDatabase database;
+
     public FeedbackController() {
         postFactory = PostFactory.getInstance();
         feedback = postFactory.getNewFeedback();
+        database = postFactory.getFeedbackDatabase();
     }
 
     @GetMapping("/feedback/{id}")
@@ -43,8 +47,8 @@ public class FeedbackController {
     public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
             feedback.setPostId(postId);
-            feedback.setUser((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-            feedback.createFeedback();
+            feedback.setUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            feedback.createFeedback(database);
         } catch (Exception e) {
             return "redirect:/error";
         }

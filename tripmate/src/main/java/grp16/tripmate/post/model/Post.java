@@ -5,7 +5,6 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.text.DateFormat;
@@ -25,7 +24,7 @@ public class Post extends PostSubject implements IPost {
     private PostValidator validator;
 
     private int id;
-    private User owner;
+    private int owner_id;
     private String title;
     private int capacity;
     private String source;
@@ -90,8 +89,8 @@ public class Post extends PostSubject implements IPost {
     }
 
     public boolean isEligibleToJoin() throws Exception {
-        boolean isPastDate = endDate.equals(new Date());
-        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        boolean isPastDate = endDate.before(new Date());
+        boolean isOwner = getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
         logger.info(String.valueOf(isPastDate));
         logger.info(String.valueOf(isOwner));
         return !isPastDate && !isOwner;
@@ -217,13 +216,13 @@ public class Post extends PostSubject implements IPost {
         isHidden = i == 0;
     }
 
-    public User getOwner() {
-        return owner;
+
+    public int getOwner_id() {
+        return owner_id;
     }
 
-    public void setOwner(int ownerId) throws Exception {
-        this.owner = new User().getUserById(ownerId);
-        logger.info(owner.toString());
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
     }
 
     public IPostDatabase getDatabase() {
@@ -243,7 +242,7 @@ public class Post extends PostSubject implements IPost {
         return "Post{" +
                 ", database=" + database +
                 ", id=" + id +
-                ", owner=" + owner +
+                ", owner=" + owner_id +
                 ", title='" + title + '\'' +
                 ", capacity=" + capacity +
                 ", source='" + source + '\'' +
