@@ -2,7 +2,6 @@ package grp16.tripmate.vehicle.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.model.PostDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleDbColumnNames;
 
 

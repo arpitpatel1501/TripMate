@@ -1,9 +1,8 @@
-package grp16.tripmate.post.feedback.database;
+package grp16.tripmate.post.model.feedback.database;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.post.feedback.model.Feedback;
-import grp16.tripmate.post.feedback.model.FeedbackDbColumnNames;
+import grp16.tripmate.post.model.feedback.model.Feedback;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 

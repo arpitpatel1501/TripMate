@@ -1,4 +1,4 @@
-package grp16.tripmate.post.model;
+package grp16.tripmate.post.model.exception;
 
 public class StartDateBeforeTodayException extends Exception{
     @Override
