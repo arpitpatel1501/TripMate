@@ -1,17 +1,15 @@
 package grp16.tripmate.user.model;
 
-import java.util.Date;
-
 public class UserDbColumnNames {
 
-    public static final String username = "email";
-    public static final String password = "password";
-    public static final String id = "id";
+    public static final String USERNAME = "email";
+    public static final String PASSWORD = "password";
+    public static final String ID = "id";
 
-    public static final String firstname = "firstname";
-    public static final String lastname = "lastname";
-    public static final String birthDate = "birthdate";
-    public static final String gender = "gender";
+    public static final String FIRSTNAME = "firstname";
+    public static final String LASTNAME = "lastname";
+    public static final String BIRTHDATE = "birthdate";
+    public static final String GENDER = "gender";
 
-    public static final String tableName = "User";
+    public static final String TABLE_NAME = "User";
 }

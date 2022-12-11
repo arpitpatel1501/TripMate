@@ -5,8 +5,9 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.notification.EmailVerificationFactory;
 import grp16.tripmate.notification.IVerification;
 import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.UserDatabase;
+import grp16.tripmate.user.model.IUserFactory;
 import grp16.tripmate.user.model.User;
+import grp16.tripmate.user.model.UserFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,9 +23,11 @@ public class VerificationController {
     private User user;
 
     private final IUserDatabase database;
+    private IUserFactory userFactory;
 
     VerificationController() {
-        database = new UserDatabase();
+        userFactory = UserFactory.getInstance();
+        database = userFactory.getUserDatabase();
     }
 
     @PostMapping("/register")

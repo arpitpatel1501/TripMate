@@ -79,7 +79,7 @@ public class User implements IUser {
     }
 
     public void setPassword(String password) throws NoSuchAlgorithmException {
-        password = PasswordEncoder.encodeString(password);
+        password = PasswordEncoder.getInstance().encodeString(password);
         this.password = password;
     }
 

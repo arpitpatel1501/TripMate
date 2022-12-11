@@ -24,26 +24,26 @@ public class UserQueryBuilder implements IUserQueryBuilder {
 
     @Override
     public String getUserByUsername(String username) {
-        return "SELECT `" + UserDbColumnNames.id + "`," +
-                "    `" + UserDbColumnNames.firstname + "`," +
-                "    `" + UserDbColumnNames.lastname + "`," +
-                "    `" + UserDbColumnNames.username + "`," +
-                "    `" + UserDbColumnNames.password + "`," +
-                "    `" + UserDbColumnNames.birthDate + "`," +
-                "    `" + UserDbColumnNames.gender + "` " +
-                "FROM `" + UserDbColumnNames.tableName + "` where " + UserDbColumnNames.username + " = \"" + username + "\"";
+        return "SELECT `" + UserDbColumnNames.ID + "`," +
+                "    `" + UserDbColumnNames.FIRSTNAME + "`," +
+                "    `" + UserDbColumnNames.LASTNAME + "`," +
+                "    `" + UserDbColumnNames.USERNAME + "`," +
+                "    `" + UserDbColumnNames.PASSWORD + "`," +
+                "    `" + UserDbColumnNames.BIRTHDATE + "`," +
+                "    `" + UserDbColumnNames.GENDER + "` " +
+                "FROM `" + UserDbColumnNames.TABLE_NAME + "` where " + UserDbColumnNames.USERNAME + " = \"" + username + "\"";
     }
 
     @Override
     public String getUserByUserID(int userid) {
-        String query = "SELECT `" + UserDbColumnNames.id + "`," +
-                "    `" + UserDbColumnNames.firstname + "`," +
-                "    `" + UserDbColumnNames.lastname + "`," +
-                "    `" + UserDbColumnNames.username + "`," +
-                "    `" + UserDbColumnNames.password + "`," +
-                "    `" + UserDbColumnNames.birthDate + "`," +
-                "    `" + UserDbColumnNames.gender + "`" +
-                "FROM `" + UserDbColumnNames.tableName + "` where " + UserDbColumnNames.id + " = " + userid;
+        String query = "SELECT `" + UserDbColumnNames.ID + "`," +
+                "    `" + UserDbColumnNames.FIRSTNAME + "`," +
+                "    `" + UserDbColumnNames.LASTNAME + "`," +
+                "    `" + UserDbColumnNames.USERNAME + "`," +
+                "    `" + UserDbColumnNames.PASSWORD + "`," +
+                "    `" + UserDbColumnNames.BIRTHDATE + "`," +
+                "    `" + UserDbColumnNames.GENDER + "`" +
+                "FROM `" + UserDbColumnNames.TABLE_NAME + "` where " + UserDbColumnNames.ID + " = " + userid;
         logger.info(query);
         return query;
     }
@@ -51,13 +51,13 @@ public class UserQueryBuilder implements IUserQueryBuilder {
     @Override
     public String createUser(User user) {
         return "INSERT INTO `User`" +
-                "(" + UserDbColumnNames.id + "," +
-                UserDbColumnNames.firstname + "," +
-                UserDbColumnNames.lastname + "," +
-                UserDbColumnNames.username + "," +
-                UserDbColumnNames.password + "," +
-                UserDbColumnNames.birthDate + "," +
-                UserDbColumnNames.gender + ") " +
+                "(" + UserDbColumnNames.ID + "," +
+                UserDbColumnNames.FIRSTNAME + "," +
+                UserDbColumnNames.LASTNAME + "," +
+                UserDbColumnNames.USERNAME + "," +
+                UserDbColumnNames.PASSWORD + "," +
+                UserDbColumnNames.BIRTHDATE + "," +
+                UserDbColumnNames.GENDER + ") " +
                 "VALUES" +
                 " (\"" + user.getId() + "\"," +
                 "\"" + user.getFirstname() + "\"," +
@@ -71,13 +71,13 @@ public class UserQueryBuilder implements IUserQueryBuilder {
     @Override
     public String changeUserDetails(User user) {
         String query = "update " +
-                UserDbColumnNames.tableName + " set " +
-                UserDbColumnNames.password + " = '" + user.getPassword() + "'" + "," +
-                UserDbColumnNames.gender + " = '" + user.getGender() + "'" + "," +
-                UserDbColumnNames.firstname + " = '" + user.getFirstname() + "'" + "," +
-                UserDbColumnNames.lastname + " = '" + user.getLastname() + "'" +
+                UserDbColumnNames.TABLE_NAME + " set " +
+                UserDbColumnNames.PASSWORD + " = '" + user.getPassword() + "'" + "," +
+                UserDbColumnNames.GENDER + " = '" + user.getGender() + "'" + "," +
+                UserDbColumnNames.FIRSTNAME + " = '" + user.getFirstname() + "'" + "," +
+                UserDbColumnNames.LASTNAME + " = '" + user.getLastname() + "'" +
                 " where " +
-                UserDbColumnNames.id + " = " + user.getId();
+                UserDbColumnNames.ID + " = " + user.getId();
         logger.info(query);
         return query;
     }

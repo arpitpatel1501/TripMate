@@ -6,8 +6,6 @@ import grp16.tripmate.post.model.Post;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.database.MyPostRequestDB;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
-import grp16.tripmate.postrequest.model.IMyPostRequestFactory;
-import grp16.tripmate.postrequest.model.MyPostRequest;
 import grp16.tripmate.postrequest.model.MyPostRequestFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
@@ -38,7 +36,7 @@ public class MyPostRequestController {
     public String postRequest(Model model) {
         model.addAttribute("title", "Post Request");
         try {
-            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             List<IMyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
             model.addAttribute("requests_count", postRequests.size());
             model.addAttribute("postRequests", postRequests);
@@ -51,7 +49,7 @@ public class MyPostRequestController {
 
     @PostMapping("/join/{id}")
     public String join(Model model, @ModelAttribute Post post, @PathVariable("id") int post_id) throws Exception {
-        query = iMyPostRequestDB.createJoinRequest(post_id, (Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        query = iMyPostRequestDB.createJoinRequest(post_id, (Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
         myPostRequest.executeQuery(query);
         return "redirect:/post_requests";
     }

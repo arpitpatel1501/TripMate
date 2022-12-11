@@ -26,7 +26,7 @@ public class MyRequestController {
     @GetMapping("/my_requests")
     public String myRequest(Model model) throws Exception {
         model.addAttribute("title", "My Request");
-        query = iMyRequestDB.getMyRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        query = iMyRequestDB.getMyRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
         List<IMyRequest> myRequestList = myRequest.resultMyRequests(query);
         model.addAttribute("requests_count", myRequestList.size());
 
