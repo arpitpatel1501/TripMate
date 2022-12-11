@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`User` (
   `birthdate` DATE NULL,
   `gender` VARCHAR(16) NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
 
 
@@ -48,11 +48,13 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`Vehicle` (
   `name` VARCHAR(45) NULL,
   `no_of_seats` INT NULL,
   `registration_numb` VARCHAR(45) NULL,
-  `is_ready_to_use` TINYINT NULL,
+  `is_available` TINYINT NULL,
   `is_for_long_journey` TINYINT NULL,
   `VechicleCategory_id` INT NOT NULL,
+  `rate_per_km` FLOAT NULL DEFAULT 0.0,
+  `description` TEXT NULL,
   PRIMARY KEY (`id`, `VechicleCategory_id`),
-  INDEX `fk_Vehicle_VechicleCategory1_idx` (`VechicleCategory_id` ASC) ,
+  INDEX `fk_Vehicle_VechicleCategory1_idx` (`VechicleCategory_id` ASC),
   CONSTRAINT `fk_Vehicle_VechicleCategory1`
     FOREIGN KEY (`VechicleCategory_id`)
     REFERENCES `CSCI5308_16_DEVINT`.`VechicleCategory` (`id`)
@@ -79,8 +81,8 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`Post` (
   `description` TEXT NULL,
   `Vehicle_id` INT NOT NULL,
   PRIMARY KEY (`id`, `created_by`, `Vehicle_id`),
-  INDEX `fk_Post_User_idx` (`created_by` ASC) ,
-  INDEX `fk_Post_Vehicle1_idx` (`Vehicle_id` ASC) ,
+  INDEX `fk_Post_User_idx` (`created_by` ASC),
+  INDEX `fk_Post_Vehicle1_idx` (`Vehicle_id` ASC),
   CONSTRAINT `fk_Post_User`
     FOREIGN KEY (`created_by`)
     REFERENCES `CSCI5308_16_DEVINT`.`User` (`id`)
@@ -103,8 +105,8 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`PostRequest` (
   `Post_id` INT NOT NULL,
   `request_owner` INT NOT NULL,
   PRIMARY KEY (`id`, `Post_id`, `request_owner`),
-  INDEX `fk_PostRequest_Post1_idx` (`Post_id` ASC) ,
-  INDEX `fk_PostRequest_User1_idx` (`request_owner` ASC) ,
+  INDEX `fk_PostRequest_Post1_idx` (`Post_id` ASC),
+  INDEX `fk_PostRequest_User1_idx` (`request_owner` ASC),
   CONSTRAINT `fk_PostRequest_Post1`
     FOREIGN KEY (`Post_id`)
     REFERENCES `CSCI5308_16_DEVINT`.`Post` (`id`)
@@ -135,8 +137,8 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`User_has_Hobby` (
   `User_id` INT NOT NULL,
   `Hobby_id` INT NOT NULL,
   PRIMARY KEY (`User_id`, `Hobby_id`),
-  INDEX `fk_User_has_Hobby_Hobby1_idx` (`Hobby_id` ASC) ,
-  INDEX `fk_User_has_Hobby_User1_idx` (`User_id` ASC) ,
+  INDEX `fk_User_has_Hobby_Hobby1_idx` (`Hobby_id` ASC),
+  INDEX `fk_User_has_Hobby_User1_idx` (`User_id` ASC),
   CONSTRAINT `fk_User_has_Hobby_User1`
     FOREIGN KEY (`User_id`)
     REFERENCES `CSCI5308_16_DEVINT`.`User` (`id`)
@@ -160,8 +162,8 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`Feedback` (
   `feedback` VARCHAR(2000) NULL,
   `rating` DECIMAL(5) NULL,
   PRIMARY KEY (`id`),
-  INDEX `postid_idx` (`postid` ASC) ,
-  INDEX `userid_idx` (`userid` ASC) ,
+  INDEX `postid_idx` (`postid` ASC),
+  INDEX `userid_idx` (`userid` ASC),
   CONSTRAINT `postid`
     FOREIGN KEY (`postid`)
     REFERENCES `CSCI5308_16_DEVINT`.`Post` (`id`)
@@ -174,42 +176,20 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`Feedback` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `CSCI5308_16_DEVINT`.`TripVehicle`
+-- Table `CSCI5308_16_DEVINT`.`VehicleBooking`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`TripVehicle` (
+CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`VehicleBooking` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `Post_id` INT NOT NULL,
   `Vehicle_id` INT NOT NULL,
-  `rate_per_km` FLOAT NULL,
   `total_km` FLOAT NULL,
-  PRIMARY KEY (`Post_id`, `Vehicle_id`),
-  INDEX `fk_Post_has_Vehicle_Vehicle1_idx` (`Vehicle_id` ASC) ,
-  INDEX `fk_Post_has_Vehicle_Post1_idx` (`Post_id` ASC) ,
-  CONSTRAINT `fk_Post_has_Vehicle_Post1`
-    FOREIGN KEY (`Post_id`)
-    REFERENCES `CSCI5308_16_DEVINT`.`Post` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Post_has_Vehicle_Vehicle1`
-    FOREIGN KEY (`Vehicle_id`)
-    REFERENCES `CSCI5308_16_DEVINT`.`Vehicle` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `CSCI5308_16_DEVINT`.`TripVehicle`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`TripVehicle` (
-  `Post_id` INT NOT NULL,
-  `Vehicle_id` INT NOT NULL,
-  `rate_per_km` FLOAT NULL,
-  `total_km` FLOAT NULL,
-  PRIMARY KEY (`Post_id`, `Vehicle_id`),
-  INDEX `fk_Post_has_Vehicle_Vehicle1_idx` (`Vehicle_id` ASC) ,
-  INDEX `fk_Post_has_Vehicle_Post1_idx` (`Post_id` ASC) ,
+  `bk_start_date` DATE NULL,
+  `bk_end_date` DATE NULL,
+  `has_paid` TINYINT NULL DEFAULT 0,
+  PRIMARY KEY (`id`, `Post_id`, `Vehicle_id`),
+  INDEX `fk_Post_has_Vehicle_Vehicle1_idx` (`Vehicle_id` ASC),
+  INDEX `fk_Post_has_Vehicle_Post1_idx` (`Post_id` ASC),
   CONSTRAINT `fk_Post_has_Vehicle_Post1`
     FOREIGN KEY (`Post_id`)
     REFERENCES `CSCI5308_16_DEVINT`.`Post` (`id`)

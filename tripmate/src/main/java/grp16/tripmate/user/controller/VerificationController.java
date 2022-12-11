@@ -2,8 +2,8 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.user.model.EmailVerificationFactory;
-import grp16.tripmate.user.model.IVerification;
+import grp16.tripmate.notification.EmailVerificationFactory;
+import grp16.tripmate.notification.IVerification;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +23,7 @@ public class VerificationController {
     public String userVerification(@ModelAttribute User user) throws Exception {
 
         iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
-        iVerification.verification(user.getUsername());
+        iVerification.sendUniqueCode(user.getUsername(), "Your user verification code is: ", "User Verification for Tripmate");
 
         this.user = user;
 

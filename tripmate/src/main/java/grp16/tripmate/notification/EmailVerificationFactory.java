@@ -1,4 +1,4 @@
-package grp16.tripmate.user.model;
+package grp16.tripmate.notification;
 
 public class EmailVerificationFactory implements IVerificationFactory{
 
