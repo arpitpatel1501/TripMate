@@ -28,7 +28,7 @@ test:
     paths:
       - tripmate/build/test-results/test
     reports:
-      junit: tripmate/build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
+      junit: tripmate/build/test-results/test/*
   only:
     refs:
       - branches
