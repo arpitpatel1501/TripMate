@@ -53,18 +53,18 @@ public class Post extends PostSubject implements IPost  {
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) {
+    public List<Post> getPostsByUserId(int userid) throws Exception {
         return database.getPostsByUserId(userid);
     }
 
     @Override
-    public List<Post> getAllPosts() {
+    public List<Post> getAllPosts() throws Exception {
         return database.getAllPosts();
     }
 
     @Override
-    public Post getPostByPostId(int postid) {
-        return database.getPostByPostId(postid);
+    public Post getPostByPostId(int postId) throws Exception {
+        return database.getPostByPostId(postId);
     }
 
     @Override
@@ -87,18 +87,16 @@ public class Post extends PostSubject implements IPost  {
         return database.getFeedbacks(this.getId());
     }
 
-    @Override
-    public boolean isEligibleForFeedback() {
-        return endDate.before(new Date());
-    }
-
-    @Override
     public boolean isEligibleToJoin() throws Exception {
         boolean isPastDate = endDate.equals(new Date());
         boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
         logger.info(String.valueOf(isPastDate));
         logger.info(String.valueOf(isOwner));
         return !isPastDate && !isOwner;
+    }
+
+    public boolean isEligibleForFeedback() {
+        return endDate.before(new Date());
     }
 
     public int getId() {
@@ -206,12 +204,17 @@ public class Post extends PostSubject implements IPost  {
         isHidden = hidden;
     }
 
+    public void setHidden(int i) {
+        isHidden = i == 0;
+    }
+
+
     public User getOwner() {
         return owner;
     }
 
-    public void setOwner(int ownerid) throws Exception {
-        this.owner = new User().getUserById(ownerid);
+    public void setOwner(int ownerId) throws Exception {
+        this.owner = new User().getUserById(ownerId);
         logger.info(owner.toString());
     }
 
@@ -219,7 +222,7 @@ public class Post extends PostSubject implements IPost  {
         return database;
     }
 
-    public void setDatabase(IPostDatabase database){
+    public void setDatabase(IPostDatabase database) {
         this.database = database;
     }
 
@@ -240,20 +243,5 @@ public class Post extends PostSubject implements IPost  {
                 ", description='" + description + '\'' +
                 ", isHidden=" + isHidden +
                 '}';
-    }
-
-    public Post copy(Post post) {
-        this.setCapacity(post.capacity);
-        this.setDescription(post.description);
-        this.setEndDate(post.endDate);
-        this.setDestination(post.destination);
-        this.setHidden(post.isHidden);
-        this.setMaxAge(post.maxAge);
-        this.setMinAge(post.minAge);
-        this.setSource(post.source);
-        this.setStartDate(post.startDate);
-        this.setTitle(post.title);
-        this.setId(post.id);
-        return this;
     }
 }

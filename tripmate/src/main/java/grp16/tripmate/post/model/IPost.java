@@ -8,23 +8,17 @@ public interface IPost {
 
     boolean createPost() throws Exception;
 
-    List<Post> getAllPosts();
+    List<Post> getAllPosts() throws Exception;
 
-    List<Post> getPostsByUserId(int userid);
+    List<Post> getPostsByUserId(int userid) throws Exception;
 
-    Post getPostByPostId(int postid);
+    Post getPostByPostId(int postid) throws Exception;
 
     boolean updatePost();
 
     boolean deletePost();
 
-    boolean isEligibleForFeedback();
-
     List<Feedback> getFeedbacks();
 
     boolean hidePost();
-
-    boolean isEligibleToJoin() throws Exception;
-
-    Post copy(Post post);
 }

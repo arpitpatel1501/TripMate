@@ -9,6 +9,7 @@ import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class PostController implements IPostController {
     @GetMapping("/dashboard")
     public String getAllPosts(Model model) {
         model.addAttribute("title", "Dashboard");
-        Post post = (Post) postFactory.getNewPost();
-        List<Post> posts = post.getAllPosts();
-        model.addAttribute("posts", posts);
+        try {
+            Post post = (Post) postFactory.getNewPost();
+            List<Post> posts = post.getAllPosts();
+            model.addAttribute("posts", posts);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            e.printStackTrace();
+        }
         return "listposts";
     }
 
@@ -77,11 +83,11 @@ public class PostController implements IPostController {
 
     @Override
     @GetMapping("/viewpost/{id}")
-    public String viewPost(Model model, @PathVariable("id") int postid) {
+    public String viewPost(Model model, @PathVariable("id") int postId) {
         model.addAttribute("title", "View Post");
         try {
             Post post = (Post) postFactory.getNewPost();
-            Post myPost = post.getPostByPostId(postid);
+            Post myPost = post.getPostByPostId(postId);
             logger.info(myPost.toString());
             model.addAttribute("isUpdateButtonVisible", myPost.getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id));
             model.addAttribute("post", myPost);
@@ -97,16 +103,21 @@ public class PostController implements IPostController {
 
     @Override
     @GetMapping("/editpost/{id}")
-    public String editPost(Model model, @PathVariable("id") int postid) {
+    public String editPost(Model model, @PathVariable("id") int postId) {
         model.addAttribute("title", "Edit Post");
-        Post post = (Post) postFactory.getNewPost();
-        Post myPost = post.getPostByPostId(postid);
-        model.addAttribute("post", myPost);
+        try {
+            Post post = (Post) postFactory.getNewPost();
+            Post myPost = post.getPostByPostId(postId);
+            model.addAttribute("post", myPost);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            e.printStackTrace();
+        }
         return "updatepost";
     }
 
     @PostMapping("/updatepost")
-    public String udpatePost(Model model, @ModelAttribute Post post) {
+    public String updatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
         post.setDatabase(postFactory.getPostDatabase());
         post.updatePost();
@@ -115,22 +126,32 @@ public class PostController implements IPostController {
 
     @Override
     @PostMapping("/deletepost/{id}")
-    public String deletePost(Model model, @PathVariable("id") int postid) {
+    public String deletePost(Model model, @PathVariable("id") int postId, RedirectAttributes redirectAttrs) {
         model.addAttribute("title", "Delete Post");
-        Post post = (Post) postFactory.getNewPost();
-        Post myPost = post.getPostByPostId(postid);
-        myPost.deletePost();
-        return "redirect:/dashboard";
+        try {
+            Post post = (Post) postFactory.getNewPost();
+            Post myPost = post.getPostByPostId(postId);
+            myPost.deletePost();
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("error", e.getMessage());
+            return "redirect:/viewpost/" + postId;
+        }
     }
 
     @Override
     @PostMapping("/hidepost/{id}")
-    public String hidePost(Model model, @PathVariable("id") int postid) {
-        model.addAttribute("title", "Hide Post");
-        Post post = (Post) postFactory.getNewPost();
-        Post myPost = post.getPostByPostId(postid);
-        myPost.hidePost();
-        return "redirect:/dashboard";
+    public String hidePost(Model model, @PathVariable("id") int postId, RedirectAttributes redirectAttrs) {
+        try {
+            model.addAttribute("title", "Hide Post");
+            Post post = (Post) postFactory.getNewPost();
+            Post myPost = post.getPostByPostId(postId);
+            myPost.hidePost();
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("error", e.getMessage());
+            return "redirect:/viewpost/" + postId;
+        }
     }
 
     @Override

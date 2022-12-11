@@ -11,10 +11,6 @@ public class DatabaseConnection implements IDatabaseConnection {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private Connection connectToDatabase() throws Exception {
-//        String databaseURL = DatabaseProperties.getInstance().getDatabaseURL();
-//        String databaseUserName = DatabaseProperties.getInstance().getDatabaseUserName();
-//        String databasePassword = DatabaseProperties.getInstance().getDatabasePassword();
-
         String databaseURL = MyProperties.getInstance().getDatabaseURL();
         String databaseUserName = MyProperties.getInstance().getDatabaseUserName();
         String databasePassword = MyProperties.getInstance().getDatabasePassword();

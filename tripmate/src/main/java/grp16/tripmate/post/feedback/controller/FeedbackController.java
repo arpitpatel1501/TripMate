@@ -21,23 +21,28 @@ public class FeedbackController {
     private IPostFactory postFactory;
 
     public FeedbackController() {
-        feedback = new Feedback();
         postFactory = PostFactory.getInstance();
+        feedback = postFactory.getNewFeedback();
     }
 
     @GetMapping("/feedback/{id}")
-    public String loadFeedbackPage(Model model, @PathVariable("id") int postid) {
-        model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postid));
-        model.addAttribute("currentFeedback", new Feedback());
-        model.addAttribute("title", "Feedback");
+    public String loadFeedbackPage(Model model, @PathVariable("id") int postId) {
+        try {
+            model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
+            model.addAttribute("currentFeedback", new Feedback());
+            model.addAttribute("title", "Feedback");
+        } catch (Exception e) {
+            model.addAttribute("error", "Post not found " + e.getMessage());
+            e.printStackTrace();
+        }
         return "feedback";
     }
 
 
     @PostMapping("/feedback/{id}")
-    public String createFeedback(Model model, @PathVariable("id") int postid, @ModelAttribute Feedback feedback) {
+    public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
-            feedback.setPostId(postid);
+            feedback.setPostId(postId);
             feedback.setUser((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
             feedback.createFeedback();
         } catch (Exception e) {
