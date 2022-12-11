@@ -233,10 +233,6 @@ public class Post extends PostSubject implements IPost {
         this.database = database;
     }
 
-    public PostValidator getValidator() {
-        return validator;
-    }
-
     public void setValidator(PostValidator validator) {
         this.validator = validator;
     }
