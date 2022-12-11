@@ -27,7 +27,6 @@ public class EmailVerification implements IVerification{
         return false;
     }
 
-
     private int generateNumber() {
         int min = 1000;
         int max = 9999;

@@ -3,6 +3,8 @@ package grp16.tripmate.forgetPassword.database;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
+import java.sql.SQLOutput;
+
 public class ForgetPasswordQueryBuilder implements IForgetPasswordQueryBuilder {
 
     private static IForgetPasswordQueryBuilder instance = null;
@@ -13,6 +15,17 @@ public class ForgetPasswordQueryBuilder implements IForgetPasswordQueryBuilder {
         }
         return instance;
     }
+
+    @Override
+    public String checkUserExist(String email) {
+        String query = "select * from " +
+                UserDbColumnNames.tableName +
+                " where " +
+                UserDbColumnNames.username + " = " + "\"" + email + "\"";
+        System.out.println(query);
+        return query;
+    }
+    @Override
     public String changeUserPassword(User user) {
         String query = "update " +
                 UserDbColumnNames.tableName + " set " +
