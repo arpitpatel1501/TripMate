@@ -56,13 +56,13 @@ class UserQueryBuilderTest {
         user.setGender("Male");
 
         String expectedQuery = "INSERT INTO `User`" +
-                "(" + UserDbColumnNames.id + "," +
-                UserDbColumnNames.firstname + "," +
-                UserDbColumnNames.lastname + "," +
-                UserDbColumnNames.username + "," +
-                UserDbColumnNames.password + "," +
-                UserDbColumnNames.birthDate + "," +
-                UserDbColumnNames.gender + ") " +
+                "(" + UserDbColumnNames.ID + "," +
+                UserDbColumnNames.FIRSTNAME + "," +
+                UserDbColumnNames.LASTNAME + "," +
+                UserDbColumnNames.USERNAME + "," +
+                UserDbColumnNames.PASSWORD + "," +
+                UserDbColumnNames.BIRTHDATE + "," +
+                UserDbColumnNames.GENDER + ") " +
                 "VALUES" +
                 " (\"" + 1 + "\"," +
                 "\"" + "firstname" + "\"," +
@@ -88,13 +88,13 @@ class UserQueryBuilderTest {
         user.setId(1);
 
         String expectedQuery = "update " +
-                UserDbColumnNames.tableName + " set " +
-                UserDbColumnNames.password + " = '" + user.getPassword() + "'" + "," +
-                UserDbColumnNames.gender + " = '" + "Female" + "'" + "," +
-                UserDbColumnNames.firstname + " = '" + "first_name" + "'" + "," +
-                UserDbColumnNames.lastname + " = '" + "last_name" + "'" +
+                UserDbColumnNames.TABLE_NAME + " set " +
+                UserDbColumnNames.PASSWORD + " = '" + user.getPassword() + "'" + "," +
+                UserDbColumnNames.GENDER + " = '" + "Female" + "'" + "," +
+                UserDbColumnNames.FIRSTNAME + " = '" + "first_name" + "'" + "," +
+                UserDbColumnNames.LASTNAME + " = '" + "last_name" + "'" +
                 " where " +
-                UserDbColumnNames.id + " = " + 1;
+                UserDbColumnNames.ID + " = " + 1;
 
 
         Assertions.assertEquals(expectedQuery, queryBuilder.changeUserDetails(user));

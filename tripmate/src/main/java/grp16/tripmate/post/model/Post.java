@@ -93,7 +93,7 @@ public class Post extends PostSubject implements IPost {
 
     public boolean isEligibleToJoin() throws Exception {
         boolean isPastDate = endDate.before(new Date());
-        boolean isOwner = getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        boolean isOwner = getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.ID);
         logger.info(String.valueOf(isPastDate));
         logger.info(String.valueOf(isOwner));
         return !isPastDate && !isOwner;
