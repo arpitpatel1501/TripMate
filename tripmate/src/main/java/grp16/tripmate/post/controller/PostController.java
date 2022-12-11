@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 @Controller
-public class PostController implements IPostController {
+public class PostController{
     private final ILogger logger;
     private final IPostFactory postFactory;
 
@@ -28,7 +28,6 @@ public class PostController implements IPostController {
         logger = postFactory.getLogger(this);
     }
 
-    @Override
     @GetMapping("/dashboard")
     public String getAllPosts(Model model) {
         model.addAttribute("title", "Dashboard");
@@ -43,7 +42,6 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
-    @Override
     @GetMapping("/createpost")
     public String getNewPost(Model model) {
         Post myPost = (Post) postFactory.getNewPost();
@@ -68,7 +66,6 @@ public class PostController implements IPostController {
         }
     }
 
-    @Override
     @GetMapping("/myposts")
     public String getUserPosts(Model model) {
         model.addAttribute("title", "My Posts");
@@ -83,7 +80,6 @@ public class PostController implements IPostController {
         return "listposts";
     }
 
-    @Override
     @GetMapping("/viewpost/{id}")
     public String viewPost(Model model, @PathVariable("id") int postId) {
         model.addAttribute("title", "View Post");
@@ -104,7 +100,6 @@ public class PostController implements IPostController {
 
     }
 
-    @Override
     @GetMapping("/editpost/{id}")
     public String editPost(Model model, @PathVariable("id") int postId) {
         model.addAttribute("title", "Edit Post");
@@ -135,7 +130,6 @@ public class PostController implements IPostController {
         return "updatePost";
     }
 
-    @Override
     @PostMapping("/deletepost/{id}")
     public String deletePost(Model model, @PathVariable("id") int postId, RedirectAttributes redirectAttrs) {
         model.addAttribute("title", "Delete Post");
@@ -150,7 +144,6 @@ public class PostController implements IPostController {
         }
     }
 
-    @Override
     @PostMapping("/hidepost/{id}")
     public String hidePost(Model model, @PathVariable("id") int postId, RedirectAttributes redirectAttrs) {
         try {
@@ -165,7 +158,6 @@ public class PostController implements IPostController {
         }
     }
 
-    @Override
     @GetMapping("/error")
     public String displayError(Model model) {
         model.addAttribute("error", "Some error has occurred");

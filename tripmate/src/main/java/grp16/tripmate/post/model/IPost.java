@@ -16,7 +16,7 @@ public interface IPost {
 
     List<Post> getPostsByUserId(int userid) throws Exception;
 
-    Post getPostByPostId(int postid) throws Exception;
+    Post getPostByPostId(int postId) throws Exception;
 
     boolean updatePost();
 

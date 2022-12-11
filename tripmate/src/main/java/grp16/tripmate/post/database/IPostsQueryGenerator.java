@@ -1,7 +1,6 @@
 package grp16.tripmate.post.database;
 
 import grp16.tripmate.post.model.IPost;
-import grp16.tripmate.post.model.Post;
 
 public interface IPostsQueryGenerator {
 
