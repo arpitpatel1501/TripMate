@@ -13,6 +13,7 @@ import grp16.tripmate.user.database.UserQueryBuilder;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class ForgetPassword implements IForgetPassword{
@@ -22,7 +23,16 @@ public class ForgetPassword implements IForgetPassword{
     private INotification iNotification;
     private IForgetPasswordQueryBuilder queryBuilder;
     private final IDatabaseConnection dbConnection;
-    int uniqueNumber;
+    private int id;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public ForgetPassword() {
         this.queryBuilder = ForgetPasswordQueryBuilder.getInstance();
@@ -30,29 +40,32 @@ public class ForgetPassword implements IForgetPassword{
     }
 
     @Override
-    public void sendUniqueCode(String userEmail) throws Exception {
-        emailSender = MyProperties.getInstance().getMailSender();
-        uniqueNumber = generateNumber();
-        String body = "Your resent password code is: " + uniqueNumber;
-        iNotification = EmailNotificationFactory.getInstance().createEmailNotification();
-        iNotification.sendNotification(emailSender, userEmail, messageSubject, body);
-    }
-    private int generateNumber() {
-        int min = 1000;
-        int max = 9999;
-        int range = (max-min+1);
-        double random = Math.random();
-        double finalNumber = Math.floor((random * range) + min);
-//        int number = (int)Math.floor(Math.random()*(max-min+1)+min);
-        return (int) finalNumber;
+    public boolean checkUserExist(String email) throws Exception {
+        this.email = email;
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        String query = queryBuilder.checkUserExist(email);
+        ResultSet resultSet = statement.executeQuery(query);
+        boolean gotResult = resultSet.next();
+        connection.close();
+        return gotResult;
     }
 
-    public void changeUserPassword() throws Exception {
-//        Connection connection = dbConnection.getDatabaseConnection();
-//        Statement statement = connection.createStatement();
-//        this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-//        String query = queryBuilder.changeUserDetails(this);
-//        int rowUpdate = statement.executeUpdate(query);
-//        connection.close();
+    @Override
+    public boolean changeUserPassword(String email, String password) throws Exception {
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        String query = queryBuilder.changeUserPassword(email, password);
+        int rowUpdate = statement.executeUpdate(query);
+        boolean isRowUpdated;
+        if (rowUpdate == 1) {
+            isRowUpdated = true;
+        }
+        else {
+            isRowUpdated = false;
+        }
+        connection.close();
+        return isRowUpdated;
     }
+
 }

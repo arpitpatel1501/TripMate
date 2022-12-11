@@ -31,7 +31,9 @@ public class VerificationController {
     public String userVerification(@ModelAttribute User user) throws Exception {
 
         iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
-        iVerification.sendUniqueCode(user.getUsername(), "Your user verification code is: ", "User Verification for Tripmate");
+        iVerification.sendUniqueCode(user.getUsername(),
+                "Your user verification code is: ",
+                "User Verification for Tripmate");
 
         this.user = user;
 

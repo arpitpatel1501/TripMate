@@ -1,5 +1,5 @@
 package grp16.tripmate.notification;
 
 public interface INotification{
-    public void sendNotification(String sendBy, String sendTo, String subject, String body);
+    public void sendNotification(String sendTo, String subject, String body) throws Exception;
 }
