@@ -2,8 +2,8 @@ package grp16.tripmate;
 
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.db.properties.DatabaseProperties;
 import grp16.tripmate.db.sql.LoadSQLProfile;
+import grp16.tripmate.properties.MyProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -19,6 +19,6 @@ public class TripmateApplication {
         Connection connection = databaseConnection.getDatabaseConnection();
 
         LoadSQLProfile loadSQLProfile = new LoadSQLProfile();
-        loadSQLProfile.loadSQLforProfile(connection, DatabaseProperties.getInstance().getActiveProfile());
+        loadSQLProfile.loadSQLforProfile(connection, MyProperties.getInstance().getActiveProfile());
     }
 }
