@@ -12,11 +12,10 @@ public class EmailVerification implements IVerification{
 
     @Override
     public void sendUniqueCode(String userEmail, String body, String subject) throws Exception {
-        emailSender = MyProperties.getInstance().getMailSender();
         uniqueNumber = generateNumber();
         body += uniqueNumber;
         iNotification = EmailNotificationFactory.getInstance().createEmailNotification();
-        iNotification.sendNotification(emailSender, userEmail, subject, body);
+        iNotification.sendNotification(userEmail, subject, body);
     }
 
     @Override
