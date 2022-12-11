@@ -14,7 +14,7 @@ public class MyProperties implements IProperties{
 
     private static final String PROPERTY_CONFIGURATION_FILE = "./application.properties";
     private String databaseURL, databaseUserName, databasePassword;
-    private String mailSender;
+    private String mailSender, host, port, password;
     Properties properties = new Properties();
     public MyProperties(){
         String activeProfile = getActiveProfile();
@@ -35,6 +35,18 @@ public class MyProperties implements IProperties{
 
     public String getMailSender() {
         return mailSender;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public static MyProperties getInstance() throws Exception {
@@ -62,7 +74,20 @@ public class MyProperties implements IProperties{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        logger.info(properties.toString());
+        return properties;
+    }
 
+    public Properties loadProperties() {
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+        try (InputStream resourceStream = loader.getResourceAsStream(PROPERTY_CONFIGURATION_FILE)) {
+            properties.load(resourceStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.info(properties.toString());
         return properties;
     }
 
@@ -74,8 +99,12 @@ public class MyProperties implements IProperties{
         this.databaseUserName = properties.getProperty("username");
         this.databasePassword = properties.getProperty("password");
         this.mailSender = properties.getProperty("spring.mail.username");
+        this.host = properties.getProperty("spring.mail.host");
+        this.port = properties.getProperty("spring.mail.port");
+        this.password = properties.getProperty("spring.mail.password");
         logger.info(databaseURL);
         logger.info(databaseUserName);
         logger.info(databasePassword);
+        logger.info(mailSender);
     }
 }

@@ -2,6 +2,7 @@ package grp16.tripmate.request.controller;
 
 import grp16.tripmate.request.database.IMyRequestDB;
 import grp16.tripmate.request.database.MyRequestDB;
+import grp16.tripmate.request.model.IMyRequest;
 import grp16.tripmate.request.model.MyRequest;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
@@ -25,9 +26,8 @@ public class MyRequestController {
     @GetMapping("/my_requests")
     public String myRequest(Model model) throws Exception {
         model.addAttribute("title", "My Request");
-
         query = iMyRequestDB.getMyRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        List<MyRequest> myRequestList = myRequest.resultMyRequests(query);
+        List<IMyRequest> myRequestList = myRequest.resultMyRequests(query);
         model.addAttribute("requests_count", myRequestList.size());
 
         model.addAttribute("myRequests", myRequestList);

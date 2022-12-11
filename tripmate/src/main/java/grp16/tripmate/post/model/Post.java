@@ -1,27 +1,27 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostsQueryBuilder;
-import grp16.tripmate.post.database.PostsQueryBuilder;
+import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.feedback.model.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Post implements IPost {
+/*
+ **References
+ **https://www.baeldung.com/java-simple-date-format
+ */
+
+public class Post extends PostSubject implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
+    private IPostDatabase database;
 
     private int id;
     private User owner;
@@ -35,14 +35,68 @@ public class Post implements IPost {
     private int maxAge;
     private String description;
     private boolean isHidden;
-    private final IDatabaseConnection dbConnection;
-    private final IPostsQueryBuilder queryBuilder;
 
-    public Post(){
-        queryBuilder = PostsQueryBuilder.getInstance();
-        dbConnection = new DatabaseConnection();
+    public Post(IPostDatabase postDatabase) {
+        super();
+        this.database = postDatabase;
         this.setStartDate(new Date());
         this.setEndDate(new Date());
+    }
+
+    @Override
+    public boolean createPost() throws Exception {
+        boolean isPostCreated = database.createPost(this);
+        if (isPostCreated) {
+            notifyObservers();
+        }
+        return isPostCreated;
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(int userid) throws Exception {
+        return database.getPostsByUserId(userid);
+    }
+
+    @Override
+    public List<Post> getAllPosts() throws Exception {
+        return database.getAllPosts();
+    }
+
+    @Override
+    public Post getPostByPostId(int postId) throws Exception {
+        return database.getPostByPostId(postId);
+    }
+
+    @Override
+    public boolean updatePost() {
+        return database.updatePost(this);
+    }
+
+    @Override
+    public boolean deletePost() {
+        return database.deletePost(this.getId());
+    }
+
+    @Override
+    public boolean hidePost() {
+        return database.hidePost(this.getId());
+    }
+
+    @Override
+    public List<Feedback> getFeedbacks() {
+        return database.getFeedbacks(this.getId());
+    }
+
+    public boolean isEligibleToJoin() throws Exception {
+        boolean isPastDate = endDate.before(new Date());
+        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        logger.info(String.valueOf(isPastDate));
+        logger.info(String.valueOf(isOwner));
+        return !isPastDate && !isOwner;
+    }
+
+    public boolean isEligibleForFeedback() {
+        return endDate.before(new Date());
     }
 
     public int getId() {
@@ -109,6 +163,15 @@ public class Post implements IPost {
         this.endDate = getJavaDate(endDate);
     }
 
+    private String getSQLParsableDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    private Date getJavaDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    }
+
     public int getMinAge() {
         return minAge;
     }
@@ -141,164 +204,33 @@ public class Post implements IPost {
         isHidden = hidden;
     }
 
+    public void setHidden(int i) {
+        isHidden = i == 0;
+    }
+
+
     public User getOwner() {
         return owner;
     }
 
-    public void setOwner(int ownerid) throws Exception {
-        this.owner = new User().getUserById(ownerid);
+    public void setOwner(int ownerId) throws Exception {
+        this.owner = new User().getUserById(ownerId);
         logger.info(owner.toString());
     }
 
-    @Override
-    public boolean createPost() {
-        Connection connection = null;
-        boolean isCreationSuccess = false;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            this.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-            String query = queryBuilder.getCreatePostQuery(this);
-            statement.executeUpdate(query);
-            isCreationSuccess = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isCreationSuccess;
+    public IPostDatabase getDatabase() {
+        return database;
     }
 
-    public static List<Post> resultSetToPosts(ResultSet rs) throws Exception {
-        List<Post> results = new ArrayList<>();
-        while (rs.next()) {
-            Post post = new Post();
-            post.setId(rs.getInt(PostDbColumnNames.ID));
-            post.setTitle(rs.getString(PostDbColumnNames.TITLE));
-            post.setCapacity(rs.getInt(PostDbColumnNames.CAPACITY));
-            post.setDescription(rs.getString(PostDbColumnNames.DESCRIPTION));
-            post.setEndDate(rs.getDate(PostDbColumnNames.ENDDATE));
-            post.setHidden(false);
-            post.setDestination(rs.getString(PostDbColumnNames.DESTINATION));
-            post.setMaxAge(rs.getInt(PostDbColumnNames.MAXAGE));
-            post.setMinAge(rs.getInt(PostDbColumnNames.MINAGE));
-            post.setStartDate(rs.getDate(PostDbColumnNames.STARTDATE));
-            post.setSource(rs.getString(PostDbColumnNames.SOURCE));
-            post.setOwner(rs.getInt(PostDbColumnNames.OWNER));
-            results.add(post);
-        }
-        return results;
-    }
-
-    public List<Post> getPostsByUserId(int userid) {
-        try {
-            final Connection connection = new DatabaseConnection().getDatabaseConnection();
-            IPostsQueryBuilder queryBuilder = PostsQueryBuilder.getInstance();
-            String query = queryBuilder.getPostsByUserId(userid);
-//            logger.info(query);
-            final ResultSet allPosts = connection.createStatement().executeQuery(query);
-            List<Post> posts = Post.resultSetToPosts(allPosts);
-            connection.close();
-            return posts;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
-    }
-
-    public List<Post> getAllPosts() {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            String query = queryBuilder.getAllPosts();
-//            logger.info(query);
-            final ResultSet allPosts = connection.createStatement().executeQuery(query);
-            List<Post> posts = Post.resultSetToPosts(allPosts);
-            connection.close();
-            return posts;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
-    }
-
-    public Post getPostByPostId(int postid) {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            String query = queryBuilder.getPostByPostId(postid);
-            final ResultSet postRS = connection.createStatement().executeQuery(query);
-            Post post = Post.resultSetToPosts(postRS).get(0);
-//            logger.info(post.toString());
-            connection.close();
-            return post;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public List<Post> getFeedbackPosts() throws Exception {
-        return null;
-    }
-
-    @Override
-    public boolean isEligibleForFeedback() {
-        return endDate.before(new Date());
-    }
-
-    public boolean updatePost() {
-        Connection connection = null;
-        boolean isUpdateSuccess = false;
-        try {
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.getUpdatePostQuery(this);
-            statement.executeUpdate(query);
-            isUpdateSuccess = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isUpdateSuccess;
-    }
-
-    public boolean deletePost(){
-        boolean isDeleteSuccessful = false;
-        Connection connection = null;
-        try{
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.deletePostQuery(this.getId());
-            logger.info(query);
-            statement.executeUpdate(query);
-            isDeleteSuccessful = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isDeleteSuccessful;
-    }
-
-    public boolean hidePost(){
-        boolean isHidingSuccessful = false;
-        Connection connection = null;
-        try{
-            connection = dbConnection.getDatabaseConnection();
-            Statement statement = connection.createStatement();
-            String query = queryBuilder.hidePostQuery(this.getId());
-            logger.info(query);
-            statement.executeUpdate(query);
-            isHidingSuccessful = true;
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return isHidingSuccessful;
+    public void setDatabase(IPostDatabase database) {
+        this.database = database;
     }
 
     @Override
     public String toString() {
         return "Post{" +
-                "id=" + id +
+                ", database=" + database +
+                ", id=" + id +
                 ", owner=" + owner +
                 ", title='" + title + '\'' +
                 ", capacity=" + capacity +
@@ -312,14 +244,4 @@ public class Post implements IPost {
                 ", isHidden=" + isHidden +
                 '}';
     }
-
-    private String getSQLParsableDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
-    }
-
-    private Date getJavaDate(String date) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
-    }
-
 }

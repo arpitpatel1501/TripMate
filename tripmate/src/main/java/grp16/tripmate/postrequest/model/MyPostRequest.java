@@ -7,11 +7,12 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPostRequest {
+public class MyPostRequest implements IMyPostRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IDatabaseConnection databaseConnection;
@@ -81,19 +82,25 @@ public class MyPostRequest {
     }
 
     public ResultSet resultExecuteQuery(String query) throws Exception {
-//        posts.add(new Post(1, new User(), "title 1", 5, "source 1", "destination 1", new Date(), new Date(), 15, 25, "description 1", false));
         statement = getConnection();
         resultSet = statement.executeQuery(query);
 
         return resultSet;
     }
 
-    public List<MyPostRequest> resultMyPostRequests(String query) throws Exception {
+    public boolean executeQuery(String query) throws Exception {
+        statement = getConnection();
+        boolean returnResult = statement.execute(query);
+        return returnResult;
+    }
+
+    public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception {
         resultSet = resultExecuteQuery(query);
 
-        List<MyPostRequest> results = new ArrayList<>();
+        List<IMyPostRequest> results = new ArrayList<>();
         while (resultSet.next()) {
-            MyPostRequest myPostRequest = new MyPostRequest();
+            IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+
             myPostRequest.setFirstNameRequestee(resultSet.getString("firstNameRequestee"));
             myPostRequest.setLastNameRequestee(resultSet.getString("lastNameRequestee"));
             myPostRequest.setPostTitle(resultSet.getString("postTitle"));
@@ -102,19 +109,6 @@ public class MyPostRequest {
 
             logger.info(resultSet.getString("firstNameRequestee"));
             results.add(myPostRequest);
-
-//            myPostRequest.id = 1;
-//            myPostRequest.userName = "Harshil";
-//            myPostRequest.postId = 3;
-//            myPostRequest.status = PostRequestStatus.PENDING;
-//            results.add(myPostRequest);
-//
-//            MyPostRequest myPostRequest2 = new MyPostRequest();
-//            myPostRequest2.id = 4;
-//            myPostRequest2.userName = "Harshil 2";
-//            myPostRequest2.postId = 5;
-//            myPostRequest2.status = PostRequestStatus.PENDING;
-//            results.add(myPostRequest2);
         }
         connection.close();
         return results;
