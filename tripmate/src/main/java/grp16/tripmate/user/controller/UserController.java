@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
-
-    IVerification iVerification;
     private final IUserFactory userFactory;
-
-    private User user;
 
     public UserController() {
         userFactory = UserFactory.getInstance();

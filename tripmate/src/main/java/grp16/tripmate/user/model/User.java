@@ -1,28 +1,15 @@
 package grp16.tripmate.user.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDatabase;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserQueryBuilder;
-import grp16.tripmate.user.database.UserQueryBuilder;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class User implements IUser {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -101,6 +88,10 @@ public class User implements IUser {
 
     public User() {
         userDatabase = new UserDatabase();
+    }
+
+    public User(IUserDatabase userDatabase) {
+        this.userDatabase = userDatabase;
     }
 
     @Override

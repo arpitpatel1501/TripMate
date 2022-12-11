@@ -61,7 +61,7 @@ public class PostController implements IPostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            logger.error(e.getMessage());
+            e.printStackTrace();
             return "createpost";
         }
     }
