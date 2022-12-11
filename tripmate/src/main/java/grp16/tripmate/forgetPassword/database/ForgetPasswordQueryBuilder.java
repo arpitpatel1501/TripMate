@@ -26,15 +26,13 @@ public class ForgetPasswordQueryBuilder implements IForgetPasswordQueryBuilder {
         return query;
     }
     @Override
-    public String changeUserPassword(User user) {
+    public String changeUserPassword(String email, String password) {
         String query = "update " +
                 UserDbColumnNames.tableName + " set " +
-                UserDbColumnNames.password + " = '" + user.getPassword() + "'" + "," +
-                UserDbColumnNames.gender + " = '" + user.getGender() + "'" + "," +
-                UserDbColumnNames.firstname + " = '" + user.getFirstname() + "'" + "," +
-                UserDbColumnNames.lastname + " = '" + user.getLastname() + "'" +
+                UserDbColumnNames.password + " = '" + password + "'" +
                 " where " +
-                UserDbColumnNames.id + " = " + user.getId();
+                UserDbColumnNames.username + " = '" + email + "'";
+        System.out.println();
         return query;
     }
 }

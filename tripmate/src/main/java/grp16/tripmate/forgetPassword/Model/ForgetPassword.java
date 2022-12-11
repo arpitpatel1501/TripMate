@@ -24,6 +24,11 @@ public class ForgetPassword implements IForgetPassword{
     private IForgetPasswordQueryBuilder queryBuilder;
     private final IDatabaseConnection dbConnection;
     private int id;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -36,6 +41,7 @@ public class ForgetPassword implements IForgetPassword{
 
     @Override
     public boolean checkUserExist(String email) throws Exception {
+        this.email = email;
         Connection connection = dbConnection.getDatabaseConnection();
         Statement statement = connection.createStatement();
         String query = queryBuilder.checkUserExist(email);
@@ -45,12 +51,21 @@ public class ForgetPassword implements IForgetPassword{
         return gotResult;
     }
 
-    public void changeUserPassword() throws Exception {
-//        Connection connection = dbConnection.getDatabaseConnection();
-//        Statement statement = connection.createStatement();
-//        this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-//        String query = queryBuilder.changeUserPassword();
-//        int rowUpdate = statement.executeUpdate(query);
-//        connection.close();
+    @Override
+    public boolean changeUserPassword(String email, String password) throws Exception {
+        Connection connection = dbConnection.getDatabaseConnection();
+        Statement statement = connection.createStatement();
+        String query = queryBuilder.changeUserPassword(email, password);
+        int rowUpdate = statement.executeUpdate(query);
+        boolean isRowUpdated;
+        if (rowUpdate == 1) {
+            isRowUpdated = true;
+        }
+        else {
+            isRowUpdated = false;
+        }
+        connection.close();
+        return isRowUpdated;
     }
+
 }

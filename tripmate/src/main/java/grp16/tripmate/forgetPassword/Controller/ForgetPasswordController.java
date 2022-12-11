@@ -5,7 +5,9 @@ import grp16.tripmate.forgetPassword.Model.IForgetPassword;
 import grp16.tripmate.forgetPassword.Model.IForgetPasswordFactory;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.notification.EmailNotificationFactory;
 import grp16.tripmate.notification.EmailVerificationFactory;
+import grp16.tripmate.notification.INotificationFactory;
 import grp16.tripmate.notification.IVerification;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class ForgetPasswordController {
     private User user;
 
     @GetMapping("/forget_password")
-    public String resetPassword(Model model) throws Exception {
+    public String forgetPassword(Model model) throws Exception {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", this.email);
 
@@ -74,11 +76,36 @@ public class ForgetPasswordController {
 
         if (this.iVerification.verifyCode(code)) {
             System.out.println("--- code match ---");
-
+            return "new_password";
         } else {
             return "redirect:/error";
         }
-        return "redirect:/error";
     }
 
+    @GetMapping("/new_password")
+    public String resetPassword(Model model) throws Exception {
+        email = ForgetPasswordFactory.getInstance().createForgetPassword().getEmail();
+
+        model.addAttribute("title", "New password");
+        model.addAttribute("email", email);
+
+        return "/new_password";
+    }
+    @PostMapping("/new_password")
+    public String setNewPassword(Model model, HttpServletRequest request) throws Exception {
+        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
+//        email = iForgetPassword.getEmail();
+        model.addAttribute("email", email);
+        String password = request.getParameter("password");
+        if (iForgetPassword.changeUserPassword(email, password)) {
+            EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(email,
+                                                                                    "Password Updated",
+                                                                                      "Password Reset successfully");
+
+            return "redirect:/login";
+        }
+        else {
+            return "redirect:/error";
+        }
+    }
 }
