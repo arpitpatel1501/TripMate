@@ -20,7 +20,7 @@ public class VehicleBookingFactory implements IVehicleBookingFactory
     }
     @Override
     public VehicleBooking getNewVehicleBooking() {
-        return null;
+        return new VehicleBooking();
     }
 
     @Override

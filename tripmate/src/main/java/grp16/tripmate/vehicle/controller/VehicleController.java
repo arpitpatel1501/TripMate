@@ -61,7 +61,7 @@ public class VehicleController implements IVehicleController {
         return "vehicledetails";
     }
 
-    @PostMapping("/vehicle/{id}")
+    @PostMapping("/confirm-booking/{id}")
     public String confirmVehicleBooking(Model model,
                                         @PathVariable("id") int vehicleId,
                                         @ModelAttribute VehicleBooking vehicleBookingObj,
