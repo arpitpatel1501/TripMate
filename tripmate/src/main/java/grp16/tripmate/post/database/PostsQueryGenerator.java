@@ -4,7 +4,6 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
-import grp16.tripmate.post.model.PostDbColumnNames;
 
 public class PostsQueryGenerator implements IPostsQueryGenerator {
     private final ILogger logger = new MyLoggerAdapter(this);

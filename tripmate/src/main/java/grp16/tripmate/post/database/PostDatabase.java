@@ -4,14 +4,15 @@ import grp16.tripmate.db.execute.DatabaseExecution;
 import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.Feedback;
 import grp16.tripmate.post.model.*;
+import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +104,7 @@ public class PostDatabase implements IPostDatabase {
     }
 
     private Date localDateTimeToDate(LocalDateTime ldt) {
-        Instant instant = ldt.toInstant(ZoneOffset.UTC);
+        Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }
 }

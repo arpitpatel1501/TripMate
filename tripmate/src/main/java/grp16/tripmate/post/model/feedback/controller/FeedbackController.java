@@ -1,10 +1,10 @@
-package grp16.tripmate.post.feedback.controller;
+package grp16.tripmate.post.model.feedback.controller;
 
-import grp16.tripmate.post.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.post.feedback.model.Feedback;
-import grp16.tripmate.post.feedback.model.IFeedback;
-import grp16.tripmate.post.model.IPostFactory;
-import grp16.tripmate.post.model.PostFactory;
+import grp16.tripmate.post.model.feedback.database.IFeedbackDatabase;
+import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.IFeedback;
+import grp16.tripmate.post.model.factory.IPostFactory;
+import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 import org.springframework.stereotype.Controller;

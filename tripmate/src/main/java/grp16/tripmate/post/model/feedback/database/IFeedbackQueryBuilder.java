@@ -1,6 +1,6 @@
-package grp16.tripmate.post.feedback.database;
+package grp16.tripmate.post.model.feedback.database;
 
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.Feedback;
 
 public interface IFeedbackQueryBuilder {
     String createFeedback(Feedback feedback);

@@ -1,9 +1,8 @@
 package grp16.tripmate.post.database;
 
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.Feedback;
 import grp16.tripmate.post.model.Post;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 public interface IPostDatabase {

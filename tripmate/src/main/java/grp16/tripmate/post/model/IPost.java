@@ -1,6 +1,9 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
+import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
+import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 
 import java.text.ParseException;
 import java.util.List;

@@ -3,7 +3,10 @@ package grp16.tripmate.post.model;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
+import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
+import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 

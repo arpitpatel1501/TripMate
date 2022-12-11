@@ -1,4 +1,4 @@
-package grp16.tripmate.post.model;
+package grp16.tripmate.post.database;
 
 public class PostDbColumnNames {
     public static final String TABLENAME = "Post";
