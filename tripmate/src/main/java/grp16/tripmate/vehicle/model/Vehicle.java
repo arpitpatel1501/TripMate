@@ -118,7 +118,7 @@ public class Vehicle implements IVehicle
 
     public Vehicle getVehicleById(int vehicleId)
     {
-        return new Vehicle();
+        return database.getVehicleById(vehicleId);
     }
 
     public List<Vehicle> getTripVehicles(int postId)

@@ -2,6 +2,11 @@ package grp16.tripmate.vehicle.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.model.IPostFactory;
+import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.PostFactory;
+import grp16.tripmate.session.SessionManager;
+import grp16.tripmate.user.model.UserDbColumnNames;
 import grp16.tripmate.vehicle.model.IVehicle;
 import grp16.tripmate.vehicle.model.IVehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle;
@@ -18,11 +23,13 @@ import java.util.List;
 public class VehicleController implements IVehicleController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    final private IVehicleFactory vehicleFactory;
+    private final IVehicleFactory vehicleFactory;
+    private final IPostFactory postFactory;
 
     private final IVehicle vehicle;
 
     VehicleController() {
+        postFactory = PostFactory.getInstance();
         vehicleFactory = VehicleFactory.getInstance();
         vehicle = vehicleFactory.getNewVehicle();
     }
@@ -35,9 +42,25 @@ public class VehicleController implements IVehicleController {
         return "listvehicles";
     }
 
-    @PostMapping("/vehicle/{id}")
-    public String confirmVehicleBooking(Model model, @PathVariable("id") int vehicleId) {
+    @GetMapping("/vehicle/{id}")
+    public String getVehicleDetails(Model model, @PathVariable("id") int vehicleId) throws Exception {
+        model.addAttribute("title", "Vehicle Details");
+
+        Vehicle vehicleObj = vehicle.getVehicleById(vehicleId);
+        model.addAttribute("vehicle", vehicleObj);
+
+        int userId = (Integer) SessionManager.Instance().getValue(UserDbColumnNames.id);
+        Post post = (Post) postFactory.getNewPost();
+        List<Post> userPosts = post.getPostsByUserId(userId);
+        model.addAttribute("userposts", userPosts);
+
         return "vehicledetails";
+    }
+
+    @PostMapping("/vehicle/{id}")
+    public String confirmVehicleBooking(Model model, @PathVariable("id") int vehicleId)
+    {
+        return "my_vehiclebookings";
     }
 
     @GetMapping("/my-vehicle-bookings")
