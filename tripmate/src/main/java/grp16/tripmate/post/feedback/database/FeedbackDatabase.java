@@ -26,16 +26,34 @@ public class FeedbackDatabase implements IFeedbackDatabase {
     @Override
     public void createFeedback(Feedback feedback) {
         String query = queryBuilder.createFeedback(feedback);
-        executeQuery(query);
+        execute(query);
     }
 
     @Override
     public void deleteFeedbackByPostId(int postid) {
         String query = queryBuilder.deleteFeedbackByPostId(postid);
-        executeQuery(query);
+        execute(query);
     }
 
-    private void executeQuery(String query) {
+    @Override
+    public List<Feedback> getFeedbacksByPostId(int post_id) {
+        String query = queryBuilder.getFeedbacksByPostId(post_id);
+        return executeQuery(query);
+    }
+
+    private List<Feedback> executeQuery(String query) {
+        try {
+            final Connection connection = dbConnection.getDatabaseConnection();
+            List<Feedback> feedbacks = resultSetToFeedback(connection.createStatement().executeQuery(query));
+            connection.close();
+            return feedbacks;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    private void execute(String query) {
         try {
             final Connection connection = dbConnection.getDatabaseConnection();
             connection.createStatement().execute(query);
@@ -51,7 +69,7 @@ public class FeedbackDatabase implements IFeedbackDatabase {
             Feedback feedback = new Feedback();
 
             feedback.setId(rs.getInt(FeedbackDbColumnNames.ID));
-            feedback.setPost(rs.getInt(FeedbackDbColumnNames.POST_ID));
+            feedback.setPostId(rs.getInt(FeedbackDbColumnNames.POST_ID));
             feedback.setUser(rs.getInt(FeedbackDbColumnNames.USER_ID));
             feedback.setFeedback(rs.getString(FeedbackDbColumnNames.FEEDBACK));
             feedback.setRating(rs.getFloat(FeedbackDbColumnNames.RATING));

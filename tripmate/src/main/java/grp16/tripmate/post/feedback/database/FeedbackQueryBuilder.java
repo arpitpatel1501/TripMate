@@ -34,21 +34,28 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
                 ")" +
                 " VALUES " +
                 "(" +
-                feedback.getPost().getId() + "," +
+                feedback.getPostId() + "," +
                 feedback.getUser().getId() + "," +
                 " '" + feedback.getFeedback() + "' " + "," +
                 feedback.getRating() + ")";
 
         logger.info(query);
-
         return query;
-
     }
 
     public String deleteFeedbackByPostId(int postid) {
         String query = "DELETE FROM " +
                 FeedbackDbColumnNames.TABLE_NAME +
                 " WHERE postid = " + postid;
+
+        logger.info(query);
+
+        return query;
+    }
+
+    @Override
+    public String getFeedbacksByPostId(int post_id) {
+        String query = "select * from Feedback where postid = " + post_id;
 
         logger.info(query);
 

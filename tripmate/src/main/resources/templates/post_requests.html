@@ -5,6 +5,8 @@
 <head>
     <title>My Post Requests</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/menubar.css">
+    <link rel="stylesheet" href="/css/error.css">
 </head>
 <body>
 <p th:text="'Number of Requests: ' + ${requests_count}"/>
@@ -19,5 +21,6 @@
         <br></td>
     <br>
 </tr>
+<h2 class="error" th:text="${error}"></h2>
 </body>
 </html>

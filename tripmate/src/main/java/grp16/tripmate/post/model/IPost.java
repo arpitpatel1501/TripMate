@@ -1,19 +1,24 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.post.feedback.model.Feedback;
+
 import java.util.List;
 
 public interface IPost {
 
     boolean createPost() throws Exception;
 
-    List<Post> getPostsByUserId(int userid);
+    List<Post> getAllPosts() throws Exception;
 
-    List<Post> getAllPosts();
+    List<Post> getPostsByUserId(int userid) throws Exception;
 
-    Post getPostByPostId(int postid);
+    Post getPostByPostId(int postid) throws Exception;
 
+    boolean updatePost();
 
-    boolean isEligibleForFeedback();
+    boolean deletePost();
+
+    List<Feedback> getFeedbacks();
 
     boolean hidePost();
 }
