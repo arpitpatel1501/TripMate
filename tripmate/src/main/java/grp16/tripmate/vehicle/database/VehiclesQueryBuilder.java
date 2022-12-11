@@ -33,9 +33,11 @@ public class VehiclesQueryBuilder implements IVehicleQueryBuilder
                                 "`Vehicle`.`name`,\n" +
                                 "`Vehicle`.`no_of_seats`,\n" +
                                 "`Vehicle`.`registration_numb`,\n" +
-                                "`Vehicle`.`is_ready_to_use`,\n" +
+                                "`Vehicle`.`is_available`,\n" +
                                 "`Vehicle`.`is_for_long_journey`,\n" +
-                                "`Vehicle`.`VehicleCategory_id`\n" +
+                                "`Vehicle`.`rate_per_km`,\n" +
+                                "`Vehicle`.`description`,\n" +
+                                "`Vehicle`.`VechicleCategory_id`\n" +
                                 "FROM `CSCI5308_16_DEVINT`.`Vehicle`" +
                                 " where " + VehicleDbColumnNames.ISAVAILABLE + " = 1;";
         logger.info(query);

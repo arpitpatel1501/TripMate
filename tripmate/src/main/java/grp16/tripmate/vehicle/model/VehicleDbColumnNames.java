@@ -9,7 +9,7 @@ public class VehicleDbColumnNames
     public static final String REGISTRATIONNUMBER = "registration_numb";
     public static final String ISAVAILABLE = "is_available";
     public static final String ISFORLONGJOURNEY = "is_for_long_journey";
-    public static final String VEHICLECATEGORY = "VehicleCategory_id";
+    public static final String VEHICLECATEGORY = "VechicleCategory_id";
     public static final String RATEPERKM = "rate_per_km";
     public static final String DESCRIPTION = "description";
 

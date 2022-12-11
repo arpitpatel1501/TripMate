@@ -22,7 +22,7 @@ public class VehicleCategory implements IVehicleCategory
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName()
@@ -47,6 +47,6 @@ public class VehicleCategory implements IVehicleCategory
     }
     public String getCategoryNameByCategoryId(int categoryId)
     {
-        return "";
+        return "sample Category";
     }
 }
