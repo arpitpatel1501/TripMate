@@ -57,17 +57,17 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) throws Exception {
+    public List<Post> getPostsByUserId(int userid){
         return database.getPostsByUserId(userid);
     }
 
     @Override
-    public List<Post> getAllPosts() throws Exception {
+    public List<Post> getAllPosts(){
         return database.getAllPosts();
     }
 
     @Override
-    public Post getPostByPostId(int postId) throws Exception {
+    public Post getPostByPostId(int postId){
         return database.getPostByPostId(postId);
     }
 
@@ -100,7 +100,10 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException {
+    public void validatePost() throws ParseException,
+            StartDateAfterEndDateException,
+            MinAgeGreaterThanMaxAgeException,
+            StartDateBeforeTodayException {
         validator.isStarDateBeforeToday(this);
         validator.isStartDateBeforeEndDate(this);
         validator.isMinAgeLessThanMaxAge(this);

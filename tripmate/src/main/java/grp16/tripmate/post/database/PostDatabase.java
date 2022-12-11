@@ -2,8 +2,6 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.db.execute.DatabaseExecution;
 import grp16.tripmate.db.execute.IDatabaseExecution;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.feedback.model.Feedback;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PostDatabase implements IPostDatabase {
-    private final ILogger logger = new MyLoggerAdapter(this);
     private final IPostsQueryGenerator queryGenerator;
     private final IDatabaseExecution databaseExecutor;
 
@@ -36,19 +33,19 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) throws Exception {
+    public List<Post> getPostsByUserId(int userid){
         String query = queryGenerator.getPostsByUserId(userid);
         return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public List<Post> getAllPosts() throws Exception {
+    public List<Post> getAllPosts(){
         String query = queryGenerator.getAllPosts();
         return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public Post getPostByPostId(int post_id) throws Exception {
+    public Post getPostByPostId(int post_id){
         String query = queryGenerator.getPostByPostId(post_id);
         List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
         if (posts != null) {
@@ -82,7 +79,7 @@ public class PostDatabase implements IPostDatabase {
         return PostFactory.getInstance().getFeedbackDatabase().getFeedbacksByPostId(post_id);
     }
 
-    public List<Post> listToPosts(List<Map<String, Object>> responseMaps) throws Exception {
+    public List<Post> listToPosts(List<Map<String, Object>> responseMaps){
         List<Post> results = new ArrayList<>();
         for (Map<String, Object> responseMap : responseMaps) {
             Post post = (Post) PostFactory.getInstance().getNewPost();
