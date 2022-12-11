@@ -4,9 +4,6 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.IPostsQueryBuilder;
-import grp16.tripmate.post.model.IPostFactory;
 import grp16.tripmate.vehicle.database.IVehicleDatabase;
 import grp16.tripmate.vehicle.database.IVehicleQueryBuilder;
 
