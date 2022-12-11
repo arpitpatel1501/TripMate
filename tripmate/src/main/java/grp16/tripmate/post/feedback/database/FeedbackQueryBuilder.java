@@ -34,11 +34,7 @@ public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
                 ")" +
                 " VALUES " +
                 "(" +
-<<<<<<< HEAD:tripmate/src/main/java/grp16/tripmate/feedback/database/FeedbackQueryBuilder.java
-                feedback.getPost().getId() + "," +
-=======
                 feedback.getPostId() + "," +
->>>>>>> develop:tripmate/src/main/java/grp16/tripmate/post/feedback/database/FeedbackQueryBuilder.java
                 feedback.getUser().getId() + "," +
                 " '" + feedback.getFeedback() + "' " + "," +
                 feedback.getRating() + ")";

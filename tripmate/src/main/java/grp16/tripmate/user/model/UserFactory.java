@@ -1,5 +1,8 @@
 package grp16.tripmate.user.model;
 
+import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.database.UserDatabase;
+
 public class UserFactory implements IUserFactory {
     private static IUserFactory instance;
 
@@ -17,6 +20,11 @@ public class UserFactory implements IUserFactory {
     @Override
     public IUser getNewUser() {
         return new User();
+    }
+
+    @Override
+    public IUserDatabase getUserDatabase() {
+        return new UserDatabase();
     }
 
 
