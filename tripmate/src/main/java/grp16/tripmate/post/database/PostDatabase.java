@@ -1,7 +1,5 @@
 package grp16.tripmate.post.database;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.db.execute.DatabaseExecution;
 import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.logger.ILogger;
@@ -11,9 +9,6 @@ import grp16.tripmate.post.model.*;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.model.UserDbColumnNames;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -34,7 +29,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean createPost(Post post) throws Exception {
-        post.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+        post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecution.executeInsertQuery(query);
     }
@@ -101,7 +96,7 @@ public class PostDatabase implements IPostDatabase {
             post.setMinAge((Integer) responseMap.get(PostDbColumnNames.MINAGE));
             post.setStartDate(localDateTimeToDate((LocalDateTime) responseMap.get(PostDbColumnNames.STARTDATE)));
             post.setSource((String) responseMap.get(PostDbColumnNames.SOURCE));
-            post.setOwner((Integer) responseMap.get(PostDbColumnNames.OWNER));
+            post.setOwner_id((Integer) responseMap.get(PostDbColumnNames.OWNER));
             results.add(post);
         }
         return results;

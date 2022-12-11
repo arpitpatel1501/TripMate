@@ -26,6 +26,4 @@ public class UserFactory implements IUserFactory {
     public IUserDatabase getUserDatabase() {
         return new UserDatabase();
     }
-
-
 }
