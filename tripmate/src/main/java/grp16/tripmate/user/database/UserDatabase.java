@@ -62,7 +62,7 @@ public class UserDatabase implements IUserDatabase {
             user.setId((Integer) result.get(UserDbColumnNames.ID));
             user.setFirstname((String) result.get(UserDbColumnNames.FIRSTNAME));
             user.setLastname((String) result.get(UserDbColumnNames.LASTNAME));
-            user.setBirthDate((Date) result.get(UserDbColumnNames.BIRTHDATE));
+            user.setBirthDateAsDate((Date) result.get(UserDbColumnNames.BIRTHDATE));
             user.setGender((String) result.get(UserDbColumnNames.GENDER));
             users.add(user);
         }

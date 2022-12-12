@@ -57,7 +57,7 @@ public class User implements IUser {
         this.birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDateAsDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
