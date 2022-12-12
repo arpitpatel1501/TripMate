@@ -2,6 +2,9 @@ package grp16.tripmate.postrequest.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.PostDbColumnNames;
+import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.user.database.UserDbColumnNames;
 
 public class MyPostRequestDB implements IMyPostRequestDB {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -45,5 +48,17 @@ public class MyPostRequestDB implements IMyPostRequestDB {
         return query;
     }
 
+
+
+    @Override
+    public String updateRequestStatus(String postId, String requestOwner, PostRequestStatus postRequestStatus) {
+        String query = "update " +
+                PostRequestDbColumnNames.TABLE_NAME + " set " +
+                PostRequestDbColumnNames.STATUS + " = '" + postRequestStatus.toString() + "'" + "," +
+                " where " +
+                PostRequestDbColumnNames.POST_ID + " = " + postId + " and " +
+                PostRequestDbColumnNames.REQUEST_OWNER + " = " + requestOwner;
+        return query;
+    }
 
 }

@@ -53,4 +53,10 @@ public class MyPostRequestController {
         myPostRequest.executeQuery(query);
         return "redirect:/post_requests";
     }
+
+    @PostMapping("accept_request")
+    public String acceptRequest(Model model) {
+        return null;
+
+    }
 }
