@@ -28,15 +28,15 @@ public class VehiclesQueryBuilder implements IVehicleQueryBuilder
     @Override
     public String getAllVehicles()
     {
-        String query = "SELECT `Vehicle`.`id`,\n" +
-                                "`Vehicle`.`name`,\n" +
-                                "`Vehicle`.`no_of_seats`,\n" +
-                                "`Vehicle`.`registration_numb`,\n" +
-                                "`Vehicle`.`is_available`,\n" +
-                                "`Vehicle`.`is_for_long_journey`,\n" +
-                                "`Vehicle`.`rate_per_km`,\n" +
-                                "`Vehicle`.`description`,\n" +
-                                "`Vehicle`.`VechicleCategory_id`\n" +
+        String query = "SELECT `Vehicle`.`id`, " +
+                                "`Vehicle`.`name`, " +
+                                "`Vehicle`.`no_of_seats`, " +
+                                "`Vehicle`.`registration_numb`, " +
+                                "`Vehicle`.`is_available`, " +
+                                "`Vehicle`.`is_for_long_journey`, " +
+                                "`Vehicle`.`rate_per_km`, " +
+                                "`Vehicle`.`description`, " +
+                                "`Vehicle`.`VechicleCategory_id` " +
                                 "FROM `CSCI5308_16_DEVINT`.`Vehicle`" +
                                 " where " + VehicleDbColumnNames.ISAVAILABLE + " = 1;";
         logger.info(query);
@@ -47,7 +47,21 @@ public class VehiclesQueryBuilder implements IVehicleQueryBuilder
     @Override
     public String getVehicleById(int vehicleId)
     {
-        return "";
+        String query = "SELECT `Vehicle`.`id`, " +
+                "`Vehicle`.`name`, " +
+                "`Vehicle`.`no_of_seats`, " +
+                "`Vehicle`.`registration_numb`, " +
+                "`Vehicle`.`is_available`, " +
+                "`Vehicle`.`is_for_long_journey`, " +
+                "`Vehicle`.`rate_per_km`, " +
+                "`Vehicle`.`description`, " +
+                "`Vehicle`.`VechicleCategory_id` " +
+                "FROM `CSCI5308_16_DEVINT`.`Vehicle`" +
+                " where " + VehicleDbColumnNames.ID + "=" + vehicleId +
+                " and " + VehicleDbColumnNames.ISAVAILABLE + "=1;";
+
+        logger.info(query);
+        return query;
     }
 
     @Override
