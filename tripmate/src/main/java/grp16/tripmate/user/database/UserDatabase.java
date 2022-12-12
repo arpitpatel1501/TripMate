@@ -40,6 +40,15 @@ public class UserDatabase implements IUserDatabase {
     @Override
     public User getUserById(int userid) throws Exception {
         String query = queryGenerator.getUserByUserID(userid);
+        logger.info(query);
+        List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
+        return users.get(0);
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws NoSuchAlgorithmException {
+        String query = queryGenerator.getUserByUsername(username);
+        logger.info(query);
         List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
         return users.get(0);
     }
@@ -49,7 +58,7 @@ public class UserDatabase implements IUserDatabase {
         for (Map<String, Object> result : results) {
             User user = new User();
             user.setUsername((String) result.get(UserDbColumnNames.USERNAME));
-            user.setPassword((String) result.get(UserDbColumnNames.PASSWORD));
+            user.setPasswordWithOutEncoding((String) result.get(UserDbColumnNames.PASSWORD));
             user.setId((Integer) result.get(UserDbColumnNames.ID));
             user.setFirstname((String) result.get(UserDbColumnNames.FIRSTNAME));
             user.setLastname((String) result.get(UserDbColumnNames.LASTNAME));

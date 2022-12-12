@@ -86,6 +86,10 @@ public class User implements IUser {
         this.password = password;
     }
 
+    public void setPasswordWithOutEncoding(String password) {
+        this.password = password;
+    }
+
     public User() {
     }
 
@@ -95,7 +99,8 @@ public class User implements IUser {
     }
 
     public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws Exception {
-        User userFromDb = userDatabase.getUserById(this.getId());
+        User userFromDb = userDatabase.getUserByUsername(this.getUsername());
+        logger.info(userFromDb.toString());
         boolean isValidUser = userFromDb != null &&
                 userFromDb.getUsername().equals(this.getUsername()) &&
                 userFromDb.getPassword().equals(this.getPassword());

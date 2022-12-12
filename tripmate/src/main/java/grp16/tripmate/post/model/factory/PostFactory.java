@@ -49,11 +49,6 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IFeedback getNewFeedback() {
-        return new Feedback();
-    }
-
-    @Override
     public IFeedbackDatabase makeFeedbackDatabase() {
         return new FeedbackDatabase(makeNewDatabaseExecutor(), makeFeedbackQueryBuilder());
     }
