@@ -1,6 +1,6 @@
 package grp16.tripmate.forgetPassword.database;
 
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.database.UserDbColumnNames;
 
 public class ForgetPasswordQueryBuilder implements IForgetPasswordQueryBuilder {
 

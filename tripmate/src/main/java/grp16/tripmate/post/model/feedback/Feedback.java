@@ -1,6 +1,6 @@
-package grp16.tripmate.post.model.feedback.model;
+package grp16.tripmate.post.model.feedback;
 
-import grp16.tripmate.post.model.feedback.database.IFeedbackDatabase;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 
 public class Feedback implements IFeedback {
     private int id;
