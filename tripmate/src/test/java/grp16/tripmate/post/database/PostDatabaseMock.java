@@ -3,6 +3,8 @@ package grp16.tripmate.post.database;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.feedback.Feedback;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,12 +62,17 @@ public class PostDatabaseMock implements IPostDatabase{
     }
 
     @Override
-    public Post getPostByPostId(int post_id) {
-        return postDB.get(post_id);
+    public Post getPostByPostId(int postId) {
+        return postDB.get(postId);
     }
 
     @Override
-    public List<Feedback> getFeedbacks(IFeedbackDatabase feedbackDatabase, int post_id) throws Exception {
+    public List<Feedback> getFeedbacks(IFeedbackDatabase feedbackDatabase, int postId) throws Exception {
         return new ArrayList<>();
+    }
+
+    @Override
+    public List<VehicleBooking> getVehicles(IVehicleBookingDatabase vehicleBookingDatabase, int postId) {
+        return null;
     }
 }

@@ -10,6 +10,8 @@ import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -100,6 +102,11 @@ public class Post extends PostSubject implements IPost {
         validator.isStarDateBeforeToday(this);
         validator.isStartDateBeforeEndDate(this);
         validator.isMinAgeLessThanMaxAge(this);
+    }
+
+    @Override
+    public List<VehicleBooking> getVehiclesAssociatedWithCurrentPost(IPostDatabase database, IVehicleBookingDatabase vehicleBookingDatabase) {
+        return database.getVehicles(vehicleBookingDatabase, this.getId());
     }
 
     public boolean isEligibleForFeedback() {
