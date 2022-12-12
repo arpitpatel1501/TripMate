@@ -2,13 +2,12 @@ package grp16.tripmate.vehicle.model;
 
 import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.database.IVehicleBookingQueryBuilder;
+import grp16.tripmate.vehicle.database.VehicleBookingDatabase;
 
-public class VehicleBookingFactory implements IVehicleBookingFactory
-{
+public class VehicleBookingFactory implements IVehicleBookingFactory {
     private static IVehicleBookingFactory instance;
 
-    private VehicleBookingFactory()
-    {
+    private VehicleBookingFactory() {
 
     }
 
@@ -18,6 +17,7 @@ public class VehicleBookingFactory implements IVehicleBookingFactory
         }
         return (VehicleBookingFactory) instance;
     }
+
     @Override
     public VehicleBooking getNewVehicleBooking() {
         return new VehicleBooking();
@@ -25,7 +25,7 @@ public class VehicleBookingFactory implements IVehicleBookingFactory
 
     @Override
     public IVehicleBookingDatabase getVehicleBookingDatabase() {
-        return null;
+        return new VehicleBookingDatabase();
     }
 
     @Override

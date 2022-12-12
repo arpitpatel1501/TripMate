@@ -2,11 +2,12 @@ package grp16.tripmate.vehicle.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.model.IPostFactory;
+import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.model.Post;
-import grp16.tripmate.post.model.PostFactory;
+import grp16.tripmate.post.model.factory.IPostFactory;
+import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +29,17 @@ public class VehicleController implements IVehicleController {
 
     private final IVehicle vehicle;
 
+    private final IPostDatabase postDatabase;
+
+    private final IVehicleBookingDatabase vehicleBookingDatabase;
+
     VehicleController() {
         postFactory = PostFactory.getInstance();
         vehicleFactory = VehicleFactory.getInstance();
         vehicle = vehicleFactory.getNewVehicle();
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
+        postDatabase = postFactory.makePostDatabase();
+        vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
     }
 
     @GetMapping("/all-vehicles")
@@ -50,12 +57,12 @@ public class VehicleController implements IVehicleController {
         Vehicle vehicleObj = vehicle.getVehicleById(vehicleId);
         model.addAttribute("vehicle", vehicleObj);
 
-        int userId = (Integer) SessionManager.Instance().getValue(UserDbColumnNames.id);
-        Post post = (Post) postFactory.getNewPost();
-        List<Post> userPosts = post.getPostsByUserId(userId);
+        int userId = SessionManager.getInstance().getLoggedInUserId();
+        Post post = (Post) postFactory.makeNewPost();
+        List<Post> userPosts = post.getPostsByUserId(postDatabase, userId);
         model.addAttribute("userposts", userPosts);
 
-        VehicleBooking vehicleBookingObj = (VehicleBooking) vehicleBookingFactory.getNewVehicleBooking();
+        VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking();
         model.addAttribute("vehicleBookingObj", vehicleBookingObj);
 
         return "vehicledetails";
@@ -65,10 +72,12 @@ public class VehicleController implements IVehicleController {
     public String confirmVehicleBooking(Model model,
                                         @PathVariable("id") int vehicleId,
                                         @ModelAttribute VehicleBooking vehicleBookingObj,
-                                        @ModelAttribute Post userPost)
-    {
-        System.out.println("the vehiclebooking obj is: " + vehicleBookingObj);
-        System.out.println("the User Post obj is: " + userPost);
+                                        @ModelAttribute Post userPost) {
+        logger.info("the vehiclebooking obj is: " + vehicleBookingObj);
+        logger.info("the User Post obj is: " + userPost);
+
+        vehicleBookingObj.setVehicleId(vehicleId);
+        vehicleBookingDatabase.createVehicleBooking(vehicleBookingObj);
         return "redirect:/dashboard";
     }
 

@@ -44,16 +44,17 @@
     <tr>
         <td>
             <br><br>
-            <form action="#" th:action="@{/confirm-booking/{id}(id=${vehicle.getId()})}" method="post">
+            <form action="#" th:object="${vehicleBookingObj}" th:action="@{/confirm-booking/{id}(id=${vehicle.getId()})}"
+                  method="post">
                 <label for="trips">Choose Your Trip:</label>
-                <select id="trips" name="trips">
+                <select th:field="${vehicleBookingObj.postId}" id="trips" name="trips">
                     <th:block th:each="userpost : ${userposts}">
-                        <option th:text="${userpost.title}" th:value="${userpost.title}"/>
+                        <option th:text="${userpost.title}" th:value="${userpost.id}"/>
                     </th:block>
                 </select>
                 <p>Booking Start Date : <input type="date" th:field="${vehicleBookingObj.bookingStartDate}" required></p>
-                <p>Booking End Date   : <input type="date" th:field="${vehicleBookingObj.bookingEndDate}" required></p>
-                <p>Total Kilometers   : <input type="number" th:field="${vehicleBookingObj.totalKm}" required></p>
+                <p>Booking End Date : <input type="date" th:field="${vehicleBookingObj.bookingEndDate}" required></p>
+                <p>Total Kilometers : <input type="number" th:field="${vehicleBookingObj.totalKm}" required></p>
                 <button type="submit">Confirm Booking</button>
             </form>
         </td>

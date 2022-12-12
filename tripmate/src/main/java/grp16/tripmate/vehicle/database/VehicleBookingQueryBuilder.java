@@ -2,26 +2,26 @@ package grp16.tripmate.vehicle.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.model.VehicleBookingDbColumnNames;
+import grp16.tripmate.vehicle.model.VehicleDbColumnNames;
 
-public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder
-{
+public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private static VehicleBookingQueryBuilder instance;
 
-    private VehicleBookingQueryBuilder()
-    {
+    private VehicleBookingQueryBuilder() {
 
     }
 
-    public static VehicleBookingQueryBuilder getInstance()
-    {
-        if (instance == null)
-        {
+    public static VehicleBookingQueryBuilder getInstance() {
+        if (instance == null) {
             instance = new VehicleBookingQueryBuilder();
         }
         return instance;
     }
+
     @Override
     public String getVehicleBookingByPostId(int postId) {
         return null;
@@ -35,5 +35,27 @@ public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder
     @Override
     public String getVehicleBookingByBookingId(int bookingId) {
         return null;
+    }
+
+    @Override
+    public String createVehicleBooking(VehicleBooking vehicleBooking) {
+        String query = "INSERT INTO " + VehicleBookingDbColumnNames.TABLENAME +
+                " (" +
+                VehicleBookingDbColumnNames.POST_ID + ", " +
+                VehicleBookingDbColumnNames.VEHICLE_ID + ", " +
+                VehicleBookingDbColumnNames.TOTAL_KM + ", " +
+                VehicleBookingDbColumnNames.BOOKING_START_DATE + ", " +
+                VehicleBookingDbColumnNames.BOOKING_END_DATE + ", " +
+                VehicleBookingDbColumnNames.HAS_PAID + ") " +
+                "VALUES " +
+                "(" +
+                vehicleBooking.getPostId() + ", " +
+                vehicleBooking.getVehicleId() + ", " +
+                vehicleBooking.getTotalKm() + ", " +
+                "'" + vehicleBooking.getBookingStartDate() + "', " +
+                "'" + vehicleBooking.getBookingEndDate() + "', " +
+                vehicleBooking.getHasPaid() + ");";
+        logger.info(query);
+        return query;
     }
 }

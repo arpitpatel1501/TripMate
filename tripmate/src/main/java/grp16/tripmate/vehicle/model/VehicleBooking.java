@@ -1,4 +1,5 @@
 package grp16.tripmate.vehicle.model;
+
 import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
@@ -7,16 +8,18 @@ import grp16.tripmate.post.model.Post;
 import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.database.IVehicleBookingQueryBuilder;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 
-public class VehicleBooking implements IVehicleBooking
-{
+public class VehicleBooking implements IVehicleBooking {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private int id;
-    private Vehicle vehicleObj;
-    private Post postObj;
+    private int vehicleId;
+    private int postId;
     private float totalKm;
     private Date bookingStartDate;
     private Date bookingEndDate;
@@ -28,12 +31,14 @@ public class VehicleBooking implements IVehicleBooking
 
     private final IVehicleBookingDatabase database;
 
-    public VehicleBooking()
-    {
+    public VehicleBooking() {
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
         database = vehicleBookingFactory.getVehicleBookingDatabase();
         queryBuilder = vehicleBookingFactory.getVehicleBookingQueryBuilder();
         dbConnection = new DatabaseConnection();
+
+        this.setBookingStartDate(new Date());
+        this.setBookingEndDate(new Date());
     }
 
     public int getId() {
@@ -44,32 +49,41 @@ public class VehicleBooking implements IVehicleBooking
         this.id = id;
     }
 
-    public Vehicle getVehicleObj() {
-        return vehicleObj;
+    public int getVehicleId() {
+        return vehicleId;
     }
 
-    public void setVehicleObj(Vehicle vehicleObj) {
-        this.vehicleObj = vehicleObj;
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
-    public Post getPostObj() {
-        return postObj;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setPostObj(Post postObj) {
-        this.postObj = postObj;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public Date getBookingStartDate() {
-        return bookingStartDate;
+    public String getBookingStartDate() {
+        return getSQLParsableDate(bookingStartDate);
+    }
+
+    public void setBookingStartDate(String bookingStartDate) throws ParseException {
+        this.bookingStartDate = getJavaDate(bookingStartDate);
     }
 
     public void setBookingStartDate(Date bookingStartDate) {
         this.bookingStartDate = bookingStartDate;
     }
 
-    public Date getBookingEndDate() {
-        return bookingEndDate;
+    public String getBookingEndDate() {
+        return getSQLParsableDate(bookingEndDate);
+    }
+
+
+    public void setBookingEndDate(Date bookingEndDate) {
+        this.bookingEndDate = bookingEndDate;
     }
 
     public float getTotalKm() {
@@ -88,24 +102,31 @@ public class VehicleBooking implements IVehicleBooking
         this.hasPaid = hasPaid;
     }
 
-    public void setBookingEndDate(Date bookingEndDate) {
-        this.bookingEndDate = bookingEndDate;
+    public void setBookingEndDate(String bookingEndDate) throws ParseException {
+        this.bookingEndDate = getJavaDate(bookingEndDate);
     }
+
     @Override
-    public List<VehicleBooking> getVehicleBookingByUserId(int userId)
-    {
+    public List<VehicleBooking> getVehicleBookingByUserId(int userId) {
+        return null;
+    }
+
+    private String getSQLParsableDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    protected Date getJavaDate(String date) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    }
+
+    @Override
+    public List<VehicleBooking> getVehicleBookingByPostId(int postId) {
         return null;
     }
 
     @Override
-    public List<VehicleBooking> getVehicleBookingByPostId(int postId)
-    {
-        return null;
-    }
-
-    @Override
-    public VehicleBooking getVehicleBookingByBookingId(int bookingId)
-    {
+    public VehicleBooking getVehicleBookingByBookingId(int bookingId) {
         return null;
     }
 }
