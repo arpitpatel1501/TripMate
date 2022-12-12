@@ -52,7 +52,7 @@ public class Feedback implements IFeedback {
         this.rating = rating;
     }
 
-    public void createFeedback(IFeedbackDatabase database) {
-        database.createFeedback(this);
+    public boolean createFeedback(IFeedbackDatabase database) {
+        return database.createFeedback(this);
     }
 }
