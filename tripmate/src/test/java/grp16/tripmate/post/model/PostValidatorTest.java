@@ -36,14 +36,10 @@ class PostValidatorTest {
     }
 
     @Test
-    void isMinAgeLessThanMaxAge() throws ParseException {
+    void isMinAgeLessThanMaxAge(){
         Post post = (Post) factory.getNewPost();
         post.setMinAge(5);
         post.setMaxAge(4);
-        String startDate = "2030-12-31";
-        String endDate = "2031-12-31";
-        post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
-        post.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(endDate));
         assertThrows(MinAgeGreaterThanMaxAgeException.class, () -> post.validatePost(validator));
     }
 }
