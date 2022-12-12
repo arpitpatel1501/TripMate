@@ -26,7 +26,7 @@ class UserTest {
     }
 
     private void createTestUser() throws NoSuchAlgorithmException, ParseException {
-        user = (User) userFactory.getNewUser();
+        user = (User) userFactory.makeNewUser();
         user.setUsername("uname");
         user.setPassword("password");
         user.setId(1);
@@ -105,13 +105,13 @@ class UserTest {
 
     @Test
     void getPassword() throws NoSuchAlgorithmException {
-        Assertions.assertEquals(userFactory.getPasswordEncoder().encodeString("password"), user.getPassword());
+        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password"), user.getPassword());
     }
 
     @Test
     void setPassword() throws NoSuchAlgorithmException {
         user.setPassword("password 2");
-        Assertions.assertEquals(userFactory.getPasswordEncoder().encodeString("password 2"), user.getPassword());
+        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password 2"), user.getPassword());
     }
 
     @Test

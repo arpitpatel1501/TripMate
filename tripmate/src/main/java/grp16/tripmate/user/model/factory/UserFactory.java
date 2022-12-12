@@ -26,27 +26,27 @@ public class UserFactory implements IUserFactory {
     }
 
     @Override
-    public IUser getNewUser() {
+    public IUser makeNewUser() {
         return new User();
     }
 
     @Override
-    public IUserDatabase getUserDatabase() {
-        return new UserDatabase(getUserQueryBuilder(), getNewDatabaseExecutor(), getPasswordEncoder());
+    public IUserDatabase makeUserDatabase() {
+        return new UserDatabase(makeUserQueryBuilder(), makeNewDatabaseExecutor());
     }
 
     @Override
-    public IUserQueryGenerator getUserQueryBuilder() {
+    public IUserQueryGenerator makeUserQueryBuilder() {
         return UserQueryGenerator.getInstance();
     }
 
     @Override
-    public IDatabaseExecutor getNewDatabaseExecutor() {
+    public IDatabaseExecutor makeNewDatabaseExecutor() {
         return new DatabaseExecutor();
     }
 
     @Override
-    public IPasswordEncoder getPasswordEncoder() {
+    public IPasswordEncoder makePasswordEncoder() {
         return PasswordEncoder.getInstance();
     }
 }

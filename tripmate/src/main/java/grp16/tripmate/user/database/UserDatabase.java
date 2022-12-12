@@ -19,47 +19,20 @@ public class UserDatabase implements IUserDatabase {
     private final IUserQueryGenerator queryGenerator;
     private final IDatabaseExecutor databaseExecution;
 
-    private final IPasswordEncoder passwordEncoder;
 
-    public UserDatabase(IUserQueryGenerator queryGenerator, IDatabaseExecutor databaseExecution, IPasswordEncoder passwordEncoder) {
+    public UserDatabase(IUserQueryGenerator queryGenerator, IDatabaseExecutor databaseExecution) {
         this.queryGenerator = queryGenerator;
         this.databaseExecution = databaseExecution;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public boolean validateUser(User user) throws Exception {
-        String query = queryGenerator.getUserByUsername(user.getUsername());
-        List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
-        User userFromDb = users.get(0);
-        boolean isValidUser = userFromDb != null &&
-                userFromDb.getUsername().equals(user.getUsername()) &&
-                userFromDb.getPassword().equals(passwordEncoder.encodeString(user.getPassword()));
-        if (isValidUser) {
-            logger.info("Current User: " + userFromDb);
-            SessionManager.Instance().setValue(UserDbColumnNames.ID, userFromDb.getId());
-        }
-        return isValidUser;
-    }
-
-    @Override
-    public boolean createUser(User user) {
+    public boolean insertUser(User user) {
         String query = queryGenerator.createUser(user);
-        return databaseExecution.executeUpdateQuery(query);
+        return databaseExecution.executeInsertQuery(query);
     }
 
     @Override
-    public User getLoggedInUser() throws Exception {
-        int currentUserId = (int) SessionManager.Instance().getValue(UserDbColumnNames.ID);
-        logger.info("Current User ID: " + currentUserId);
-        String query = queryGenerator.getUserByUserID(currentUserId);
-        List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
-        return users.get(0);
-    }
-
-    @Override
-    public boolean changeUserDetails(User user) throws Exception {
-        user.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+    public boolean updateUser(User user) {
         String query = queryGenerator.changeUserDetails(user);
         return databaseExecution.executeUpdateQuery(query);
     }
@@ -67,6 +40,15 @@ public class UserDatabase implements IUserDatabase {
     @Override
     public User getUserById(int userid) throws Exception {
         String query = queryGenerator.getUserByUserID(userid);
+        logger.info(query);
+        List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
+        return users.get(0);
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws NoSuchAlgorithmException {
+        String query = queryGenerator.getUserByUsername(username);
+        logger.info(query);
         List<User> users = listToUsers(databaseExecution.executeSelectQuery(query));
         return users.get(0);
     }
@@ -76,7 +58,7 @@ public class UserDatabase implements IUserDatabase {
         for (Map<String, Object> result : results) {
             User user = new User();
             user.setUsername((String) result.get(UserDbColumnNames.USERNAME));
-            user.setPassword((String) result.get(UserDbColumnNames.PASSWORD));
+            user.setPasswordWithOutEncoding((String) result.get(UserDbColumnNames.PASSWORD));
             user.setId((Integer) result.get(UserDbColumnNames.ID));
             user.setFirstname((String) result.get(UserDbColumnNames.FIRSTNAME));
             user.setLastname((String) result.get(UserDbColumnNames.LASTNAME));
