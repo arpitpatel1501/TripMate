@@ -5,6 +5,7 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class FeedbackDatabase implements IFeedbackDatabase {
             feedback.setPostId((Integer) result.get(FeedbackDbColumnNames.POST_ID));
             feedback.setUserId((Integer) result.get(FeedbackDbColumnNames.USER_ID));
             feedback.setFeedback((String) result.get(FeedbackDbColumnNames.FEEDBACK));
-            feedback.setRating((Float) result.get(FeedbackDbColumnNames.RATING));
+            feedback.setRating(((BigDecimal) result.get(FeedbackDbColumnNames.RATING)).floatValue());
 
             feedbacks.add(feedback);
         }

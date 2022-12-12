@@ -6,6 +6,8 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -44,8 +46,8 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public Post getPostByPostId(int post_id) {
-        String query = queryGenerator.getPostByPostId(post_id);
+    public Post getPostByPostId(int postId) {
+        String query = queryGenerator.getPostByPostId(postId);
         List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
         if (posts != null) {
             return posts.get(0);
@@ -74,8 +76,13 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public List<Feedback> getFeedbacks(IFeedbackDatabase database, int post_id) throws Exception {
-        return database.getFeedbacksByPostId(post_id);
+    public List<Feedback> getFeedbacks(IFeedbackDatabase database, int postId) throws Exception {
+        return database.getFeedbacksByPostId(postId);
+    }
+
+    @Override
+    public List<VehicleBooking> getVehicles(IVehicleBookingDatabase vehicleBookingDatabase, int postId) {
+        return vehicleBookingDatabase.getVehicleBookingByPostId(postId);
     }
 
     public List<Post> listToPosts(List<Map<String, Object>> responseMaps) {
