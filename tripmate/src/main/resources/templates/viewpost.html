@@ -87,13 +87,38 @@
     </tr>
 </table>
 
-<h2 th:if="${feedbacks.size() != 0}">Feedbacks on this post</h2>
-<table class="feedback">
-    <tr class="feedback" th:each="feedback: ${feedbacks}">
-        <td class="feedback" th:text="${feedback.rating}"/>
-        <td class="feedback" th:text="${feedback.feedback}"/>
+<h2 th:if="${vehicles.size() != 0}">Vehicles booked this post</h2>
+<table th:if="${vehicles.size() != 0}" id="vehicleTbl">
+    <tr>
+        <th>Vehicle Id</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Paid?</th>
+        <th>Total KMs</th>
+    </tr>
+    <tr th:each="vehicle: ${vehicles}">
+        <td th:text="${vehicle.getId()}"/>
+        <td th:text="${vehicle.getBookingStartDate()}"/>
+        <td th:text="${vehicle.getBookingEndDate}"/>
+        <td th:text="${vehicle.getHasPaid}"/>
+        <td th:text="${vehicle.getTotalKm}"/>
     </tr>
 </table>
+
+
+<h2 th:if="${feedbacks.size() != 0}">Feedbacks on this post</h2>
+<table th:if="${feedbacks.size() != 0}" id="feedbackTbl">
+    <tr>
+        <th>Rating</th>
+        <th>Feedback</th>
+    </tr>
+    <tr th:each="feedback: ${feedbacks}">
+        <td th:text="${feedback.rating}"/>
+        <td th:text="${feedback.feedback}"/>
+    </tr>
+</table>
+
+
 <h2 class="error" th:text="${error}"></h2>
 </body>
 </html>

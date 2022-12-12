@@ -6,6 +6,9 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.IVehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBooking;
 
 import java.text.ParseException;
 import java.util.List;
@@ -29,4 +32,6 @@ public interface IPost {
     boolean hidePost(IPostDatabase database);
 
     void validatePost(PostValidator validator) throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException;
+
+    List<VehicleBooking> getVehiclesAssociatedWithCurrentPost(IPostDatabase database, IVehicleBookingDatabase vehicleBookingDatabase);
 }

@@ -24,7 +24,11 @@ public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
 
     @Override
     public String getVehicleBookingByPostId(int postId) {
-        return null;
+        String query = "select * from " +
+                VehicleBookingDbColumnNames.TABLENAME +
+                " where " + VehicleBookingDbColumnNames.POST_ID + "  = " + postId + ";\n";
+        logger.info(query);
+        return query;
     }
 
     @Override
