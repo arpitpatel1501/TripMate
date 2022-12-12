@@ -135,7 +135,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatePost";
+        return "updatepost";
     }
 
     @PostMapping("/deletepost/{id}")
@@ -186,7 +186,6 @@ public class PostController {
         return "feedback";
     }
 
-
     @PostMapping("/feedback/{id}")
     public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
@@ -197,6 +196,5 @@ public class PostController {
             return "redirect:/error";
         }
         return "redirect:/dashboard";
-
     }
 }
