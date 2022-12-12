@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DatabaseExecution implements IDatabaseExecution {
+public class DatabaseExecutor implements IDatabaseExecutor {
 
     private final IDatabaseConnection dbConnection;
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    public DatabaseExecution() {
+    public DatabaseExecutor() {
         dbConnection = new DatabaseConnection();
     }
 

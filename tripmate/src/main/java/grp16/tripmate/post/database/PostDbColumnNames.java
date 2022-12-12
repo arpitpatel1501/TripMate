@@ -1,7 +1,7 @@
 package grp16.tripmate.post.database;
 
 public class PostDbColumnNames {
-    public static final String TABLENAME = "Post";
+    public static final String TABLE_NAME = "Post";
 
     public static final String ID = "id";
     public static final String OWNER = "created_by";

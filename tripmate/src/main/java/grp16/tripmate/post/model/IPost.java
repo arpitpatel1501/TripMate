@@ -1,5 +1,7 @@
 package grp16.tripmate.post.model;
 
+import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
@@ -10,21 +12,21 @@ import java.util.List;
 
 public interface IPost {
 
-    boolean createPost() throws Exception;
+    boolean createPost(IPostDatabase database) throws Exception;
 
-    List<Post> getAllPosts() throws Exception;
+    List<Post> getAllPosts(IPostDatabase database, int loggedInUser) throws Exception;
 
-    List<Post> getPostsByUserId(int userid) throws Exception;
+    List<Post> getPostsByUserId(IPostDatabase database, int userid) throws Exception;
 
-    Post getPostByPostId(int postId) throws Exception;
+    Post getPostByPostId(IPostDatabase database, int postId) throws Exception;
 
-    boolean updatePost();
+    boolean updatePost(IPostDatabase database);
 
-    boolean deletePost();
+    boolean deletePost(IPostDatabase database);
 
-    List<Feedback> getFeedbacks();
+    List<Feedback> getFeedbacks(IPostDatabase database, IFeedbackDatabase feedbackDatabase) throws Exception;
 
-    boolean hidePost();
+    boolean hidePost(IPostDatabase database);
 
-    void validatePost() throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException;
+    void validatePost(PostValidator validator) throws ParseException, StartDateAfterEndDateException, MinAgeGreaterThanMaxAgeException, StartDateBeforeTodayException;
 }

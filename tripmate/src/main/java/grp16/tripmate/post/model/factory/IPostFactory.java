@@ -1,5 +1,6 @@
 package grp16.tripmate.post.model.factory;
 
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryGenerator;
@@ -27,4 +28,6 @@ public interface IPostFactory {
 
     ILogger getLogger(Object classObj);
 
+
+    IDatabaseExecutor getNewDatabaseExecutor();
 }

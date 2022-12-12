@@ -6,6 +6,8 @@ import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.user.model.*;
+import grp16.tripmate.user.model.factory.IUserFactory;
+import grp16.tripmate.user.model.factory.UserFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IUserFactory userFactory;
-
     private final IUserDatabase database;
 
     public UserController() {

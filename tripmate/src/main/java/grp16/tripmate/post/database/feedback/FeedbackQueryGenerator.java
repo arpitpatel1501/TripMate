@@ -42,10 +42,10 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
         return query;
     }
 
-    public String deleteFeedbackByPostId(int postid) {
+    public String deleteFeedbackByPostId(int postId) {
         String query = "DELETE FROM " +
                 FeedbackDbColumnNames.TABLE_NAME +
-                " WHERE postid = " + postid;
+                " WHERE " + FeedbackDbColumnNames.POST_ID + " = " + postId;
 
         logger.info(query);
 
@@ -53,12 +53,9 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
     }
 
     @Override
-    public String getFeedbacksByPostId(int post_id) {
-        String query = "select * from Feedback where postid = " + post_id;
-
+    public String getFeedbacksByPostId(int postId) {
+        String query = "select * from " + FeedbackDbColumnNames.TABLE_NAME + " where " + FeedbackDbColumnNames.TABLE_NAME + " = " + postId;
         logger.info(query);
-
         return query;
     }
-
 }

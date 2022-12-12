@@ -1,13 +1,15 @@
-package grp16.tripmate.user.model;
+package grp16.tripmate.user.model.factory;
 
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.DatabaseExecutor;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.IUserQueryBuilder;
+import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.database.UserDatabase;
-import grp16.tripmate.user.database.UserQueryBuilder;
+import grp16.tripmate.user.database.UserQueryGenerator;
 import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.IUser;
+import grp16.tripmate.user.model.User;
 
 public class UserFactory implements IUserFactory {
     private static IUserFactory instance;
@@ -34,13 +36,13 @@ public class UserFactory implements IUserFactory {
     }
 
     @Override
-    public IUserQueryBuilder getUserQueryBuilder() {
-        return UserQueryBuilder.getInstance();
+    public IUserQueryGenerator getUserQueryBuilder() {
+        return UserQueryGenerator.getInstance();
     }
 
     @Override
-    public IDatabaseExecution getNewDatabaseExecutor() {
-        return new DatabaseExecution();
+    public IDatabaseExecutor getNewDatabaseExecutor() {
+        return new DatabaseExecutor();
     }
 
     @Override
