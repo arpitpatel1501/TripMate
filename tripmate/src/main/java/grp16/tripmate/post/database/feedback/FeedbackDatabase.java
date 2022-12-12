@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FeedbackDatabase implements IFeedbackDatabase {
-    private final ILogger logger = new MyLoggerAdapter(this);
-
     private final IDatabaseExecutor databaseExecutor;
     private final IFeedbackQueryGenerator queryGenerator;
 

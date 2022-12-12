@@ -1,13 +1,10 @@
 package grp16.tripmate.post.database.feedback;
 
 import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 
 public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
 
     static IFeedbackQueryGenerator instance;
-    private final ILogger logger = new MyLoggerAdapter(this);
 
     private FeedbackQueryGenerator() {
         //Required empty constructor
