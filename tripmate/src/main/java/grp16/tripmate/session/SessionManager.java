@@ -14,7 +14,7 @@ public class SessionManager {
         session = new HashMap<>();
     }
 
-    public static SessionManager Instance() {
+    public static SessionManager getInstance() {
         if (sessionManager == null) {
             sessionManager = new SessionManager();
         }

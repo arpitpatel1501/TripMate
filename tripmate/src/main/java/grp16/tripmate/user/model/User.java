@@ -1,6 +1,9 @@
 package grp16.tripmate.user.model;
 
+import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
@@ -91,18 +94,21 @@ public class User implements IUser {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 
-    public boolean validateUser(IUserDatabase userDatabase) throws Exception {
-        return userDatabase.validateUser(this);
+    public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws Exception {
+        User userFromDb = userDatabase.getUserById(this.getId());
+        boolean isValidUser = userFromDb != null &&
+                userFromDb.getUsername().equals(this.getUsername()) &&
+                userFromDb.getPassword().equals(this.getPassword());
+        if (isValidUser) {
+            logger.info("Current User: " + userFromDb);
+            SessionManager.getInstance().setValue(UserDbColumnNames.ID, userFromDb.getId());
+        }
+        return isValidUser;
     }
 
     @Override
     public boolean createUser(IUserDatabase userDatabase) throws Exception {
-        return userDatabase.createUser(this);
-    }
-
-    @Override
-    public User getLoggedInUser(IUserDatabase userDatabase) throws Exception {
-        return userDatabase.getLoggedInUser();
+        return userDatabase.insertUser(this);
     }
 
     public String dateToSQLDate(Date date) {
@@ -116,11 +122,7 @@ public class User implements IUser {
     }
 
     public boolean changeUserDetails(IUserDatabase userDatabase) throws Exception {
-        return userDatabase.changeUserDetails(this);
-    }
-
-    @Override
-    public User getUserById(IUserDatabase userDatabase, int userId) throws Exception {
-        return userDatabase.getUserById(userId);
+        this.setId(SessionManager.getInstance().getLoggedInUserId());
+        return userDatabase.updateUser(this);
     }
 }

@@ -25,8 +25,8 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public boolean createPost(Post post) throws Exception {
-        post.setOwner_id(SessionManager.Instance().getLoggedInUserId());
+    public boolean createPost(Post post) {
+        post.setOwner_id(SessionManager.getInstance().getLoggedInUserId());
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecutor.executeInsertQuery(query);
     }
@@ -62,7 +62,7 @@ public class PostDatabase implements IPostDatabase {
 
     @Override
     public boolean deletePost(int post_id) {
-        PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post_id);
+        PostFactory.getInstance().makeFeedbackDatabase().deleteFeedbackByPostId(post_id);
         String query = queryGenerator.deletePostQuery(post_id);
         return databaseExecutor.executeDeleteQuery(query);
     }
@@ -81,7 +81,7 @@ public class PostDatabase implements IPostDatabase {
     public List<Post> listToPosts(List<Map<String, Object>> responseMaps) {
         List<Post> results = new ArrayList<>();
         for (Map<String, Object> responseMap : responseMaps) {
-            Post post = (Post) PostFactory.getInstance().getNewPost();
+            Post post = (Post) PostFactory.getInstance().makeNewPost();
             post.setId((Integer) responseMap.get(PostDbColumnNames.ID));
             post.setTitle((String) responseMap.get(PostDbColumnNames.TITLE));
             post.setCapacity((Integer) responseMap.get(PostDbColumnNames.CAPACITY));
