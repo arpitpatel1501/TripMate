@@ -1,12 +1,11 @@
 package grp16.tripmate.user.model;
 
+import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.encoder.IPasswordEncoder;
+
 public interface IUser {
 
-    boolean validateUser() throws Exception;
+    boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws Exception;
 
-    boolean createUser() throws Exception;
-
-    User getLoggedInUser() throws Exception;
-
-    User getUserById(int userid) throws Exception;
+    boolean createUser(IUserDatabase userDatabase) throws Exception;
 }

@@ -1,60 +1,52 @@
 package grp16.tripmate.post.database;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
+import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.UserDbColumnNames;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class PostDatabase implements IPostDatabase {
-    private final ILogger logger = new MyLoggerAdapter(this);
     private final IPostsQueryGenerator queryGenerator;
-    private final IDatabaseExecution databaseExecution;
+    private final IDatabaseExecutor databaseExecutor;
 
-    public PostDatabase() {
-        queryGenerator = PostsQueryGenerator.getInstance();
-        databaseExecution = new DatabaseExecution();
+    public PostDatabase(IDatabaseExecutor databaseExecutor, IPostsQueryGenerator queryGenerator) {
+        this.queryGenerator = queryGenerator;
+        this.databaseExecutor = databaseExecutor;
     }
 
     @Override
-    public boolean createPost(Post post) throws Exception {
-        post.setOwner((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
+    public boolean createPost(Post post) {
+        post.setOwner_id(SessionManager.getInstance().getLoggedInUserId());
         String query = queryGenerator.getCreatePostQuery(post);
-        return databaseExecution.executeInsertQuery(query);
+        return databaseExecutor.executeInsertQuery(query);
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) throws Exception {
-        String query = queryGenerator.getPostsByUserId(userid);
-        return listToPosts(databaseExecution.executeSelectQuery(query));
+    public List<Post> getPostsByUserId(int userId) {
+        String query = queryGenerator.getPostsByUserId(userId);
+        return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public List<Post> getAllPosts() throws Exception {
-        String query = queryGenerator.getAllPosts();
-        return listToPosts(databaseExecution.executeSelectQuery(query));
+    public List<Post> getAllPosts(int loggedInUser) {
+        String query = queryGenerator.getAllPosts(loggedInUser);
+        return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public Post getPostByPostId(int post_id) throws Exception {
+    public Post getPostByPostId(int post_id) {
         String query = queryGenerator.getPostByPostId(post_id);
-        List<Post> posts = listToPosts(databaseExecution.executeSelectQuery(query));
+        List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
         if (posts != null) {
             return posts.get(0);
         } else {
@@ -65,31 +57,31 @@ public class PostDatabase implements IPostDatabase {
     @Override
     public boolean updatePost(Post post) {
         String query = queryGenerator.getUpdatePostQuery(post);
-        return databaseExecution.executeUpdateQuery(query);
+        return databaseExecutor.executeUpdateQuery(query);
     }
 
     @Override
     public boolean deletePost(int post_id) {
-        PostFactory.getInstance().getFeedbackDatabase().deleteFeedbackByPostId(post_id);
+        PostFactory.getInstance().makeFeedbackDatabase().deleteFeedbackByPostId(post_id);
         String query = queryGenerator.deletePostQuery(post_id);
-        return databaseExecution.executeDeleteQuery(query);
+        return databaseExecutor.executeDeleteQuery(query);
     }
 
     @Override
     public boolean hidePost(int post_id) {
         String query = queryGenerator.hidePostQuery(post_id);
-        return databaseExecution.executeUpdateQuery(query);
+        return databaseExecutor.executeUpdateQuery(query);
     }
 
     @Override
-    public List<Feedback> getFeedbacks(int post_id) {
-        return PostFactory.getInstance().getFeedbackDatabase().getFeedbacksByPostId(post_id);
+    public List<Feedback> getFeedbacks(IFeedbackDatabase database, int post_id) throws Exception {
+        return database.getFeedbacksByPostId(post_id);
     }
 
-    public List<Post> listToPosts(List<Map<String, Object>> responseMaps) throws Exception {
+    public List<Post> listToPosts(List<Map<String, Object>> responseMaps) {
         List<Post> results = new ArrayList<>();
         for (Map<String, Object> responseMap : responseMaps) {
-            Post post = (Post) PostFactory.getInstance().getNewPost();
+            Post post = (Post) PostFactory.getInstance().makeNewPost();
             post.setId((Integer) responseMap.get(PostDbColumnNames.ID));
             post.setTitle((String) responseMap.get(PostDbColumnNames.TITLE));
             post.setCapacity((Integer) responseMap.get(PostDbColumnNames.CAPACITY));
@@ -101,14 +93,14 @@ public class PostDatabase implements IPostDatabase {
             post.setMinAge((Integer) responseMap.get(PostDbColumnNames.MINAGE));
             post.setStartDate(localDateTimeToDate((LocalDateTime) responseMap.get(PostDbColumnNames.STARTDATE)));
             post.setSource((String) responseMap.get(PostDbColumnNames.SOURCE));
-            post.setOwner((Integer) responseMap.get(PostDbColumnNames.OWNER));
+            post.setOwner_id((Integer) responseMap.get(PostDbColumnNames.OWNER));
             results.add(post);
         }
         return results;
     }
 
     private Date localDateTimeToDate(LocalDateTime ldt) {
-        Instant instant = ldt.toInstant(ZoneOffset.UTC);
+        Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }
 }

@@ -3,10 +3,13 @@ package grp16.tripmate.post.model;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.feedback.model.Feedback;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.model.feedback.Feedback;
+import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
+import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
+import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.database.UserDbColumnNames;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,12 +22,10 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post implements IPost {
+public class Post extends PostSubject implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private IPostDatabase database;
-
     private int id;
-    private User owner;
+    private int owner_id;
     private String title;
     private int capacity;
     private String source;
@@ -36,58 +37,69 @@ public class Post implements IPost {
     private String description;
     private boolean isHidden;
 
-    public Post(IPostDatabase postDatabase) {
-        this.database = postDatabase;
+    public Post() {
         this.setStartDate(new Date());
         this.setEndDate(new Date());
     }
 
     @Override
-    public boolean createPost() throws Exception {
-        return database.createPost(this);
+    public boolean createPost(IPostDatabase database) throws Exception {
+        boolean isPostCreated = database.createPost(this);
+        if (isPostCreated) {
+            notifyObservers();
+        }
+        return isPostCreated;
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid) throws Exception {
-        return database.getPostsByUserId(userid);
+    public List<Post> getPostsByUserId(IPostDatabase database, int userId) {
+        return database.getPostsByUserId(userId);
     }
 
     @Override
-    public List<Post> getAllPosts() throws Exception {
-        return database.getAllPosts();
+    public List<Post> getAllPosts(IPostDatabase database, int loggedInUser) {
+        return database.getAllPosts(loggedInUser);
     }
 
     @Override
-    public Post getPostByPostId(int postId) throws Exception {
+    public Post getPostByPostId(IPostDatabase database, int postId) {
         return database.getPostByPostId(postId);
     }
 
     @Override
-    public boolean updatePost() {
+    public boolean updatePost(IPostDatabase database) {
         return database.updatePost(this);
     }
 
     @Override
-    public boolean deletePost() {
+    public boolean deletePost(IPostDatabase database) {
         return database.deletePost(this.getId());
     }
 
     @Override
-    public boolean hidePost() {
+    public boolean hidePost(IPostDatabase database) {
         return database.hidePost(this.getId());
     }
 
     @Override
-    public List<Feedback> getFeedbacks() {
-        return database.getFeedbacks(this.getId());
+    public List<Feedback> getFeedbacks(IPostDatabase database, IFeedbackDatabase feedbackDatabase) throws Exception {
+        return database.getFeedbacks(feedbackDatabase, this.getId());
     }
 
     public boolean isEligibleToJoin() throws Exception {
-        boolean isPastDate = endDate.equals(new Date());
-        boolean isOwner = getOwner().getId() == (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
-        logger.info(String.valueOf(isPastDate));
-        logger.info(String.valueOf(isOwner));
+        boolean isPastDate = endDate.before(new Date());
+        boolean isOwner = getOwner_id() == (int) SessionManager.getInstance().getValue(UserDbColumnNames.ID);
         return !isPastDate && !isOwner;
+    }
+
+    @Override
+    public void validatePost(PostValidator validator) throws ParseException,
+            StartDateAfterEndDateException,
+            MinAgeGreaterThanMaxAgeException,
+            StartDateBeforeTodayException {
+        validator.isStarDateBeforeToday(this);
+        validator.isStartDateBeforeEndDate(this);
+        validator.isMinAgeLessThanMaxAge(this);
     }
 
     public boolean isEligibleForFeedback() {
@@ -163,7 +175,7 @@ public class Post implements IPost {
         return dateFormat.format(date);
     }
 
-    private Date getJavaDate(String date) throws ParseException {
+    protected Date getJavaDate(String date) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(date);
     }
 
@@ -204,29 +216,19 @@ public class Post implements IPost {
     }
 
 
-    public User getOwner() {
-        return owner;
+    public int getOwner_id() {
+        return owner_id;
     }
 
-    public void setOwner(int ownerId) throws Exception {
-        this.owner = new User().getUserById(ownerId);
-        logger.info(owner.toString());
-    }
-
-    public IPostDatabase getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(IPostDatabase database) {
-        this.database = database;
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
     }
 
     @Override
     public String toString() {
         return "Post{" +
-                ", database=" + database +
-                ", id=" + id +
-                ", owner=" + owner +
+                " id=" + id +
+                ", owner=" + owner_id +
                 ", title='" + title + '\'' +
                 ", capacity=" + capacity +
                 ", source='" + source + '\'' +

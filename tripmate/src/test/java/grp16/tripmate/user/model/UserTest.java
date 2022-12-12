@@ -2,7 +2,8 @@ package grp16.tripmate.user.model;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.factory.IUserFactory;
+import grp16.tripmate.user.model.factory.UserFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,7 @@ import java.text.SimpleDateFormat;
 class UserTest {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private IUserFactory userFactory;
+    private final IUserFactory userFactory;
 
     private User user;
 
@@ -25,7 +26,7 @@ class UserTest {
     }
 
     private void createTestUser() throws NoSuchAlgorithmException, ParseException {
-        user = (User) userFactory.getNewUser();
+        user = (User) userFactory.makeNewUser();
         user.setUsername("uname");
         user.setPassword("password");
         user.setId(1);
@@ -65,8 +66,8 @@ class UserTest {
 
     @Test
     void setLastname() {
-        user.setLastname("last anem 2");
-        Assertions.assertEquals("last anem 2", user.getLastname());
+        user.setLastname("last name 2");
+        Assertions.assertEquals("last name 2", user.getLastname());
     }
 
     @Test
@@ -104,14 +105,13 @@ class UserTest {
 
     @Test
     void getPassword() throws NoSuchAlgorithmException {
-        Assertions.assertEquals(PasswordEncoder.encodeString("password"), user.getPassword());
+        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password"), user.getPassword());
     }
 
     @Test
     void setPassword() throws NoSuchAlgorithmException {
         user.setPassword("password 2");
-        Assertions.assertEquals(PasswordEncoder.encodeString("password 2"), user.getPassword());
-
+        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password 2"), user.getPassword());
     }
 
     @Test

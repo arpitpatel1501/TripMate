@@ -1,13 +1,12 @@
 package grp16.tripmate.post.database;
 
 import grp16.tripmate.post.model.IPost;
-import grp16.tripmate.post.model.Post;
 
 public interface IPostsQueryGenerator {
 
     String getCreatePostQuery(IPost post);
 
-    String getAllPosts();
+    String getAllPosts(int loggedInUser);
 
     String getPostsByUserId(int userId);
 

@@ -16,9 +16,13 @@
         requested to join post <B><span th:text="${postRequest.getPostTitle}"/></B> <br></td>
     <br>
     <td>
-        <button type="button" onclick="alert('Accept')">Accept</button>
-        <button type="button" onclick="alert('Decline')">Decline</button>
-        <br></td>
+        <form action="#" th:action="@{/accept_request}" method="get">
+            <p><input type="submit" value="Accept"/></p>
+        </form>
+        <form action="#" th:action="@{/decline_request}" method="get">
+            <input type="submit" value="Decline"/>
+        </form>
+    </td>
     <br>
 </tr>
 <h2 class="error" th:text="${error}"></h2>

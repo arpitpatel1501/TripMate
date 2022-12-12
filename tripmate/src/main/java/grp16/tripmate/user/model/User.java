@@ -1,24 +1,17 @@
 package grp16.tripmate.user.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.session.SessionManager;
+import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserQueryBuilder;
-import grp16.tripmate.user.database.UserQueryBuilder;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class User implements IUser {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -31,8 +24,6 @@ public class User implements IUser {
     private Date birthDate;
     private String gender;
 
-    private final IUserQueryBuilder queryBuilder;
-    private final IDatabaseConnection dbConnection;
 
     public int getId() {
         return id;
@@ -66,6 +57,10 @@ public class User implements IUser {
         this.birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
     }
 
+    public void setBirthDateAsDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -87,13 +82,15 @@ public class User implements IUser {
     }
 
     public void setPassword(String password) throws NoSuchAlgorithmException {
-        password = PasswordEncoder.encodeString(password);
+        password = PasswordEncoder.getInstance().encodeString(password);
+        this.password = password;
+    }
+
+    public void setPasswordWithOutEncoding(String password) {
         this.password = password;
     }
 
     public User() {
-        this.queryBuilder = UserQueryBuilder.getInstance();
-        this.dbConnection = new DatabaseConnection();
     }
 
     @Override
@@ -101,58 +98,22 @@ public class User implements IUser {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 
-    public boolean validateUser() throws Exception {
-        Connection connection = dbConnection.getDatabaseConnection();
-        Statement statement = connection.createStatement();
-        ResultSet userRS = statement.executeQuery(queryBuilder.getUserByUsername(this.getUsername()));
-        User userFromDb = resultSetToUsers(userRS).get(0);
-        connection.close();
-        boolean isValidUser = userFromDb != null && userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(PasswordEncoder.encodeString(this.getPassword()));
+    public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws Exception {
+        User userFromDb = userDatabase.getUserByUsername(this.getUsername());
+        logger.info(userFromDb.toString());
+        boolean isValidUser = userFromDb != null &&
+                userFromDb.getUsername().equals(this.getUsername()) &&
+                userFromDb.getPassword().equals(this.getPassword());
         if (isValidUser) {
             logger.info("Current User: " + userFromDb);
-            SessionManager.Instance().setValue(UserDbColumnNames.id, userFromDb.getId());
+            SessionManager.getInstance().setValue(UserDbColumnNames.ID, userFromDb.getId());
         }
         return isValidUser;
     }
 
-    private List<User> resultSetToUsers(ResultSet rs) throws SQLException, NoSuchAlgorithmException, ParseException {
-        List<User> results = new ArrayList<>();
-        while (rs.next()) {
-            User user = new User();
-            user.setUsername(rs.getString(UserDbColumnNames.username));
-            user.setPassword(rs.getString(UserDbColumnNames.password));
-            user.setId(rs.getInt(UserDbColumnNames.id));
-            user.setFirstname(rs.getString(UserDbColumnNames.firstname));
-            user.setLastname(rs.getString(UserDbColumnNames.lastname));
-            user.setBirthDate(String.valueOf(rs.getDate(UserDbColumnNames.birthDate)));
-            user.setGender(rs.getString(UserDbColumnNames.gender));
-            results.add(user);
-        }
-        return results;
-    }
-
     @Override
-    public boolean createUser() throws Exception {
-        Connection connection = dbConnection.getDatabaseConnection();
-        Statement statement = connection.createStatement();
-        String query = queryBuilder.createUser(this);
-        logger.info(query);
-        int rowUpdate = statement.executeUpdate(query);
-        connection.close();
-        return rowUpdate == 1;
-    }
-
-    @Override
-    public User getLoggedInUser() throws Exception {
-        int currentUserId = (int) SessionManager.Instance().getValue(UserDbColumnNames.id);
-        logger.info("Current User ID: " + currentUserId);
-        String query = queryBuilder.getUserByUserID(currentUserId);
-        Connection connection = dbConnection.getDatabaseConnection();
-        Statement statement = connection.createStatement();
-        ResultSet userRS = statement.executeQuery(query);
-        User userFromDb = resultSetToUsers(userRS).get(0);
-        connection.close();
-        return userFromDb;
+    public boolean createUser(IUserDatabase userDatabase) throws Exception {
+        return userDatabase.insertUser(this);
     }
 
     public String dateToSQLDate(Date date) {
@@ -160,27 +121,13 @@ public class User implements IUser {
             // Ref: https://theopentutorials.com/examples/java/util/date/how-to-convert-java-util-date-to-mysql-date-format/
             String pattern = "yyyy-MM-dd";
             SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-            String sqlDate = formatter.format(date);
-            return sqlDate;
+            return formatter.format(date);
         }
         return "";
     }
 
-    public void changeUserDetails() throws Exception {
-        Connection connection = dbConnection.getDatabaseConnection();
-        Statement statement = connection.createStatement();
-        this.setId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.id));
-        String query = queryBuilder.changeUserDetails(this);
-        int rowUpdate = statement.executeUpdate(query);
-        connection.close();
-    }
-
-    @Override
-    public User getUserById(int userid) throws Exception {
-        Connection connection = dbConnection.getDatabaseConnection();
-        Statement statement = connection.createStatement();
-        String query = queryBuilder.getUserByUserID(userid);
-        ResultSet rs = statement.executeQuery(query);
-        return resultSetToUsers(rs).get(0);
+    public boolean changeUserDetails(IUserDatabase userDatabase) throws Exception {
+        this.setId(SessionManager.getInstance().getLoggedInUserId());
+        return userDatabase.updateUser(this);
     }
 }

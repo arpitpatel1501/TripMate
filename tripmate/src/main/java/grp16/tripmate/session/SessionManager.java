@@ -1,5 +1,7 @@
 package grp16.tripmate.session;
 
+import grp16.tripmate.user.database.UserDbColumnNames;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +14,7 @@ public class SessionManager {
         session = new HashMap<>();
     }
 
-    public static SessionManager Instance() {
+    public static SessionManager getInstance() {
         if (sessionManager == null) {
             sessionManager = new SessionManager();
         }
@@ -35,4 +37,7 @@ public class SessionManager {
     }
 
 
+    public int getLoggedInUserId() {
+        return (Integer) session.get(UserDbColumnNames.ID);
+    }
 }
