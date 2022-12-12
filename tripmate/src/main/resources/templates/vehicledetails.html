@@ -44,7 +44,8 @@
     <tr>
         <td>
             <br><br>
-            <form action="#" th:object="${vehicleBookingObj}" th:action="@{/confirm-booking/{id}(id=${vehicle.getId()})}"
+            <form action="#" th:object="${vehicleBookingObj}"
+                  th:action="@{/confirm-booking/{id}(id=${vehicle.getId()})}"
                   method="post">
                 <label for="trips">Choose Your Trip:</label>
                 <select th:field="${vehicleBookingObj.postId}" id="trips" name="trips">

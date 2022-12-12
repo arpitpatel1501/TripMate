@@ -2,6 +2,7 @@ package grp16.tripmate.vehicle.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.PostDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleBooking;
 import grp16.tripmate.vehicle.model.VehicleBookingDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleDbColumnNames;
@@ -24,12 +25,21 @@ public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
 
     @Override
     public String getVehicleBookingByPostId(int postId) {
-        return null;
+        String query = "select * from " +
+                VehicleBookingDbColumnNames.TABLENAME +
+                " where " + VehicleBookingDbColumnNames.POST_ID + "  = " + postId + ";\n";
+        logger.info(query);
+        return query;
     }
 
     @Override
     public String getVehicleBookingByUserId(int userId) {
-        return null;
+        String query = "select * from " +
+                VehicleBookingDbColumnNames.TABLENAME + " where " +
+                VehicleBookingDbColumnNames.POST_ID + " in ( select " + PostDbColumnNames.ID + " from " + PostDbColumnNames.TABLE_NAME
+                + " where " + PostDbColumnNames.OWNER + " = " + userId + ");\n";
+
+        return query;
     }
 
     @Override

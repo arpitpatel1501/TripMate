@@ -45,7 +45,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 post.getMaxAge() + ", " +
                 post.getCapacity() + ", " +
                 "'" + post.getDescription() + "' );";
-        logger.info(query);
         return query;
     }
 
@@ -67,7 +66,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 "FROM " + PostDbColumnNames.TABLE_NAME + " " +
                 "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1 " +
                 "AND " + PostDbColumnNames.OWNER + " != " + loggedInUser;
-        logger.info(query);
         return query;
     }
 
@@ -89,7 +87,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 "FROM " + PostDbColumnNames.TABLE_NAME + " " +
                 "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1 AND  " +
                 PostDbColumnNames.OWNER + " = " + userId;
-        logger.info(query);
         return query;
     }
 

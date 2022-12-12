@@ -3,6 +3,8 @@ package grp16.tripmate.post.database;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.Post;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ public interface IPostDatabase {
 
     List<Post> getAllPosts(int loggedInUser);
 
-    Post getPostByPostId(int post_id);
+    Post getPostByPostId(int postId);
 
-    List<Feedback> getFeedbacks(IFeedbackDatabase feedbackDatabase, int post_id) throws Exception;
+    List<Feedback> getFeedbacks(IFeedbackDatabase feedbackDatabase, int postId) throws Exception;
+
+    List<VehicleBooking> getVehicles(IVehicleBookingDatabase vehicleBookingDatabase, int postId);
 }

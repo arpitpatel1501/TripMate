@@ -7,19 +7,26 @@ import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PostTest {
 
-    IPostFactory factory = PostFactory.getInstance();
-    IPostDatabase database = new PostDatabaseMock();
+    IPostFactory factory;
+    IPostDatabase database;
     Post post;
 
-    public PostTest() throws ParseException{
+    public PostTest() throws ParseException {
+        factory = PostFactory.getInstance();
+        database = new PostDatabaseMock();
+
         post = (Post) factory.makeNewPost();
         post.setId(1);
         post.setOwner_id(2);
@@ -42,17 +49,30 @@ class PostTest {
     }
 
     @Test
+    @Order(11)
+    void createPostAgain() throws Exception {
+        assertFalse(post.createPost(database));
+    }
+
+    @Test
     @Order(2)
     void getPostsByUserId() throws Exception {
         post.createPost(database);
-        assertEquals(post.getPostsByUserId(database, 2).size(), 1);
+        assertEquals(1, post.getPostsByUserId(database, 2).size());
+    }
+
+    @Test
+    @Order(12)
+    void getPostsByUserIdDNE() throws Exception {
+        post.createPost(database);
+        assertEquals(0, post.getPostsByUserId(database, 5).size());
     }
 
     @Test
     @Order(3)
     void getAllPosts() throws Exception {
         post.createPost(database);
-        assertEquals(post.getAllPosts(database, 2).size(), 1);
+        assertEquals(1, post.getAllPosts(database, 2).size());
     }
 
     @Test
@@ -60,7 +80,14 @@ class PostTest {
     void getPostByPostId() throws Exception {
         post.createPost(database);
         Post postFromDb = post.getPostByPostId(database, post.getId());
-        assertEquals(post.getId(), postFromDb.getId());
+        assertEquals(postFromDb.getId(), post.getId());
+    }
+
+    @Test
+    @Order(14)
+    void getPostByPostIdWithNoPost(){
+        Post postFromDb = post.getPostByPostId(database, 5);
+        assertNull(postFromDb);
     }
 
     @Test
@@ -70,7 +97,7 @@ class PostTest {
         post.setTitle("Updated Title");
         post.updatePost(database);
         Post postFromDb = post.getPostByPostId(database, post.getId());
-        assertEquals(postFromDb.getTitle(), "Updated Title");
+        assertEquals("Updated Title", postFromDb.getTitle());
     }
 
     @Test
@@ -79,7 +106,7 @@ class PostTest {
         post.createPost(database);
         post.deletePost(database);
         Post postFromDB = post.getPostByPostId(database, post.getId());
-        assertEquals(postFromDB, null);
+        assertNull(postFromDB);
     }
 
     @Test

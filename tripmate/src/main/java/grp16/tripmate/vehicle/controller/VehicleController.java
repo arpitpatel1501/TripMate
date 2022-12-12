@@ -54,16 +54,16 @@ public class VehicleController implements IVehicleController {
     public String getVehicleDetails(Model model, @PathVariable("id") int vehicleId) throws Exception {
         model.addAttribute("title", "Vehicle Details");
 
-        Vehicle vehicleObj = vehicle.getVehicleById(vehicleId);
-        model.addAttribute("vehicle", vehicleObj);
+        Vehicle vehicle = this.vehicle.getVehicleById(vehicleId);
+        model.addAttribute("vehicle", vehicle);
 
         int userId = SessionManager.getInstance().getLoggedInUserId();
         Post post = (Post) postFactory.makeNewPost();
         List<Post> userPosts = post.getPostsByUserId(postDatabase, userId);
         model.addAttribute("userposts", userPosts);
 
-        VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking();
-        model.addAttribute("vehicleBookingObj", vehicleBookingObj);
+        VehicleBooking vehicleBooking = vehicleBookingFactory.getNewVehicleBooking();
+        model.addAttribute("vehicleBookingObj", vehicleBooking);
 
         return "vehicledetails";
     }
@@ -71,18 +71,26 @@ public class VehicleController implements IVehicleController {
     @PostMapping("/confirm-booking/{id}")
     public String confirmVehicleBooking(Model model,
                                         @PathVariable("id") int vehicleId,
-                                        @ModelAttribute VehicleBooking vehicleBookingObj,
+                                        @ModelAttribute VehicleBooking vehicleBooking,
                                         @ModelAttribute Post userPost) {
-        logger.info("the vehiclebooking obj is: " + vehicleBookingObj);
+        logger.info("the vehiclebooking obj is: " + vehicleBooking);
         logger.info("the User Post obj is: " + userPost);
 
-        vehicleBookingObj.setVehicleId(vehicleId);
-        vehicleBookingDatabase.createVehicleBooking(vehicleBookingObj);
-        return "payment";
+        vehicleBooking.setVehicleId(vehicleId);
+        vehicleBookingDatabase.createVehicleBooking(vehicleBooking);
+        return "redirect:/my-vehicle-bookings";
     }
 
     @GetMapping("/my-vehicle-bookings")
     public String getAllVehicleBookingsByUserId(Model model) {
+        model.addAttribute("title", "My Vehicle Bookings");
+        try {
+            List<VehicleBooking> vehicleBookings = vehicleBookingDatabase.getVehicleBookingByUserId(SessionManager.getInstance().getLoggedInUserId());
+            model.addAttribute("vehicleBookings", vehicleBookings);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", e.getMessage());
+        }
         return "my_vehiclebookings";
     }
 

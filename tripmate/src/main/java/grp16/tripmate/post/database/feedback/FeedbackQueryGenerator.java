@@ -37,8 +37,6 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
                 feedback.getUserId() + "," +
                 " '" + feedback.getFeedback() + "' " + "," +
                 feedback.getRating() + ")";
-
-        logger.info(query);
         return query;
     }
 
@@ -46,16 +44,12 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
         String query = "DELETE FROM " +
                 FeedbackDbColumnNames.TABLE_NAME +
                 " WHERE " + FeedbackDbColumnNames.POST_ID + " = " + postId;
-
-        logger.info(query);
-
         return query;
     }
 
     @Override
     public String getFeedbacksByPostId(int postId) {
-        String query = "select * from " + FeedbackDbColumnNames.TABLE_NAME + " where " + FeedbackDbColumnNames.TABLE_NAME + " = " + postId;
-        logger.info(query);
+        String query = "select * from " + FeedbackDbColumnNames.TABLE_NAME + " where " + FeedbackDbColumnNames.POST_ID + " = " + postId;
         return query;
     }
 }

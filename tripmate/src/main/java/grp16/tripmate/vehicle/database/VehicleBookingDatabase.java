@@ -6,13 +6,14 @@ import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.model.IVehicleBooking;
-import grp16.tripmate.vehicle.model.IVehicleBookingFactory;
-import grp16.tripmate.vehicle.model.VehicleBooking;
-import grp16.tripmate.vehicle.model.VehicleBookingFactory;
+import grp16.tripmate.vehicle.model.*;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class VehicleBookingDatabase implements IVehicleBookingDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -32,19 +33,33 @@ public class VehicleBookingDatabase implements IVehicleBookingDatabase {
         databaseExecutor = new DatabaseExecutor();
     }
 
-    @Override
-    public List<VehicleBooking> resultSetToVehicleBooking(ResultSet rs) throws Exception {
-        return null;
-    }
 
     @Override
     public List<VehicleBooking> getVehicleBookingByPostId(int postId) {
-        return null;
+        String query = queryBuilder.getVehicleBookingByPostId(postId);
+        return listToVehicles(databaseExecutor.executeSelectQuery(query));
+    }
+
+    private List<VehicleBooking> listToVehicles(List<Map<String, Object>> results) {
+        List<VehicleBooking> bookings = new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            VehicleBooking vehicleObj = factory.getNewVehicleBooking();
+            vehicleObj.setId((Integer) result.get(VehicleBookingDbColumnNames.ID));
+            vehicleObj.setVehicleId((Integer) result.get(VehicleBookingDbColumnNames.VEHICLE_ID));
+            vehicleObj.setPostId((Integer) result.get(VehicleBookingDbColumnNames.POST_ID));
+            vehicleObj.setBookingStartDate((Date) result.get(VehicleBookingDbColumnNames.BOOKING_START_DATE));
+            vehicleObj.setBookingEndDate((Date) result.get(VehicleBookingDbColumnNames.BOOKING_END_DATE));
+            vehicleObj.setTotalKm((Float) result.get(VehicleBookingDbColumnNames.TOTAL_KM));
+            vehicleObj.setHasPaid((Integer) result.get(VehicleBookingDbColumnNames.HAS_PAID) != 0);
+            bookings.add(vehicleObj);
+        }
+        return bookings;
     }
 
     @Override
     public List<VehicleBooking> getVehicleBookingByUserId(int userId) {
-        return null;
+        String query = queryBuilder.getVehicleBookingByUserId(userId);
+        return listToVehicles(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
