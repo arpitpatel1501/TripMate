@@ -1,5 +1,7 @@
 package grp16.tripmate.post.model.factory;
 
+import grp16.tripmate.db.execute.DatabaseExecution;
+import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
@@ -19,20 +21,9 @@ import grp16.tripmate.post.model.PostValidator;
 public class PostFactory implements IPostFactory {
 
     private static IPostFactory instance;
-    private final IPostDatabase postDatabase;
-    private final IPostsQueryGenerator postQueryBuilder;
-    private final IFeedbackDatabase feedbackDatabase;
-    private final IFeedbackQueryGenerator feedbackQueryBuilder;
-    private final PostValidator postValidator;
-    private final ILogger logger;
 
     private PostFactory() {
-        postDatabase = new PostDatabase();
-        postQueryBuilder = PostsQueryGenerator.getInstance();
-        feedbackDatabase = new FeedbackDatabase();
-        feedbackQueryBuilder = FeedbackQueryGenerator.getInstance();
-        postValidator = new PostValidator();
-        logger = new MyLoggerAdapter(this);
+
     }
 
     public static IPostFactory getInstance() {
@@ -44,17 +35,17 @@ public class PostFactory implements IPostFactory {
 
     @Override
     public IPost getNewPost() {
-        return new Post(postDatabase);
+        return new Post();
     }
 
     @Override
     public IPostDatabase getPostDatabase() {
-        return postDatabase;
+        return new PostDatabase(getNewDatabaseExecutor(), getPostQueryBuilder());
     }
 
     @Override
     public IPostsQueryGenerator getPostQueryBuilder() {
-        return postQueryBuilder;
+        return PostsQueryGenerator.getInstance();
     }
 
     @Override
@@ -64,21 +55,28 @@ public class PostFactory implements IPostFactory {
 
     @Override
     public IFeedbackDatabase getFeedbackDatabase() {
-        return feedbackDatabase;
+        return new FeedbackDatabase(getNewDatabaseExecutor(), getFeedbackQueryBuilder());
     }
 
     @Override
     public IFeedbackQueryGenerator getFeedbackQueryBuilder() {
-        return feedbackQueryBuilder;
+        return FeedbackQueryGenerator.getInstance();
     }
 
     @Override
     public PostValidator getPostValidator() {
-        return postValidator;
+        return new PostValidator();
     }
 
     @Override
     public ILogger getLogger(Object classObj) {
         return new MyLoggerAdapter(classObj);
     }
+
+    @Override
+    public IDatabaseExecution getNewDatabaseExecutor() {
+        return new DatabaseExecution();
+    }
+
+
 }

@@ -2,8 +2,8 @@ package grp16.tripmate.user.model;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
-import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.factory.IUserFactory;
+import grp16.tripmate.user.model.factory.UserFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

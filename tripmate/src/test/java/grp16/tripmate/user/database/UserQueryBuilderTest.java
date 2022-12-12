@@ -10,7 +10,7 @@ import java.text.ParseException;
 class UserQueryBuilderTest {
 
 
-    IUserQueryBuilder queryBuilder = UserQueryBuilder.getInstance();
+    IUserQueryGenerator queryBuilder = UserQueryGenerator.getInstance();
 
     @Test
     void getUserByUsername() {

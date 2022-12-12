@@ -2,11 +2,11 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.db.execute.DatabaseExecution;
 import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -20,32 +20,32 @@ public class PostDatabase implements IPostDatabase {
     private final IPostsQueryGenerator queryGenerator;
     private final IDatabaseExecution databaseExecutor;
 
-    public PostDatabase() {
-        queryGenerator = PostsQueryGenerator.getInstance();
-        databaseExecutor = new DatabaseExecution();
+    public PostDatabase(IDatabaseExecution databaseExecutor, IPostsQueryGenerator queryGenerator) {
+        this.queryGenerator = queryGenerator;
+        this.databaseExecutor = databaseExecutor;
     }
 
     @Override
     public boolean createPost(Post post) throws Exception {
-        post.setOwner_id((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+        post.setOwner_id(SessionManager.Instance().getLoggedInUserId());
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecutor.executeInsertQuery(query);
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid){
-        String query = queryGenerator.getPostsByUserId(userid);
+    public List<Post> getPostsByUserId(int userId) {
+        String query = queryGenerator.getPostsByUserId(userId);
         return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public List<Post> getAllPosts(){
-        String query = queryGenerator.getAllPosts();
+    public List<Post> getAllPosts(int loggedInUser) {
+        String query = queryGenerator.getAllPosts(loggedInUser);
         return listToPosts(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
-    public Post getPostByPostId(int post_id){
+    public Post getPostByPostId(int post_id) {
         String query = queryGenerator.getPostByPostId(post_id);
         List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
         if (posts != null) {
@@ -75,11 +75,11 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public List<Feedback> getFeedbacks(int post_id) {
-        return PostFactory.getInstance().getFeedbackDatabase().getFeedbacksByPostId(post_id);
+    public List<Feedback> getFeedbacks(IFeedbackDatabase database, int post_id) throws Exception {
+        return database.getFeedbacksByPostId(post_id);
     }
 
-    public List<Post> listToPosts(List<Map<String, Object>> responseMaps){
+    public List<Post> listToPosts(List<Map<String, Object>> responseMaps) {
         List<Post> results = new ArrayList<>();
         for (Map<String, Object> responseMap : responseMaps) {
             Post post = (Post) PostFactory.getInstance().getNewPost();

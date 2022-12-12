@@ -3,6 +3,7 @@ package grp16.tripmate.post.model;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
@@ -23,9 +24,6 @@ import java.util.List;
 
 public class Post extends PostSubject implements IPost {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private IPostDatabase database;
-    private PostValidator validator;
-
     private int id;
     private int owner_id;
     private String title;
@@ -39,16 +37,13 @@ public class Post extends PostSubject implements IPost {
     private String description;
     private boolean isHidden;
 
-    public Post(IPostDatabase postDatabase) {
-        super();
-        this.database = postDatabase;
-        this.validator = new PostValidator();
+    public Post() {
         this.setStartDate(new Date());
         this.setEndDate(new Date());
     }
 
     @Override
-    public boolean createPost() throws Exception {
+    public boolean createPost(IPostDatabase database) throws Exception {
         boolean isPostCreated = database.createPost(this);
         if (isPostCreated) {
             notifyObservers();
@@ -57,50 +52,48 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public List<Post> getPostsByUserId(int userid){
-        return database.getPostsByUserId(userid);
+    public List<Post> getPostsByUserId(IPostDatabase database, int userId) {
+        return database.getPostsByUserId(userId);
     }
 
     @Override
-    public List<Post> getAllPosts(){
-        return database.getAllPosts();
+    public List<Post> getAllPosts(IPostDatabase database, int loggedInUser) {
+        return database.getAllPosts(loggedInUser);
     }
 
     @Override
-    public Post getPostByPostId(int postId){
+    public Post getPostByPostId(IPostDatabase database, int postId) {
         return database.getPostByPostId(postId);
     }
 
     @Override
-    public boolean updatePost() {
+    public boolean updatePost(IPostDatabase database) {
         return database.updatePost(this);
     }
 
     @Override
-    public boolean deletePost() {
+    public boolean deletePost(IPostDatabase database) {
         return database.deletePost(this.getId());
     }
 
     @Override
-    public boolean hidePost() {
+    public boolean hidePost(IPostDatabase database) {
         return database.hidePost(this.getId());
     }
 
     @Override
-    public List<Feedback> getFeedbacks() {
-        return database.getFeedbacks(this.getId());
+    public List<Feedback> getFeedbacks(IPostDatabase database, IFeedbackDatabase feedbackDatabase) throws Exception {
+        return database.getFeedbacks(feedbackDatabase, this.getId());
     }
 
     public boolean isEligibleToJoin() throws Exception {
         boolean isPastDate = endDate.before(new Date());
         boolean isOwner = getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.ID);
-        logger.info(String.valueOf(isPastDate));
-        logger.info(String.valueOf(isOwner));
         return !isPastDate && !isOwner;
     }
 
     @Override
-    public void validatePost() throws ParseException,
+    public void validatePost(PostValidator validator) throws ParseException,
             StartDateAfterEndDateException,
             MinAgeGreaterThanMaxAgeException,
             StartDateBeforeTodayException {
@@ -231,23 +224,10 @@ public class Post extends PostSubject implements IPost {
         this.owner_id = owner_id;
     }
 
-    public IPostDatabase getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(IPostDatabase database) {
-        this.database = database;
-    }
-
-    public void setValidator(PostValidator validator) {
-        this.validator = validator;
-    }
-
     @Override
     public String toString() {
         return "Post{" +
-                ", database=" + database +
-                ", id=" + id +
+                " id=" + id +
                 ", owner=" + owner_id +
                 ", title='" + title + '\'' +
                 ", capacity=" + capacity +

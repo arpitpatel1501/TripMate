@@ -16,12 +16,12 @@ import java.util.Map;
 public class UserDatabase implements IUserDatabase {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IUserQueryBuilder queryGenerator;
+    private final IUserQueryGenerator queryGenerator;
     private final IDatabaseExecution databaseExecution;
 
     private final IPasswordEncoder passwordEncoder;
 
-    public UserDatabase(IUserQueryBuilder queryGenerator, IDatabaseExecution databaseExecution, IPasswordEncoder passwordEncoder) {
+    public UserDatabase(IUserQueryGenerator queryGenerator, IDatabaseExecution databaseExecution, IPasswordEncoder passwordEncoder) {
         this.queryGenerator = queryGenerator;
         this.databaseExecution = databaseExecution;
         this.passwordEncoder = passwordEncoder;

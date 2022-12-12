@@ -1,81 +1,57 @@
 package grp16.tripmate.post.database.feedback;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.db.execute.IDatabaseExecution;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FeedbackDatabase implements IFeedbackDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private static IDatabaseConnection dbConnection = null;
-    private static IFeedbackQueryGenerator queryBuilder = null;
+    private final IDatabaseExecution databaseExecutor;
+    private final IFeedbackQueryGenerator queryGenerator;
 
-    public FeedbackDatabase() {
-        dbConnection = new DatabaseConnection();
-        queryBuilder = FeedbackQueryGenerator.getInstance();
+    public FeedbackDatabase(IDatabaseExecution databaseExecutor, IFeedbackQueryGenerator queryGenerator) {
+        this.databaseExecutor = databaseExecutor;
+        this.queryGenerator = queryGenerator;
     }
 
     @Override
-    public void createFeedback(Feedback feedback) {
-        String query = queryBuilder.createFeedback(feedback);
-        execute(query);
+    public boolean createFeedback(Feedback feedback) {
+        String query = queryGenerator.createFeedback(feedback);
+        return databaseExecutor.executeInsertQuery(query);
     }
 
     @Override
-    public void deleteFeedbackByPostId(int postid) {
-        String query = queryBuilder.deleteFeedbackByPostId(postid);
-        execute(query);
+    public boolean deleteFeedbackByPostId(int postId) {
+        String query = queryGenerator.deleteFeedbackByPostId(postId);
+        return databaseExecutor.executeDeleteQuery(query);
     }
 
     @Override
-    public List<Feedback> getFeedbacksByPostId(int post_id) {
-        String query = queryBuilder.getFeedbacksByPostId(post_id);
-        return executeQuery(query);
+    public List<Feedback> getFeedbacksByPostId(int post_id) throws Exception {
+        String query = queryGenerator.getFeedbacksByPostId(post_id);
+        return listToFeedback(databaseExecutor.executeSelectQuery(query));
     }
 
-    private List<Feedback> executeQuery(String query) {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            List<Feedback> feedbacks = resultSetToFeedback(connection.createStatement().executeQuery(query));
-            connection.close();
-            return feedbacks;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-        return null;
-    }
-
-    private void execute(String query) {
-        try {
-            final Connection connection = dbConnection.getDatabaseConnection();
-            connection.createStatement().execute(query);
-            connection.close();
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    public List<Feedback> resultSetToFeedback(ResultSet rs) throws Exception {
-        List<Feedback> results = new ArrayList<>();
-        while (rs.next()) {
+    private List<Feedback> listToFeedback(List<Map<String, Object>> results) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        for (Map<String, Object> result : results) {
             Feedback feedback = new Feedback();
 
-            feedback.setId(rs.getInt(FeedbackDbColumnNames.ID));
-            feedback.setPostId(rs.getInt(FeedbackDbColumnNames.POST_ID));
-            feedback.setUserId(rs.getInt(FeedbackDbColumnNames.USER_ID));
-            feedback.setFeedback(rs.getString(FeedbackDbColumnNames.FEEDBACK));
-            feedback.setRating(rs.getFloat(FeedbackDbColumnNames.RATING));
+            feedback.setId((Integer) result.get(FeedbackDbColumnNames.ID));
+            feedback.setPostId((Integer) result.get(FeedbackDbColumnNames.POST_ID));
+            feedback.setUserId((Integer) result.get(FeedbackDbColumnNames.USER_ID));
+            feedback.setFeedback((String) result.get(FeedbackDbColumnNames.FEEDBACK));
+            feedback.setRating((Float) result.get(FeedbackDbColumnNames.RATING));
 
-            results.add(feedback);
+            feedbacks.add(feedback);
         }
-        return results;
+        return feedbacks;
     }
 
 
