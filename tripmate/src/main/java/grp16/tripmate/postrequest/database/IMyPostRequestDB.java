@@ -7,6 +7,6 @@ public interface IMyPostRequestDB {
 
     String createJoinRequest(int post_id, int user_id);
 
-    public String updateRequestStatus(String postId, String requestOwner, PostRequestStatus postRequestStatus);
+    public String updateRequestStatus(int requestId, PostRequestStatus postRequestStatus);
 
 }

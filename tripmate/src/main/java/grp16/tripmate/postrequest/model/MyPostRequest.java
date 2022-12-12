@@ -15,23 +15,26 @@ import java.util.List;
 public class MyPostRequest implements IMyPostRequest {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IDatabaseConnection databaseConnection;
+    private IDatabaseConnection databaseConnection;
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
-
-    private int id;
+    private int idRequest;
     private PostRequestStatus status;
     private int postId;
     private String firstNameRequestee;
     private String lastNameRequestee;
+    private int idRequestee;
     private String postTitle;
     private int idCreator;
     private String firstNameCreator;
     private String lastNameCreator;
 
     public MyPostRequest() {
-        databaseConnection = new DatabaseConnection();
+    }
+
+    public int getIdRequest() {
+        return this.idRequest;
     }
 
     public String getFirstNameRequestee() {
@@ -50,6 +53,14 @@ public class MyPostRequest implements IMyPostRequest {
         return idCreator;
     }
 
+    public int getIdRequestee() {
+        return idRequestee;
+    }
+
+    public void setIdRequest(int idRequest) {
+        this.idRequest = idRequest;
+    }
+
     public void setFirstNameRequestee(String firstNameRequestee) {
         this.firstNameRequestee = firstNameRequestee;
     }
@@ -65,6 +76,9 @@ public class MyPostRequest implements IMyPostRequest {
     public void setIdCreator(int idCreator) {
         this.idCreator = idCreator;
     }
+    public void setIdRequestee(int idRequestee) {
+        this.idRequestee = idRequestee;
+    }
 
     public void setFirstNameCreator(String firstNameCreator) {
         this.firstNameCreator = firstNameCreator;
@@ -75,6 +89,7 @@ public class MyPostRequest implements IMyPostRequest {
     }
 
     public Statement getConnection() throws Exception {
+        databaseConnection = new DatabaseConnection();
         connection = databaseConnection.getDatabaseConnection();
         statement = connection.createStatement();
 
@@ -101,8 +116,10 @@ public class MyPostRequest implements IMyPostRequest {
         while (resultSet.next()) {
             IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
 
+            myPostRequest.setIdRequest(resultSet.getInt("requestId"));
             myPostRequest.setFirstNameRequestee(resultSet.getString("firstNameRequestee"));
             myPostRequest.setLastNameRequestee(resultSet.getString("lastNameRequestee"));
+            myPostRequest.setIdRequestee(resultSet.getInt("idRequestee"));
             myPostRequest.setPostTitle(resultSet.getString("postTitle"));
             myPostRequest.setFirstNameCreator(resultSet.getString("firstNameCreator"));
             myPostRequest.setLastNameCreator(resultSet.getString("lastNameCreator"));
@@ -113,6 +130,23 @@ public class MyPostRequest implements IMyPostRequest {
         connection.close();
         return results;
     }
+
+    @Override
+    public boolean updateRequestAccept(String query, int requestId, PostRequestStatus postRequestStatus) throws Exception {
+        statement = getConnection();
+        int rowUpdate = statement.executeUpdate(query);
+        boolean isRowUpdated;
+        if (rowUpdate == 1) {
+            isRowUpdated = true;
+        }
+        else {
+            isRowUpdated = false;
+        }
+        connection.close();
+        return isRowUpdated;
+    }
+
+
 }
 
 

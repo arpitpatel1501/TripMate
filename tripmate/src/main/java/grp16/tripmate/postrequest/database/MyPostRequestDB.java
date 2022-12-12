@@ -19,14 +19,14 @@ public class MyPostRequestDB implements IMyPostRequestDB {
     }
 
     @Override
-    public String getPostRequestByUserId(int userid) {
-        String query = "SELECT u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, p.title as postTitle, " +
+    public String getPostRequestByUserId(int loginUserId) {
+        String query = "SELECT pr.id as requestId, u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, u.id as idRequestee, p.title as postTitle, " +
                 "p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
                 "FROM PostRequest pr\n" +
                 "JOIN Post p on pr.Post_id = p.id\n" +
                 "JOIN User u on pr.request_owner = u.id\n" +
                 "JOIN User post_owner on post_owner.id = p.created_by\n" +
-                "WHERE pr.status = \"pending\" and pr.request_owner = " + userid + " and " + userid + " != p.created_by;";
+                "WHERE pr.status = \"pending\" and p.created_by = " + loginUserId + ";";
 
         logger.info(query);
         return query;
@@ -48,17 +48,14 @@ public class MyPostRequestDB implements IMyPostRequestDB {
         return query;
     }
 
-
-
     @Override
-    public String updateRequestStatus(String postId, String requestOwner, PostRequestStatus postRequestStatus) {
+    public String updateRequestStatus(int requestId, PostRequestStatus postRequestStatus) {
         String query = "update " +
                 PostRequestDbColumnNames.TABLE_NAME + " set " +
-                PostRequestDbColumnNames.STATUS + " = '" + postRequestStatus.toString() + "'" + "," +
+                PostRequestDbColumnNames.STATUS + " = '" + postRequestStatus.toString() + "'" +
                 " where " +
-                PostRequestDbColumnNames.POST_ID + " = " + postId + " and " +
-                PostRequestDbColumnNames.REQUEST_OWNER + " = " + requestOwner;
+                PostRequestDbColumnNames.ID + " = " + requestId + ";";
+        logger.info(query);
         return query;
     }
-
 }

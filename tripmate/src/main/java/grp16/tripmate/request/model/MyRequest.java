@@ -89,9 +89,9 @@ public class MyRequest implements IMyRequest {
             if (resultSet.getString("status").equals("pending")) {
                 myRequest.setStatus(PostRequestStatus.PENDING);
             } else if (resultSet.getString("status").equals("approved")) {
-                myRequest.setStatus(PostRequestStatus.APPROVED);
+                myRequest.setStatus(PostRequestStatus.ACCEPT);
             } else {
-                myRequest.setStatus(PostRequestStatus.REJECTED);
+                myRequest.setStatus(PostRequestStatus.DECLINE);
             }
             myRequest.setPostTitle(resultSet.getString("postTitle"));
             myRequest.setFirstNameCreator(resultSet.getString("firstNameCreator"));
