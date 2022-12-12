@@ -54,16 +54,16 @@ public class VehicleController implements IVehicleController {
     public String getVehicleDetails(Model model, @PathVariable("id") int vehicleId) throws Exception {
         model.addAttribute("title", "Vehicle Details");
 
-        Vehicle vehicleObj = vehicle.getVehicleById(vehicleId);
-        model.addAttribute("vehicle", vehicleObj);
+        Vehicle vehicle = this.vehicle.getVehicleById(vehicleId);
+        model.addAttribute("vehicle", vehicle);
 
         int userId = SessionManager.getInstance().getLoggedInUserId();
         Post post = (Post) postFactory.makeNewPost();
         List<Post> userPosts = post.getPostsByUserId(postDatabase, userId);
         model.addAttribute("userposts", userPosts);
 
-        VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking();
-        model.addAttribute("vehicleBookingObj", vehicleBookingObj);
+        VehicleBooking vehicleBooking = vehicleBookingFactory.getNewVehicleBooking();
+        model.addAttribute("vehicleBookingObj", vehicleBooking);
 
         return "vehicledetails";
     }

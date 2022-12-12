@@ -10,6 +10,4 @@ public interface IVehicleQueryBuilder
     String getVehiclesByPostId(int postId);
 
     String getVehiclesByUserId(int userId);
-
-
 }
