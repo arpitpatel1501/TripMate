@@ -12,15 +12,15 @@
 <p th:text="'Number of Requests: ' + ${requests_count}"/>
 
 <tr th:each="postRequest, iterstat: ${postRequests}">
-    <td><B><span th:text="${postRequest.getFirstNameRequestee()}  + ' ' +${postRequest.getLastNameRequestee}"/> </B>
+    <td><B><span th:text="${postRequest.getIdRequest()} + ' ' + ${postRequest.getFirstNameRequestee()}  + ' ' +${postRequest.getLastNameRequestee}"/> </B>
         requested to join post <B><span th:text="${postRequest.getPostTitle}"/></B> <br></td>
     <br>
     <td>
-        <form action="#" th:action="@{/accept_request}" method="get">
-            <p><input type="submit" value="Accept"/></p>
+        <form action="#" th:action="@{/accept_request/{request_id}(request_id=${postRequest.getIdRequest()})}" method="post">
+            <button type="submit">Accept</button>
         </form>
-        <form action="#" th:action="@{/decline_request}" method="get">
-            <input type="submit" value="Decline"/>
+        <form action="#" th:action="@{/decline_request/{request_id}(request_id=${postRequest.getIdRequest()})}" method="post">
+            <button type="submit">Decline</button>
         </form>
     </td>
     <br>
