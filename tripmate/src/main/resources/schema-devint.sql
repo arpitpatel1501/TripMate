@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`VehicleBooking` (
   `bk_start_date` DATE NULL,
   `bk_end_date` DATE NULL,
   `has_paid` TINYINT NULL DEFAULT 0,
+  `created_on` DATE NULL,
   PRIMARY KEY (`id`, `Post_id`, `Vehicle_id`),
   INDEX `fk_Post_has_Vehicle_Vehicle1_idx` (`Vehicle_id` ASC),
   INDEX `fk_Post_has_Vehicle_Post1_idx` (`Post_id` ASC),
@@ -198,6 +199,24 @@ CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`VehicleBooking` (
   CONSTRAINT `fk_Post_has_Vehicle_Vehicle1`
     FOREIGN KEY (`Vehicle_id`)
     REFERENCES `CSCI5308_16_DEVINT`.`Vehicle` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `CSCI5308_16_DEVINT`.`VehicleBookingPayment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`VehicleBookingPayment` (
+  `payment_id` INT NOT NULL AUTO_INCREMENT,
+  `amount` FLOAT NULL DEFAULT 0.0,
+  `VehicleBooking_id` INT NOT NULL,
+  `created_on` DATE NULL,
+  PRIMARY KEY (`payment_id`, `VehicleBooking_id`),
+  INDEX `fk_VehicleBookingPayment_VehicleBooking1_idx` (`VehicleBooking_id` ASC),
+  CONSTRAINT `fk_VehicleBookingPayment_VehicleBooking1`
+    FOREIGN KEY (`VehicleBooking_id`)
+    REFERENCES `CSCI5308_16_DEVINT`.`VehicleBooking` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
