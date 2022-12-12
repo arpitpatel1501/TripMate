@@ -2,16 +2,24 @@ package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.model.*;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.model.IPost;
+import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.PostValidator;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.IVehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -32,19 +40,26 @@ public class PostController {
 
     private final PostValidator validator;
 
+    private final IVehicleBookingFactory vehicleBookingFactory;
+    private final IVehicleBookingDatabase vehicleBookingDatabase;
+
     PostController() {
         postFactory = PostFactory.getInstance();
         logger = postFactory.makeNewLogger(this);
         feedbackDatabase = postFactory.makeFeedbackDatabase();
         postDatabase = postFactory.makePostDatabase();
         validator = postFactory.makePostValidator();
+
+        vehicleBookingFactory = VehicleBookingFactory.getInstance();
+        vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
+
     }
 
     @GetMapping("/dashboard")
     public String getAllPosts(Model model) {
         model.addAttribute("title", "Dashboard");
         try {
-            Post post = (Post) postFactory.makeNewPost();
+            IPost post = (Post) postFactory.makeNewPost();
             List<Post> posts = post.getAllPosts(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
         } catch (Exception e) {
@@ -81,7 +96,7 @@ public class PostController {
         model.addAttribute("title", "My Posts");
         try {
             Post post = (Post) postFactory.makeNewPost();
-            List<Post> posts = post.getPostsByUserId(postDatabase, (Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
+            List<Post> posts = post.getPostsByUserId(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -102,9 +117,11 @@ public class PostController {
             model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
             model.addAttribute("feedbacks", myPost.getFeedbacks(postDatabase, feedbackDatabase));
             model.addAttribute("canJoin", myPost.isEligibleToJoin());
+            model.addAttribute("vehicles", myPost.getVehiclesAssociatedWithCurrentPost(postDatabase, vehicleBookingDatabase));
+
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return "viewpost";
 
@@ -135,7 +152,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatePost";
+        return "updatepost";
     }
 
     @PostMapping("/deletepost/{id}")
@@ -186,17 +203,15 @@ public class PostController {
         return "feedback";
     }
 
-
     @PostMapping("/feedback/{id}")
-    public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
+    public String createFeedback(@PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
             feedback.setPostId(postId);
-            feedback.setUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
+            feedback.setUserId(SessionManager.getInstance().getLoggedInUserId());
             feedback.createFeedback(feedbackDatabase);
         } catch (Exception e) {
             return "redirect:/error";
         }
         return "redirect:/dashboard";
-
     }
 }

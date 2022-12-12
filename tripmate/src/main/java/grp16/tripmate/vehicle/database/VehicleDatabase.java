@@ -49,6 +49,22 @@ public class VehicleDatabase implements IVehicleDatabase
         }
         return results;
     }
+    public Vehicle resultSetToVehicle(ResultSet rs) throws Exception
+    {
+        Vehicle vehicleObj = factory.getNewVehicle();
+        while (rs.next()) {
+            vehicleObj.setId(rs.getInt(VehicleDbColumnNames.ID));
+            vehicleObj.setName(rs.getString(VehicleDbColumnNames.NAME));
+            vehicleObj.setNumberOfSeats(rs.getInt(VehicleDbColumnNames.NUMBEROFSEATS));
+            vehicleObj.setDescription(rs.getString(VehicleDbColumnNames.DESCRIPTION));
+            vehicleObj.setRegistrationNumber(rs.getString(VehicleDbColumnNames.REGISTRATIONNUMBER));
+            vehicleObj.setIsAvailable(rs.getBoolean(VehicleDbColumnNames.ISAVAILABLE));
+            vehicleObj.setIsForLongJourney(rs.getBoolean(VehicleDbColumnNames.ISFORLONGJOURNEY));
+            vehicleObj.setRatePerKm(rs.getFloat(VehicleDbColumnNames.RATEPERKM));
+            vehicleObj.setVehicleCategory(rs.getInt(VehicleDbColumnNames.VEHICLECATEGORY));
+        }
+        return vehicleObj;
+    }
 
     public List<Vehicle> getVehiclesByPostId(int postId)
     {
@@ -56,7 +72,6 @@ public class VehicleDatabase implements IVehicleDatabase
     }
     public List<Vehicle> getAllVehicles()
     {
-
         String query = queryBuilder.getAllVehicles();
         return selectQueryExecute(query);
     }
@@ -66,9 +81,25 @@ public class VehicleDatabase implements IVehicleDatabase
     }
     public Vehicle getVehicleById(int vehicleId)
     {
-        return new Vehicle();
+        String query = queryBuilder.getVehicleById(vehicleId);
+        return getVehicleByIdSelectQueryExecute(query);
     }
 
+    private Vehicle getVehicleByIdSelectQueryExecute(String query)
+    {
+        Vehicle vehicleObj = factory.getNewVehicle();
+        try
+        {
+            final Connection connection = dbConnection.getDatabaseConnection();
+            final ResultSet vehicleRS = connection.createStatement().executeQuery(query);
+            vehicleObj = resultSetToVehicle(vehicleRS);
+        }
+        catch (Exception e)
+        {
+            logger.error(e.getMessage());
+        }
+        return vehicleObj;
+    }
     private List<Vehicle> selectQueryExecute(String query)
     {
         List<Vehicle> vehicles = new ArrayList<>();
@@ -84,4 +115,5 @@ public class VehicleDatabase implements IVehicleDatabase
         }
         return vehicles;
     }
+
 }

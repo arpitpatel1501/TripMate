@@ -15,9 +15,6 @@ public class DatabaseConnection implements IDatabaseConnection {
         String databaseUserName = MyProperties.getInstance().getDatabaseUserName();
         String databasePassword = MyProperties.getInstance().getDatabasePassword();
 
-        logger.info(databaseURL);
-        logger.info(databaseUserName);
-        logger.info(databasePassword);
         return DriverManager.getConnection(databaseURL, databaseUserName, databasePassword);
     }
 
