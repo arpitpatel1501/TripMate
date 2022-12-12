@@ -41,6 +41,11 @@ public class VehicleBooking implements IVehicleBooking {
         this.setBookingEndDate(new Date());
     }
 
+    public float getTotalBookingAmount()
+    {
+        return VehicleFactory.getInstance().getNewVehicle().getVehicleById(
+                this.vehicleId).getVehicleRatePerKmByVehicleId() * this.totalKm;
+    }
     public int getId() {
         return id;
     }

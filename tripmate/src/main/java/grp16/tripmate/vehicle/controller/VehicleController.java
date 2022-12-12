@@ -78,7 +78,7 @@ public class VehicleController implements IVehicleController {
 
         vehicleBookingObj.setVehicleId(vehicleId);
         vehicleBookingDatabase.createVehicleBooking(vehicleBookingObj);
-        return "redirect:/dashboard";
+        return "payment";
     }
 
     @GetMapping("/my-vehicle-bookings")
