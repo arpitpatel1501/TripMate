@@ -1,7 +1,7 @@
 package grp16.tripmate.post.model.factory;
 
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.DatabaseExecutor;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
@@ -74,8 +74,8 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IDatabaseExecution getNewDatabaseExecutor() {
-        return new DatabaseExecution();
+    public IDatabaseExecutor getNewDatabaseExecutor() {
+        return new DatabaseExecutor();
     }
 
 

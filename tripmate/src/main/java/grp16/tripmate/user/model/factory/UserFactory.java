@@ -1,7 +1,7 @@
 package grp16.tripmate.user.model.factory;
 
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.DatabaseExecutor;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.database.UserDatabase;
@@ -41,8 +41,8 @@ public class UserFactory implements IUserFactory {
     }
 
     @Override
-    public IDatabaseExecution getNewDatabaseExecutor() {
-        return new DatabaseExecution();
+    public IDatabaseExecutor getNewDatabaseExecutor() {
+        return new DatabaseExecutor();
     }
 
     @Override

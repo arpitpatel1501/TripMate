@@ -1,6 +1,6 @@
 package grp16.tripmate.post.database.feedback;
 
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
@@ -12,10 +12,10 @@ import java.util.Map;
 public class FeedbackDatabase implements IFeedbackDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private final IDatabaseExecution databaseExecutor;
+    private final IDatabaseExecutor databaseExecutor;
     private final IFeedbackQueryGenerator queryGenerator;
 
-    public FeedbackDatabase(IDatabaseExecution databaseExecutor, IFeedbackQueryGenerator queryGenerator) {
+    public FeedbackDatabase(IDatabaseExecutor databaseExecutor, IFeedbackQueryGenerator queryGenerator) {
         this.databaseExecutor = databaseExecutor;
         this.queryGenerator = queryGenerator;
     }

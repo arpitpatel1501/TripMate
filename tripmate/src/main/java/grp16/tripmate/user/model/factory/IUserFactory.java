@@ -1,6 +1,6 @@
 package grp16.tripmate.user.model.factory;
 
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.encoder.IPasswordEncoder;
@@ -14,7 +14,7 @@ public interface IUserFactory {
 
     IUserQueryGenerator getUserQueryBuilder();
 
-    IDatabaseExecution getNewDatabaseExecutor();
+    IDatabaseExecutor getNewDatabaseExecutor();
 
     IPasswordEncoder getPasswordEncoder();
 }

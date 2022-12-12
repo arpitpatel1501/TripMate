@@ -1,7 +1,6 @@
 package grp16.tripmate.post.database;
 
-import grp16.tripmate.db.execute.DatabaseExecution;
-import grp16.tripmate.db.execute.IDatabaseExecution;
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
@@ -18,9 +17,9 @@ import java.util.Map;
 
 public class PostDatabase implements IPostDatabase {
     private final IPostsQueryGenerator queryGenerator;
-    private final IDatabaseExecution databaseExecutor;
+    private final IDatabaseExecutor databaseExecutor;
 
-    public PostDatabase(IDatabaseExecution databaseExecutor, IPostsQueryGenerator queryGenerator) {
+    public PostDatabase(IDatabaseExecutor databaseExecutor, IPostsQueryGenerator queryGenerator) {
         this.queryGenerator = queryGenerator;
         this.databaseExecutor = databaseExecutor;
     }
