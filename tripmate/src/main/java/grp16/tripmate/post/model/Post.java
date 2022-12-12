@@ -97,9 +97,10 @@ public class Post extends PostSubject implements IPost {
             StartDateAfterEndDateException,
             MinAgeGreaterThanMaxAgeException,
             StartDateBeforeTodayException {
+        validator.isMinAgeLessThanMaxAge(this);
         validator.isStarDateBeforeToday(this);
         validator.isStartDateBeforeEndDate(this);
-        validator.isMinAgeLessThanMaxAge(this);
+
     }
 
     public boolean isEligibleForFeedback() {
