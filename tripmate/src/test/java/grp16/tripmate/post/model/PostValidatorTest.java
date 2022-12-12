@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostValidatorTest {
 
     IPostFactory factory = PostFactory.getInstance();
-    PostValidator validator = factory.getPostValidator();
+    PostValidator validator = factory.makePostValidator();
 
     @Test
     void isStarDateBeforeToday() throws ParseException {
-        Post post = (Post) factory.getNewPost();
+        Post post = (Post) factory.makeNewPost();
         String startDate = "2022-12-05";
         post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
         assertThrows(StartDateBeforeTodayException.class, () -> post.validatePost(validator));
@@ -27,7 +27,7 @@ class PostValidatorTest {
 
     @Test
     void isStartDateBeforeEndDate() throws ParseException {
-        Post post = (Post) factory.getNewPost();
+        Post post = (Post) factory.makeNewPost();
         String startDate = "2030-12-31";
         String endDate = "2030-12-01";
         post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
@@ -36,10 +36,14 @@ class PostValidatorTest {
     }
 
     @Test
-    void isMinAgeLessThanMaxAge(){
-        Post post = (Post) factory.getNewPost();
+    void isMinAgeLessThanMaxAge() throws ParseException {
+        Post post = (Post) factory.makeNewPost();
         post.setMinAge(5);
         post.setMaxAge(4);
+        String startDate = "2030-12-31";
+        String endDate = "2031-12-31";
+        post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
+        post.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(endDate));
         assertThrows(MinAgeGreaterThanMaxAgeException.class, () -> post.validatePost(validator));
     }
 }

@@ -5,6 +5,7 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.factory.UserFactory;
@@ -16,16 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IUserFactory userFactory;
-    private final IUserDatabase database;
+    private final IUserDatabase userDatabase;
+
+    private final IPasswordEncoder passwordEncoder;
 
     public UserController() {
         userFactory = UserFactory.getInstance();
-        database = UserFactory.getInstance().getUserDatabase();
+        userDatabase = UserFactory.getInstance().makeUserDatabase();
+        passwordEncoder = UserFactory.getInstance().makePasswordEncoder();
     }
 
     @GetMapping("/login")
     public String userLogin(Model model) {
-        model.addAttribute("user", userFactory.getNewUser());
+        model.addAttribute("user", userFactory.makeNewUser());
         model.addAttribute("title", "Login");
         return "login";
     }
@@ -34,7 +38,7 @@ public class UserController {
     public String userLogin(@ModelAttribute User user) {
         logger.info(user.toString());
         try {
-            boolean isValidUser = user.validateUser(database);
+            boolean isValidUser = user.validateUser(userDatabase, passwordEncoder);
 
             if (isValidUser) {
                 logger.info(user.getUsername() + " Login SUCCESS");
@@ -52,14 +56,14 @@ public class UserController {
 
     @GetMapping("/register")
     public String userRegister(Model model) {
-        model.addAttribute("user", userFactory.getNewUser());
+        model.addAttribute("user", userFactory.makeNewUser());
         model.addAttribute("title", "Register");
         return "register";
     }
 
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
-        User loggedInUser = userFactory.getNewUser().getLoggedInUser(database);
+        User loggedInUser = userDatabase.getUserById(SessionManager.getInstance().getLoggedInUserId());
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
         model.addAttribute("title", "View/Update Profile");
@@ -69,7 +73,7 @@ public class UserController {
     @PostMapping("/changeUserDetails")
     public String changeUserDetails(@ModelAttribute User user) throws Exception {
         logger.info("Change user to " + user);
-        user.changeUserDetails(database);
+        user.changeUserDetails(userDatabase);
         return "view_profile";
     }
 
@@ -80,7 +84,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-        SessionManager.Instance().removeValue(UserDbColumnNames.ID);
+        SessionManager.getInstance().removeValue(UserDbColumnNames.ID);
         return "redirect:/login";
     }
 }

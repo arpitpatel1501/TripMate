@@ -8,13 +8,13 @@ import grp16.tripmate.user.model.IUser;
 
 public interface IUserFactory {
 
-    IUser getNewUser();
+    IUser makeNewUser();
 
-    IUserDatabase getUserDatabase();
+    IUserDatabase makeUserDatabase();
 
-    IUserQueryGenerator getUserQueryBuilder();
+    IUserQueryGenerator makeUserQueryBuilder();
 
-    IDatabaseExecutor getNewDatabaseExecutor();
+    IDatabaseExecutor makeNewDatabaseExecutor();
 
-    IPasswordEncoder getPasswordEncoder();
+    IPasswordEncoder makePasswordEncoder();
 }

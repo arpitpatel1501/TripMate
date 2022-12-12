@@ -34,47 +34,42 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IPost getNewPost() {
+    public IPost makeNewPost() {
         return new Post();
     }
 
     @Override
-    public IPostDatabase getPostDatabase() {
-        return new PostDatabase(getNewDatabaseExecutor(), getPostQueryBuilder());
+    public IPostDatabase makePostDatabase() {
+        return new PostDatabase(makeNewDatabaseExecutor(), makePostQueryBuilder());
     }
 
     @Override
-    public IPostsQueryGenerator getPostQueryBuilder() {
+    public IPostsQueryGenerator makePostQueryBuilder() {
         return PostsQueryGenerator.getInstance();
     }
 
     @Override
-    public IFeedback getNewFeedback() {
-        return new Feedback();
+    public IFeedbackDatabase makeFeedbackDatabase() {
+        return new FeedbackDatabase(makeNewDatabaseExecutor(), makeFeedbackQueryBuilder());
     }
 
     @Override
-    public IFeedbackDatabase getFeedbackDatabase() {
-        return new FeedbackDatabase(getNewDatabaseExecutor(), getFeedbackQueryBuilder());
-    }
-
-    @Override
-    public IFeedbackQueryGenerator getFeedbackQueryBuilder() {
+    public IFeedbackQueryGenerator makeFeedbackQueryBuilder() {
         return FeedbackQueryGenerator.getInstance();
     }
 
     @Override
-    public PostValidator getPostValidator() {
+    public PostValidator makePostValidator() {
         return new PostValidator();
     }
 
     @Override
-    public ILogger getLogger(Object classObj) {
+    public ILogger makeNewLogger(Object classObj) {
         return new MyLoggerAdapter(classObj);
     }
 
     @Override
-    public IDatabaseExecutor getNewDatabaseExecutor() {
+    public IDatabaseExecutor makeNewDatabaseExecutor() {
         return new DatabaseExecutor();
     }
 

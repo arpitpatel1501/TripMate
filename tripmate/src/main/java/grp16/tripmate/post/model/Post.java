@@ -88,7 +88,7 @@ public class Post extends PostSubject implements IPost {
 
     public boolean isEligibleToJoin() throws Exception {
         boolean isPastDate = endDate.before(new Date());
-        boolean isOwner = getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.ID);
+        boolean isOwner = getOwner_id() == (int) SessionManager.getInstance().getValue(UserDbColumnNames.ID);
         return !isPastDate && !isOwner;
     }
 
@@ -97,10 +97,9 @@ public class Post extends PostSubject implements IPost {
             StartDateAfterEndDateException,
             MinAgeGreaterThanMaxAgeException,
             StartDateBeforeTodayException {
-        validator.isMinAgeLessThanMaxAge(this);
         validator.isStarDateBeforeToday(this);
         validator.isStartDateBeforeEndDate(this);
-
+        validator.isMinAgeLessThanMaxAge(this);
     }
 
     public boolean isEligibleForFeedback() {
