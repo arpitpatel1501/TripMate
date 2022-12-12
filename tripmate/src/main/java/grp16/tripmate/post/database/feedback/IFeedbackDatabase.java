@@ -8,7 +8,9 @@ public interface IFeedbackDatabase {
 
     boolean createFeedback(Feedback feedback);
 
-    boolean deleteFeedbackByPostId(int postId);
+    boolean updateFeedback(Feedback feedback);
 
     List<Feedback> getFeedbacksByPostId(int post_id) throws Exception;
+
+    boolean deleteFeedbackByPostId(int postId);
 }
