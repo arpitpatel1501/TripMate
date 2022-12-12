@@ -1,4 +1,4 @@
-package grp16.tripmate.user.model;
+package grp16.tripmate.user.database;
 
 public class UserDbColumnNames {
 

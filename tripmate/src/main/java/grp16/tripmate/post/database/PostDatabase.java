@@ -2,11 +2,11 @@ package grp16.tripmate.post.database;
 
 import grp16.tripmate.db.execute.DatabaseExecution;
 import grp16.tripmate.db.execute.IDatabaseExecution;
-import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.database.UserDbColumnNames;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

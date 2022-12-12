@@ -3,9 +3,9 @@ package grp16.tripmate.post.model.factory;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryGenerator;
-import grp16.tripmate.post.model.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.post.model.feedback.database.IFeedbackQueryBuilder;
-import grp16.tripmate.post.model.feedback.model.IFeedback;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.database.feedback.IFeedbackQueryGenerator;
+import grp16.tripmate.post.model.feedback.IFeedback;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.PostValidator;
 
@@ -23,7 +23,7 @@ public interface IPostFactory {
 
     IFeedbackDatabase getFeedbackDatabase();
 
-    IFeedbackQueryBuilder getFeedbackQueryBuilder();
+    IFeedbackQueryGenerator getFeedbackQueryBuilder();
 
     ILogger getLogger(Object classObj);
 

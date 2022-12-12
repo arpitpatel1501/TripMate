@@ -1,6 +1,6 @@
-package grp16.tripmate.post.model.feedback.database;
+package grp16.tripmate.post.database.feedback;
 
-import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.Feedback;
 
 import java.util.List;
 

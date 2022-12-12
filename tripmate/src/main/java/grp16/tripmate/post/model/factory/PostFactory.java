@@ -6,12 +6,12 @@ import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryGenerator;
 import grp16.tripmate.post.database.PostDatabase;
 import grp16.tripmate.post.database.PostsQueryGenerator;
-import grp16.tripmate.post.model.feedback.database.FeedbackDatabase;
-import grp16.tripmate.post.model.feedback.database.FeedbackQueryBuilder;
-import grp16.tripmate.post.model.feedback.database.IFeedbackDatabase;
-import grp16.tripmate.post.model.feedback.database.IFeedbackQueryBuilder;
-import grp16.tripmate.post.model.feedback.model.Feedback;
-import grp16.tripmate.post.model.feedback.model.IFeedback;
+import grp16.tripmate.post.database.feedback.FeedbackDatabase;
+import grp16.tripmate.post.database.feedback.FeedbackQueryGenerator;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.database.feedback.IFeedbackQueryGenerator;
+import grp16.tripmate.post.model.feedback.Feedback;
+import grp16.tripmate.post.model.feedback.IFeedback;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostValidator;
@@ -22,7 +22,7 @@ public class PostFactory implements IPostFactory {
     private final IPostDatabase postDatabase;
     private final IPostsQueryGenerator postQueryBuilder;
     private final IFeedbackDatabase feedbackDatabase;
-    private final IFeedbackQueryBuilder feedbackQueryBuilder;
+    private final IFeedbackQueryGenerator feedbackQueryBuilder;
     private final PostValidator postValidator;
     private final ILogger logger;
 
@@ -30,7 +30,7 @@ public class PostFactory implements IPostFactory {
         postDatabase = new PostDatabase();
         postQueryBuilder = PostsQueryGenerator.getInstance();
         feedbackDatabase = new FeedbackDatabase();
-        feedbackQueryBuilder = FeedbackQueryBuilder.getInstance();
+        feedbackQueryBuilder = FeedbackQueryGenerator.getInstance();
         postValidator = new PostValidator();
         logger = new MyLoggerAdapter(this);
     }
@@ -68,7 +68,7 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IFeedbackQueryBuilder getFeedbackQueryBuilder() {
+    public IFeedbackQueryGenerator getFeedbackQueryBuilder() {
         return feedbackQueryBuilder;
     }
 
