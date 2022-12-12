@@ -1,6 +1,7 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
@@ -25,16 +26,19 @@ import java.util.List;
 public class PostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
-    final private IFeedback feedback;
 
-    private IFeedbackDatabase database;
+    private final IFeedbackDatabase feedbackDatabase;
 
+    private final IPostDatabase postDatabase;
+
+    private final PostValidator validator;
 
     PostController() {
         postFactory = PostFactory.getInstance();
         logger = postFactory.getLogger(this);
-        feedback = postFactory.getNewFeedback();
-        database = postFactory.getFeedbackDatabase();
+        feedbackDatabase = postFactory.getFeedbackDatabase();
+        postDatabase = postFactory.getPostDatabase();
+        validator = postFactory.getPostValidator();
     }
 
     @GetMapping("/dashboard")
@@ -42,7 +46,7 @@ public class PostController {
         model.addAttribute("title", "Dashboard");
         try {
             Post post = (Post) postFactory.getNewPost();
-            List<Post> posts = post.getAllPosts();
+            List<Post> posts = post.getAllPosts(postDatabase, SessionManager.Instance().getLoggedInUserId());
             model.addAttribute("posts", posts);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -62,11 +66,9 @@ public class PostController {
     @PostMapping("/createpost")
     public String createPost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Create Post");
-        post.setDatabase(postFactory.getPostDatabase());
-        post.setValidator(postFactory.getPostValidator());
         try {
-            post.validatePost();
-            post.createPost();
+            post.validatePost(validator);
+            post.createPost(postDatabase);
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -80,7 +82,7 @@ public class PostController {
         model.addAttribute("title", "My Posts");
         try {
             Post post = (Post) postFactory.getNewPost();
-            List<Post> posts = post.getPostsByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+            List<Post> posts = post.getPostsByUserId(postDatabase, (Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             model.addAttribute("posts", posts);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -94,12 +96,12 @@ public class PostController {
         model.addAttribute("title", "View Post");
         try {
             Post post = (Post) postFactory.getNewPost();
-            Post myPost = post.getPostByPostId(postId);
+            Post myPost = post.getPostByPostId(postDatabase, postId);
             logger.info(myPost.toString());
             model.addAttribute("isUpdateButtonVisible", myPost.getOwner_id() == (int) SessionManager.Instance().getValue(UserDbColumnNames.ID));
             model.addAttribute("post", myPost);
             model.addAttribute("isFeedbackButtonVisible", myPost.isEligibleForFeedback());
-            model.addAttribute("feedbacks", myPost.getFeedbacks());
+            model.addAttribute("feedbacks", myPost.getFeedbacks(postDatabase, feedbackDatabase));
             model.addAttribute("canJoin", myPost.isEligibleToJoin());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -114,7 +116,7 @@ public class PostController {
         model.addAttribute("title", "Edit Post");
         try {
             Post post = (Post) postFactory.getNewPost();
-            Post myPost = post.getPostByPostId(postId);
+            Post myPost = post.getPostByPostId(postDatabase, postId);
             model.addAttribute("post", myPost);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -126,11 +128,9 @@ public class PostController {
     @PostMapping("/updatepost")
     public String updatePost(Model model, @ModelAttribute Post post) {
         model.addAttribute("title", "Update Post");
-        post.setDatabase(postFactory.getPostDatabase());
-        post.setValidator(postFactory.getPostValidator());
         try {
-            post.validatePost();
-            post.updatePost();
+            post.validatePost(validator);
+            post.updatePost(postDatabase);
             return "redirect:/dashboard";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -144,8 +144,8 @@ public class PostController {
         model.addAttribute("title", "Delete Post");
         try {
             Post post = (Post) postFactory.getNewPost();
-            Post myPost = post.getPostByPostId(postId);
-            myPost.deletePost();
+            Post myPost = post.getPostByPostId(postDatabase, postId);
+            myPost.deletePost(postDatabase);
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
@@ -158,8 +158,8 @@ public class PostController {
         try {
             model.addAttribute("title", "Hide Post");
             Post post = (Post) postFactory.getNewPost();
-            Post myPost = post.getPostByPostId(postId);
-            myPost.hidePost();
+            Post myPost = post.getPostByPostId(postDatabase, postId);
+            myPost.hidePost(postDatabase);
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
@@ -177,7 +177,7 @@ public class PostController {
     @GetMapping("/feedback/{id}")
     public String loadFeedbackPage(Model model, @PathVariable("id") int postId) {
         try {
-            model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
+            model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postDatabase, postId));
             model.addAttribute("currentFeedback", new Feedback());
             model.addAttribute("title", "Feedback");
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class PostController {
         try {
             feedback.setPostId(postId);
             feedback.setUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
-            feedback.createFeedback(database);
+            feedback.createFeedback(feedbackDatabase);
         } catch (Exception e) {
             return "redirect:/error";
         }

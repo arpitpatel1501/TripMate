@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface IFeedbackDatabase {
 
-    void createFeedback(Feedback feedback);
+    boolean createFeedback(Feedback feedback);
 
-    void deleteFeedbackByPostId(int postid);
+    boolean deleteFeedbackByPostId(int postId);
 
-    List<Feedback> getFeedbacksByPostId(int post_id);
+    List<Feedback> getFeedbacksByPostId(int post_id) throws Exception;
 }

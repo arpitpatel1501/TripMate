@@ -22,8 +22,7 @@ class PostValidatorTest {
         Post post = (Post) factory.getNewPost();
         String startDate = "2022-12-05";
         post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
-        post.setValidator(validator);
-        assertThrows(StartDateBeforeTodayException.class, () -> post.validatePost());
+        assertThrows(StartDateBeforeTodayException.class, () -> post.validatePost(validator));
     }
 
     @Test
@@ -33,8 +32,7 @@ class PostValidatorTest {
         String endDate = "2030-12-01";
         post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
         post.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(endDate));
-        post.setValidator(validator);
-        assertThrows(StartDateAfterEndDateException.class, () -> post.validatePost());
+        assertThrows(StartDateAfterEndDateException.class, () -> post.validatePost(validator));
     }
 
     @Test
@@ -46,7 +44,6 @@ class PostValidatorTest {
         String endDate = "2031-12-31";
         post.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(startDate));
         post.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(endDate));
-        post.setValidator(validator);
-        assertThrows(MinAgeGreaterThanMaxAgeException.class, () -> post.validatePost());
+        assertThrows(MinAgeGreaterThanMaxAgeException.class, () -> post.validatePost(validator));
     }
 }

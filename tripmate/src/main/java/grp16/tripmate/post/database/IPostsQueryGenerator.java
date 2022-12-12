@@ -6,7 +6,7 @@ public interface IPostsQueryGenerator {
 
     String getCreatePostQuery(IPost post);
 
-    String getAllPosts();
+    String getAllPosts(int loggedInUser);
 
     String getPostsByUserId(int userId);
 

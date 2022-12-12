@@ -4,18 +4,18 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
 
-public class UserQueryBuilder implements IUserQueryBuilder {
-    private static IUserQueryBuilder instance;
+public class UserQueryGenerator implements IUserQueryGenerator {
+    private static IUserQueryGenerator instance;
 
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private UserQueryBuilder() {
+    private UserQueryGenerator() {
         //Required private empty constructor
     }
 
-    public static IUserQueryBuilder getInstance() {
+    public static IUserQueryGenerator getInstance() {
         if (instance == null) {
-            instance = new UserQueryBuilder();
+            instance = new UserQueryGenerator();
         }
         return instance;
     }
