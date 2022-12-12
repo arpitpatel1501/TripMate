@@ -13,13 +13,17 @@ import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PostTest {
 
-    IPostFactory factory = PostFactory.getInstance();
-    IPostDatabase database = new PostDatabaseMock();
+    IPostFactory factory;
+    IPostDatabase database;
     Post post;
 
-    public PostTest() throws ParseException{
+    public PostTest() throws ParseException {
+        factory = PostFactory.getInstance();
+        database = new PostDatabaseMock();
+
         post = (Post) factory.makeNewPost();
         post.setId(1);
         post.setOwner_id(2);
@@ -79,7 +83,7 @@ class PostTest {
         post.createPost(database);
         post.deletePost(database);
         Post postFromDB = post.getPostByPostId(database, post.getId());
-        assertEquals(postFromDB, null);
+        assertNull(postFromDB);
     }
 
     @Test
