@@ -3,7 +3,6 @@ package grp16.tripmate.user.database;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserDbColumnNames;
 
 public class UserQueryBuilder implements IUserQueryBuilder {
     private static IUserQueryBuilder instance;

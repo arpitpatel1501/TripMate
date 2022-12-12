@@ -6,11 +6,8 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserDbColumnNames;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

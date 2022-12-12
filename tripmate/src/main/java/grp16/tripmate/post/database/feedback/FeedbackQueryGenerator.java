@@ -1,21 +1,21 @@
-package grp16.tripmate.post.model.feedback.database;
+package grp16.tripmate.post.database.feedback;
 
-import grp16.tripmate.post.model.feedback.model.Feedback;
+import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 
-public class FeedbackQueryBuilder implements IFeedbackQueryBuilder {
+public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
 
-    static IFeedbackQueryBuilder instance;
+    static IFeedbackQueryGenerator instance;
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private FeedbackQueryBuilder() {
+    private FeedbackQueryGenerator() {
         //Required empty constructor
     }
 
-    public static IFeedbackQueryBuilder getInstance() {
+    public static IFeedbackQueryGenerator getInstance() {
         if (instance == null) {
-            instance = new FeedbackQueryBuilder();
+            instance = new FeedbackQueryGenerator();
         }
         return instance;
     }

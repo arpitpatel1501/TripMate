@@ -1,7 +1,6 @@
 package grp16.tripmate.user.database;
 
 import grp16.tripmate.user.model.User;
-import grp16.tripmate.user.model.UserDbColumnNames;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

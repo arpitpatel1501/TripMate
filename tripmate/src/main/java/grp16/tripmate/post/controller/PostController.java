@@ -4,8 +4,11 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
+import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.model.feedback.Feedback;
+import grp16.tripmate.post.model.feedback.IFeedback;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.database.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +22,19 @@ import java.util.List;
  */
 
 @Controller
-public class PostController{
+public class PostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
+    final private IFeedback feedback;
+
+    private IFeedbackDatabase database;
+
 
     PostController() {
         postFactory = PostFactory.getInstance();
         logger = postFactory.getLogger(this);
+        feedback = postFactory.getNewFeedback();
+        database = postFactory.getFeedbackDatabase();
     }
 
     @GetMapping("/dashboard")
@@ -162,5 +171,33 @@ public class PostController{
     public String displayError(Model model) {
         model.addAttribute("error", "Some error has occurred");
         return "error";
+    }
+
+
+    @GetMapping("/feedback/{id}")
+    public String loadFeedbackPage(Model model, @PathVariable("id") int postId) {
+        try {
+            model.addAttribute("post", postFactory.getNewPost().getPostByPostId(postId));
+            model.addAttribute("currentFeedback", new Feedback());
+            model.addAttribute("title", "Feedback");
+        } catch (Exception e) {
+            model.addAttribute("error", "Post not found " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "feedback";
+    }
+
+
+    @PostMapping("/feedback/{id}")
+    public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
+        try {
+            feedback.setPostId(postId);
+            feedback.setUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+            feedback.createFeedback(database);
+        } catch (Exception e) {
+            return "redirect:/error";
+        }
+        return "redirect:/dashboard";
+
     }
 }
