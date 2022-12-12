@@ -2,13 +2,17 @@ package grp16.tripmate.vehicle.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.model.IVehicle;
-import grp16.tripmate.vehicle.model.IVehicleFactory;
-import grp16.tripmate.vehicle.model.Vehicle;
-import grp16.tripmate.vehicle.model.VehicleFactory;
+import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.model.Post;
+import grp16.tripmate.post.model.factory.IPostFactory;
+import grp16.tripmate.post.model.factory.PostFactory;
+import grp16.tripmate.session.SessionManager;
+import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -18,13 +22,24 @@ import java.util.List;
 public class VehicleController implements IVehicleController {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    final private IVehicleFactory vehicleFactory;
+    private final IVehicleFactory vehicleFactory;
+    private final IPostFactory postFactory;
+
+    private final IVehicleBookingFactory vehicleBookingFactory;
 
     private final IVehicle vehicle;
 
+    private final IPostDatabase postDatabase;
+
+    private final IVehicleBookingDatabase vehicleBookingDatabase;
+
     VehicleController() {
+        postFactory = PostFactory.getInstance();
         vehicleFactory = VehicleFactory.getInstance();
         vehicle = vehicleFactory.getNewVehicle();
+        vehicleBookingFactory = VehicleBookingFactory.getInstance();
+        postDatabase = postFactory.makePostDatabase();
+        vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
     }
 
     @GetMapping("/all-vehicles")
@@ -35,9 +50,35 @@ public class VehicleController implements IVehicleController {
         return "listvehicles";
     }
 
-    @PostMapping("/vehicle/{id}")
-    public String confirmVehicleBooking(Model model, @PathVariable("id") int vehicleId) {
+    @GetMapping("/vehicle/{id}")
+    public String getVehicleDetails(Model model, @PathVariable("id") int vehicleId) throws Exception {
+        model.addAttribute("title", "Vehicle Details");
+
+        Vehicle vehicleObj = vehicle.getVehicleById(vehicleId);
+        model.addAttribute("vehicle", vehicleObj);
+
+        int userId = SessionManager.getInstance().getLoggedInUserId();
+        Post post = (Post) postFactory.makeNewPost();
+        List<Post> userPosts = post.getPostsByUserId(postDatabase, userId);
+        model.addAttribute("userposts", userPosts);
+
+        VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking();
+        model.addAttribute("vehicleBookingObj", vehicleBookingObj);
+
         return "vehicledetails";
+    }
+
+    @PostMapping("/confirm-booking/{id}")
+    public String confirmVehicleBooking(Model model,
+                                        @PathVariable("id") int vehicleId,
+                                        @ModelAttribute VehicleBooking vehicleBookingObj,
+                                        @ModelAttribute Post userPost) {
+        logger.info("the vehiclebooking obj is: " + vehicleBookingObj);
+        logger.info("the User Post obj is: " + userPost);
+
+        vehicleBookingObj.setVehicleId(vehicleId);
+        vehicleBookingDatabase.createVehicleBooking(vehicleBookingObj);
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/my-vehicle-bookings")
