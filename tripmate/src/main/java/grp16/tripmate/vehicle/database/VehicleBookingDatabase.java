@@ -33,10 +33,6 @@ public class VehicleBookingDatabase implements IVehicleBookingDatabase {
         databaseExecutor = new DatabaseExecutor();
     }
 
-    @Override
-    public List<VehicleBooking> resultSetToVehicleBooking(ResultSet rs) throws Exception {
-        return null;
-    }
 
     @Override
     public List<VehicleBooking> getVehicleBookingByPostId(int postId) {
@@ -62,7 +58,8 @@ public class VehicleBookingDatabase implements IVehicleBookingDatabase {
 
     @Override
     public List<VehicleBooking> getVehicleBookingByUserId(int userId) {
-        return null;
+        String query = queryBuilder.getVehicleBookingByUserId(userId);
+        return listToVehicles(databaseExecutor.executeSelectQuery(query));
     }
 
     @Override
