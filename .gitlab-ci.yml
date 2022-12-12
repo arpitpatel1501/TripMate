@@ -33,7 +33,8 @@ test:
 
   only:
     refs:
-      - branches
+      - nobranch
+      # - branches
 # Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:
