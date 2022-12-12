@@ -127,7 +127,7 @@ public class PostController{
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatepost";
+        return "updatePost";
     }
 
     @PostMapping("/deletepost/{id}")
