@@ -5,7 +5,7 @@ import grp16.tripmate.request.database.MyRequestDB;
 import grp16.tripmate.request.model.IMyRequest;
 import grp16.tripmate.request.model.MyRequest;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.model.UserDbColumnNames;
+import grp16.tripmate.user.database.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

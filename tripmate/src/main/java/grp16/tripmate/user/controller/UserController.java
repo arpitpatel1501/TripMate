@@ -4,6 +4,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.user.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
