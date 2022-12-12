@@ -40,17 +40,15 @@ public class ForgetPasswordController {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", "");
         IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
-        try{
-            if(iForgetPassword.checkUserExist(request.getParameter("email"))) {
+        try {
+            if (iForgetPassword.checkUserExist(request.getParameter("email"))) {
                 System.out.println("---- user exist ----");
-            }
-            else {
+            } else {
                 model.addAttribute("error", "User Not exists");
                 logger.info("User Not exists");
                 return "redirect:/error";
             }
-        }
-        catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("---- user exist ----");
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -91,6 +89,7 @@ public class ForgetPasswordController {
 
         return "/new_password";
     }
+
     @PostMapping("/new_password")
     public String setNewPassword(Model model, HttpServletRequest request) throws Exception {
         IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
@@ -99,12 +98,11 @@ public class ForgetPasswordController {
         String password = request.getParameter("password");
         if (iForgetPassword.changeUserPassword(email, password)) {
             EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(email,
-                                                                                    "Password Updated",
-                                                                                      "Password Reset successfully");
+                    "Password Updated",
+                    "Password Reset successfully");
 
             return "redirect:/login";
-        }
-        else {
+        } else {
             return "redirect:/error";
         }
     }

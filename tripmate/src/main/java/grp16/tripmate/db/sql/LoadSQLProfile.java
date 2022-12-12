@@ -14,13 +14,12 @@ import java.sql.SQLException;
 public class LoadSQLProfile {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    public boolean loadSQLforProfile(Connection conn, String env) {
+    public void loadSQLforProfile(Connection conn, String env) {
 
         String filename = "schema-" + env + ".sql";
 
         logger.info("loading SQL from: " + filename);
 
-        boolean isScriptExecuted = false;
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream resourceStream = loader.getResourceAsStream(filename);
@@ -38,18 +37,13 @@ public class LoadSQLProfile {
                         }
                     }
                     conn.createStatement().execute(sb.toString());
-
                 }
                 in.close();
-
-//                conn.createStatement().execute(sb.toString());
-                isScriptExecuted = true;
             }
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return isScriptExecuted;
     }
 }
