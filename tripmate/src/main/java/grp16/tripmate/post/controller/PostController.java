@@ -204,10 +204,10 @@ public class PostController {
     }
 
     @PostMapping("/feedback/{id}")
-    public String createFeedback(Model model, @PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
+    public String createFeedback(@PathVariable("id") int postId, @ModelAttribute Feedback feedback) {
         try {
             feedback.setPostId(postId);
-            feedback.setUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
+            feedback.setUserId(SessionManager.getInstance().getLoggedInUserId());
             feedback.createFeedback(feedbackDatabase);
         } catch (Exception e) {
             return "redirect:/error";
