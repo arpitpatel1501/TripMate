@@ -19,27 +19,23 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @Controller
 public class VerificationController {
     private final ILogger logger = new MyLoggerAdapter(this);
-    IVerification iVerification;
+    IVerification verification;
     private User user;
 
     private final IUserDatabase database;
-    private IUserFactory userFactory;
 
-    VerificationController() {
-        userFactory = UserFactory.getInstance();
-        database = userFactory.getUserDatabase();
+    VerificationController() throws Exception {
+        IUserFactory userFactory = UserFactory.getInstance();
+        database = userFactory.makeUserDatabase();
+        verification = EmailVerificationFactory.getInstance().createVerificationMethod();
     }
 
     @PostMapping("/register")
     public String userVerification(@ModelAttribute User user) throws Exception {
-
-        iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
-        iVerification.sendUniqueCode(user.getUsername(),
+        verification.sendUniqueCode(user.getUsername(),
                 "Your user verification code is: ",
                 "User Verification for Tripmate");
-
         this.user = user;
-
         return "user_verification";
     }
 
@@ -48,7 +44,7 @@ public class VerificationController {
 
         String code = request.getParameter("code");
 
-        if (this.iVerification.verifyCode(code)) {
+        if (this.verification.verifyCode(code)) {
             try {
                 boolean isUserCreatedSuccessfully = this.user.createUser(database);
                 if (isUserCreatedSuccessfully) {

@@ -6,28 +6,24 @@ import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.IPostsQueryGenerator;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.database.feedback.IFeedbackQueryGenerator;
-import grp16.tripmate.post.model.feedback.IFeedback;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.PostValidator;
 
 public interface IPostFactory {
 
-    IPost getNewPost();
+    IPost makeNewPost();
 
-    IPostDatabase getPostDatabase();
+    IPostDatabase makePostDatabase();
 
-    PostValidator getPostValidator();
+    PostValidator makePostValidator();
 
-    IPostsQueryGenerator getPostQueryBuilder();
+    IPostsQueryGenerator makePostQueryBuilder();
 
-    IFeedback getNewFeedback();
+    IFeedbackDatabase makeFeedbackDatabase();
 
-    IFeedbackDatabase getFeedbackDatabase();
+    IFeedbackQueryGenerator makeFeedbackQueryBuilder();
 
-    IFeedbackQueryGenerator getFeedbackQueryBuilder();
+    ILogger makeNewLogger(Object classObj);
 
-    ILogger getLogger(Object classObj);
-
-
-    IDatabaseExecutor getNewDatabaseExecutor();
+    IDatabaseExecutor makeNewDatabaseExecutor();
 }

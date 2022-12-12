@@ -36,7 +36,7 @@ public class MyPostRequestController {
     public String postRequest(Model model) {
         model.addAttribute("title", "Post Request");
         try {
-            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
             List<IMyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
             model.addAttribute("requests_count", postRequests.size());
             model.addAttribute("postRequests", postRequests);
@@ -49,7 +49,7 @@ public class MyPostRequestController {
 
     @PostMapping("/join/{id}")
     public String join(Model model, @ModelAttribute Post post, @PathVariable("id") int post_id) throws Exception {
-        query = iMyPostRequestDB.createJoinRequest(post_id, (Integer) SessionManager.Instance().getValue(UserDbColumnNames.ID));
+        query = iMyPostRequestDB.createJoinRequest(post_id, (Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
         myPostRequest.executeQuery(query);
         return "redirect:/post_requests";
     }
