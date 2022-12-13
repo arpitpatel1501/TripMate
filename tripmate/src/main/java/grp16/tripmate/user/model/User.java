@@ -138,6 +138,10 @@ public class User implements IUser {
         return userDatabase.updateUser(this);
     }
 
+    public User getUserById(IUserDatabase userDatabase, int userId) throws Exception {
+        return mapToUser(userDatabase.getUserById(userId));
+    }
+
     private List<User> listToUsers(List<Map<String, Object>> results) {
         List<User> users = new ArrayList<>();
         for (Map<String, Object> result : results) {
