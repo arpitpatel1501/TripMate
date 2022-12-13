@@ -111,7 +111,7 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "my_vehiclebookings";
+        return "myVehicleBookings";
     }
 
     @GetMapping("/my-vehicle-booking-transaction")
@@ -125,11 +125,6 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "my_transactions";
-    }
-
-    @GetMapping("/recommended-vehicles")
-    public String getRecommendedVehiclesByTripId(Model model) {
-        return "recommended_vehicles";
+        return "myTransactions";
     }
 }
