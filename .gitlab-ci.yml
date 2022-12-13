@@ -22,16 +22,19 @@ test:
   image: gradle:$GRADLE_VERSION-$JDK_VERSION # 7.5-jdk8
   script:
     - chmod +x ./gradlew
-    - ./gradlew check
+    - ./gradlew clean test --info
   artifacts:
     when: always
     paths:
       - tripmate/build/test-results/test
     reports:
-      junit: tripmate/build/test-results/test/TEST-grp16.tripmate.TripmateApplicationTests.xml
+      junit: 
+        - tripmate/build/test-results/test/*.xml
+
   only:
     refs:
-      - branches
+      - nobranch
+      # - branches
 # Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:
@@ -61,7 +64,7 @@ deploy-non-prod:
     name: staging
     url: https://trip-mate-grp16-test.herokuapp.com/
   only:
-    - develop
+    - nobranch
 
 # Ref: https://docs.gitlab.com/ee/ci/examples/deployment/index.html
 
@@ -80,6 +83,6 @@ deploy-prod:
     name: production
     url: https://trip-mate-grp16.herokuapp.com/
   only:
-    - main
+    - nobranch
 
 # Ref: https://dal.brightspace.com/d2l/le/content/230468/viewContent/3095849/View?ou=230468
