@@ -54,7 +54,6 @@
         <td th:text="${post.getDescription()}"/>
     </tr>
     <tr th:if="${isUpdateButtonVisible}">
-    <tr>
         <td>
             <form action="#" th:action="@{/editpost/{id}(id=${post.getId()})}" method="get">
                 <button type="submit">Update</button>

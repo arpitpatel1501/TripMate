@@ -101,7 +101,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `CSCI5308_16_DEVINT`.`PostRequest` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NULL DEFAULT 'pending',
+  `status` VARCHAR(45) NULL DEFAULT 'PENDING',
   `Post_id` INT NOT NULL,
   `request_owner` INT NOT NULL,
   PRIMARY KEY (`id`, `Post_id`, `request_owner`),

@@ -107,6 +107,9 @@ public class User implements IUser {
         if (isValidUser) {
             logger.info("Current User: " + userFromDb);
             SessionManager.getInstance().setValue(UserDbColumnNames.ID, userFromDb.getId());
+            SessionManager.getInstance().setValue(UserDbColumnNames.USERNAME, userFromDb.getUsername());
+            SessionManager.getInstance().setValue(UserDbColumnNames.FIRSTNAME, userFromDb.getFirstname());
+            SessionManager.getInstance().setValue(UserDbColumnNames.LASTNAME, userFromDb.getLastname());
         }
         return isValidUser;
     }
