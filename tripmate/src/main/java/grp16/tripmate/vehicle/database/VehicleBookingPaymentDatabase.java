@@ -8,6 +8,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.model.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +35,7 @@ public class VehicleBookingPaymentDatabase implements IVehicleBookingPaymentData
         databaseExecutor = new DatabaseExecutor();
     }
 
-    private List<VehicleBookingPayment> listToVehicleBookingPayments(List<Map<String, Object>> results)
-    {
+    private List<VehicleBookingPayment> listToVehicleBookingPayments(List<Map<String, Object>> results) throws ParseException {
         List<VehicleBookingPayment> bookingPayments = new ArrayList<>();
         for (Map<String, Object> result : results)
         {
@@ -50,9 +50,15 @@ public class VehicleBookingPaymentDatabase implements IVehicleBookingPaymentData
         return bookingPayments;
     }
     @Override
-    public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId)
-    {
+    public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId) throws ParseException {
         String query = queryBuilder.getVehicleBookingPaymentByUserId(userId);
         return listToVehicleBookingPayments(databaseExecutor.executeSelectQuery(query));
+    }
+
+    @Override
+    public boolean createVehicleBookingPayment(IVehicleBookingPayment vehicleBookingPayment)
+    {
+        String query = queryBuilder.createVehicleBookingPayment((VehicleBookingPayment) vehicleBookingPayment);
+        return databaseExecutor.executeInsertQuery(query);
     }
 }

@@ -3,10 +3,7 @@ package grp16.tripmate.vehicle.database;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.PostDbColumnNames;
-import grp16.tripmate.vehicle.model.VehicleBookingDbColumnNames;
-import grp16.tripmate.vehicle.model.VehicleBookingPayment;
-import grp16.tripmate.vehicle.model.VehicleBookingPaymentDbColumns;
-import grp16.tripmate.vehicle.model.VehicleDbColumnNames;
+import grp16.tripmate.vehicle.model.*;
 
 public class VehicleBookingPaymentQueryBuilder implements IVehicleBookingPaymentQueryBuilder
 {
@@ -44,6 +41,23 @@ public class VehicleBookingPaymentQueryBuilder implements IVehicleBookingPayment
                 VehicleDbColumnNames.ID + "=vb." +
                 VehicleBookingDbColumnNames.VEHICLE_ID + " where p." +
                 PostDbColumnNames.OWNER + "=" + userId + ";";
+        return query;
+    }
+
+    @Override
+    public String createVehicleBookingPayment(VehicleBookingPayment vehicleBookingPayment)
+    {
+        String query = "INSERT INTO " + VehicleBookingPaymentDbColumns.TABLENAME +
+                "(" +
+                VehicleBookingPaymentDbColumns.AMOUNT + ", " +
+                VehicleBookingPaymentDbColumns.VEHICLE_BOOKING_ID + ", " +
+                VehicleBookingPaymentDbColumns.CREATED_ON + ") " +
+                "VALUES " +
+                '(' +
+                vehicleBookingPayment.getAmount() + ", " +
+                vehicleBookingPayment.getVehicleBookingId() + ", " +
+                "'" + vehicleBookingPayment.getCreatedOn() + "');";
+        logger.info(query);
         return query;
     }
 }

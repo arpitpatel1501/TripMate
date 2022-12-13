@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -81,12 +83,21 @@ public class VehicleController implements IVehicleController {
     public String confirmVehicleBooking(Model model,
                                         @PathVariable("id") int vehicleId,
                                         @ModelAttribute VehicleBooking vehicleBooking,
-                                        @ModelAttribute Post userPost) {
+                                        @ModelAttribute VehicleBookingPayment vehicleBookingPayment,
+                                        @ModelAttribute Post userPost) throws ParseException {
         logger.info("the vehiclebooking obj is: " + vehicleBooking);
         logger.info("the User Post obj is: " + userPost);
+        logger.info("Vehicle booking payment is: " + vehicleBookingPayment);
+        logger.info("Vehicle booking payment amount is: " + vehicleBookingPayment.getAmount());
+        logger.info("Vehicle booking kilometers: " + vehicleBooking.getTotalKm());
 
         vehicleBooking.setVehicleId(vehicleId);
         vehicleBookingDatabase.createVehicleBooking(vehicleBooking);
+
+        vehicleBookingPayment.setVehicleBookingId(vehicleBooking.getId());
+        vehicleBookingPayment.setCreatedOn(new Date());
+        vehicleBookingPaymentDatabase.createVehicleBookingPayment(vehicleBookingPayment);
+
         return "redirect:/my-vehicle-bookings";
     }
 

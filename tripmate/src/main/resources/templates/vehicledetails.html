@@ -23,7 +23,24 @@
 </head>
 <script type="text/javascript">
         function fillPaymentAmount(){
-            document.getElementById('fillPrice').innerHTML = document.getElementById('totalkminput').value;
+            console.log('Welcome');
+            var ratePerKm = document.getElementById('ratePerKm').innerText * 1;
+            console.log('1');
+            console.log(ratePerKm);
+            var totalKm   = document.getElementById('totalkminput').value * 1;
+            console.log('2');
+            console.log(totalKm);
+            var totalBillAmount = ratePerKm * totalKm * 1;
+            console.log('3');
+            console.log(totalBillAmount);
+
+            document.getElementById('totalPaymentAmount').value = totalBillAmount;
+            console.log(document.getElementById('totalPaymentAmount').value);
+            document.getElementById('fillPrice').innerHTML = totalBillAmount + '$ CAD';
+            console.log(document.getElementById('fillPrice').innerHTML);
+            console.log(document.getElementById("todayDate").value);
+
+            document.getElementById('fillPrice').innerHTML.concat(' CAD$');
         }
     </script>
 <body>
@@ -53,7 +70,7 @@
     </tr>
     <tr>
         <th>Rate Per Kilometer:</th>
-        <td th:text="${vehicle.getRatePerKm()}"/>
+        <td id="ratePerKm" th:text="${vehicle.getRatePerKm()}"/>
     </tr>
     <tr>
         <th>Description:</th>
@@ -74,11 +91,13 @@
                 </select>
                 <p>Booking Start Date : <input type="date" th:field="${vehicleBookingObj.bookingStartDate}" required></p>
                 <p>Booking End Date : <input type="date" th:field="${vehicleBookingObj.bookingEndDate}" required></p>
-                <p>Total Kilometers : <input id="totalkminput" type="number" th:field="${vehicleBookingObj.totalKm}" onchange=fillPaymentAmount() required></p>
+                <p>Total Kilometers : <input id="totalkminput" type="number" onchange=fillPaymentAmount() required></p>
+                <input type="hidden" id="totalPaymentAmount" th:field="${vehicleBookingPayment.amount}">
+
                 <div class="container">
                     <div class="centre-content">
                         <p class="price">Pay using Credit or Debit card</p>
-                        <h3 class="price" id="fillPrice"><span>CAD(C$)/-</span></h3>
+                        <h3 class="price" id="fillPrice"></h3>
                     </div>
                     <div class="card-details">
                         <div class="card-number">
