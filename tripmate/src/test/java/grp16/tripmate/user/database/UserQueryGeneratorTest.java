@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
-class UserQueryBuilderTest {
+class UserQueryGeneratorTest {
 
 
     IUserQueryGenerator queryBuilder = UserQueryGenerator.getInstance();
