@@ -1,6 +1,5 @@
 package grp16.tripmate.request.database;
 
-import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
 import grp16.tripmate.request.model.IMyRequestFactory;
@@ -35,9 +34,9 @@ public class MyRequestDatabase implements IMyRequestDatabase {
             if (status.equals("pending")) {
                 myRequest.setStatus(PostRequestStatus.PENDING);
             } else if (status.equals("approved")) {
-                myRequest.setStatus(PostRequestStatus.APPROVED);
+                myRequest.setStatus(PostRequestStatus.ACCEPT);
             } else {
-                myRequest.setStatus(PostRequestStatus.REJECTED);
+                myRequest.setStatus(PostRequestStatus.DECLINE);
             }
             myRequest.setPostTitle((String) result.get("postTitle"));
             myRequest.setFirstNameCreator((String) result.get("firstNameCreator"));
