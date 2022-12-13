@@ -15,6 +15,9 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
 
     private static IMyPostRequestFactory instance = null;
 
+    private MyPostRequestFactory() {
+
+    }
     public static IMyPostRequestFactory getInstance() {
         if (instance == null) {
             instance = new MyPostRequestFactory();

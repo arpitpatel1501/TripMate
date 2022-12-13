@@ -11,6 +11,9 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private static IMyPostRequestQueryBuilder instance;
+    private MyPostRequestQueryBuilder() {
+
+    }
 
     public static IMyPostRequestQueryBuilder getInstance() {
         if (instance == null) {

@@ -6,6 +6,10 @@ public class ForgetPasswordQueryBuilder implements IForgetPasswordQueryBuilder {
 
     private static IForgetPasswordQueryBuilder instance = null;
 
+    private ForgetPasswordQueryBuilder() {
+
+    }
+
     public static IForgetPasswordQueryBuilder getInstance() {
         if (instance == null) {
             instance = new ForgetPasswordQueryBuilder();
