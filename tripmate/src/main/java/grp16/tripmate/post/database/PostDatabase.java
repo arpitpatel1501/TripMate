@@ -5,6 +5,7 @@ import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
+import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.model.VehicleBooking;
@@ -27,7 +28,7 @@ public class PostDatabase implements IPostDatabase {
     }
 
     @Override
-    public boolean createPost(Post post) {
+    public boolean createPost(Post post) throws SessionEndedException {
         post.setOwner_id(SessionManager.getInstance().getLoggedInUserId());
         String query = queryGenerator.getCreatePostQuery(post);
         return databaseExecutor.executeInsertQuery(query);
