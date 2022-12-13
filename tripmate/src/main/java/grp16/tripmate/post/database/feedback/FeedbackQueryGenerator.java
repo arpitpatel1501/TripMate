@@ -8,7 +8,7 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
     static IFeedbackQueryGenerator instance;
 
     private FeedbackQueryGenerator() {
-        //Required empty constructor
+
     }
 
     public static IFeedbackQueryGenerator getInstance() {
