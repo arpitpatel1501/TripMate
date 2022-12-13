@@ -13,7 +13,6 @@ import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +36,6 @@ public class PostController {
     private final IPostDatabase postDatabase;
     private final PostValidator validator;
     private final IFeedbackDatabase feedbackDatabase;
-    private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingDatabase vehicleBookingDatabase;
 
     PostController() {
@@ -46,8 +44,7 @@ public class PostController {
         feedbackDatabase = postFactory.makeFeedbackDatabase();
         postDatabase = postFactory.makePostDatabase();
         validator = postFactory.makePostValidator();
-        vehicleBookingFactory = VehicleBookingFactory.getInstance();
-        vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
+        vehicleBookingDatabase = VehicleBookingFactory.getInstance().getVehicleBookingDatabase();
     }
 
     @GetMapping("/dashboard")

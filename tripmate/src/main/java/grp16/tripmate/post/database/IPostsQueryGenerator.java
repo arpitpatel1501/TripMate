@@ -17,6 +17,4 @@ public interface IPostsQueryGenerator {
     String deletePostQuery(int postId);
 
     String hidePostQuery(int postId);
-
-    String getFeedbackPosts();
 }
