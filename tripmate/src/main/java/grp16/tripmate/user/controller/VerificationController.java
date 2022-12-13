@@ -2,8 +2,8 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.notification.EmailVerificationFactory;
-import grp16.tripmate.notification.IVerification;
+import grp16.tripmate.notification.model.IVerification;
+import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.User;
@@ -27,7 +27,7 @@ public class VerificationController {
     VerificationController() throws Exception {
         IUserFactory userFactory = UserFactory.getInstance();
         database = userFactory.makeUserDatabase();
-        verification = EmailVerificationFactory.getInstance().createVerificationMethod();
+        verification = NotificationFactory.getInstance().createVerificationMethod();
     }
 
     @PostMapping("/register")

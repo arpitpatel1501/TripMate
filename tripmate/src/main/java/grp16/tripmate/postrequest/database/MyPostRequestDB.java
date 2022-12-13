@@ -26,7 +26,7 @@ public class MyPostRequestDB implements IMyPostRequestDB {
                 "JOIN Post p on pr.Post_id = p.id\n" +
                 "JOIN User u on pr.request_owner = u.id\n" +
                 "JOIN User post_owner on post_owner.id = p.created_by\n" +
-                "WHERE pr.status = \"pending\" and p.created_by = " + loginUserId + ";";
+                "WHERE pr.status = \"PENDING\" and p.created_by = " + loginUserId + ";";
 
         logger.info(query);
         return query;
@@ -40,10 +40,29 @@ public class MyPostRequestDB implements IMyPostRequestDB {
                 "`Post_id`,\n" +
                 "`request_owner`)\n" +
                 "VALUES\n" + "(" +
-                "'pending',\n" +
+                "'PENDING',\n" +
                 post_id + "," +
                 user_id + ");\n";
 
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String getPostOwnerDetailsbyPostId(int post_id) {
+        String query = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.firstname as postOwnerFirstName, u.lastname as postOwnerLastName from Post p \n" +
+                "JOIN User u on p.created_by = u.id\n" +
+                "WHERE p.id = "+ post_id +";";
+        logger.info(query);
+        return query;
+    }
+
+    @Override
+    public String getPostRequesteeDetailsbyRequestId (int request_id) {
+        String query = "SELECT * from PostRequest pr \n" +
+                "JOIN User u on pr.request_owner = u.id \n" +
+                "JOIN Post p on pr.Post_id = p.id \n" +
+                "WHERE pr.id = " + request_id + ";";
         logger.info(query);
         return query;
     }

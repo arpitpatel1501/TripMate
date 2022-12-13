@@ -2,9 +2,9 @@ package grp16.tripmate.request.controller;
 
 import grp16.tripmate.request.database.IMyRequestDatabase;
 import grp16.tripmate.request.model.IMyRequest;
-import grp16.tripmate.request.model.IMyRequestFactory;
+import grp16.tripmate.request.model.factory.IMyRequestFactory;
 import grp16.tripmate.request.model.MyRequest;
-import grp16.tripmate.request.model.MyRequestFactory;
+import grp16.tripmate.request.model.factory.MyRequestFactory;
 import grp16.tripmate.session.SessionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

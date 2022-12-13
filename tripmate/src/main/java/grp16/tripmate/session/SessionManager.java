@@ -27,8 +27,9 @@ public class SessionManager {
 
     public Object getValue(String key) throws Exception {
         Object value = session.get(key);
-        if (value == null)
+        if (value == null) {
             throw new SessionManagerException("null value");
+        }
         return session.get(key);
     }
 

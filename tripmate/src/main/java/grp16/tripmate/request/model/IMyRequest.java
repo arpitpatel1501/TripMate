@@ -1,6 +1,7 @@
 package grp16.tripmate.request.model;
 
 import grp16.tripmate.request.database.IMyRequestDatabase;
+import grp16.tripmate.request.model.factory.IMyRequestFactory;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.forgetPassword.database.ForgetPasswordQueryBuilder;
 import grp16.tripmate.forgetPassword.database.IForgetPasswordQueryBuilder;
-import grp16.tripmate.notification.INotification;
+import grp16.tripmate.notification.model.INotification;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
