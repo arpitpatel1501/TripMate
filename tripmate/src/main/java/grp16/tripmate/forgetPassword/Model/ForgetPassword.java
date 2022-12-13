@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class ForgetPassword implements IForgetPassword{
-
-    String emailSender;
     private String messageSubject = "Reset Password Request Code";
     private INotification iNotification;
     private IForgetPasswordQueryBuilder queryBuilder;

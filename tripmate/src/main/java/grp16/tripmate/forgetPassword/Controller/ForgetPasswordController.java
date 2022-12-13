@@ -7,14 +7,12 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.notification.model.IVerification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.user.model.encoder.PasswordEncoder;
-import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class ForgetPasswordController {
@@ -22,10 +20,9 @@ public class ForgetPasswordController {
     private final ILogger logger = new MyLoggerAdapter(this);
     private IVerification iVerification = null;
     private String email = null;
-    private User user;
 
     @GetMapping("/forget_password")
-    public String forgetPassword(Model model) throws Exception {
+    public String forgetPassword(Model model) {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", this.email);
 
@@ -45,8 +42,6 @@ public class ForgetPasswordController {
                 logger.info("User Not exists");
                 return "redirect:/error";
             }
-        } catch (SQLIntegrityConstraintViolationException e) {
-            System.out.println("---- user exist ----");
         } catch (Exception e) {
             logger.info(e.getMessage());
             e.printStackTrace();
@@ -67,10 +62,8 @@ public class ForgetPasswordController {
     public String userVerificationCode(Model model, HttpServletRequest request) {
         model.addAttribute("email", this.email);
         String code = request.getParameter("code");
-        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
 
         if (this.iVerification.verifyCode(code)) {
-            System.out.println("--- code match ---");
             return "new_password";
         } else {
             return "redirect:/error";
@@ -78,7 +71,7 @@ public class ForgetPasswordController {
     }
 
     @GetMapping("/new_password")
-    public String resetPassword(Model model) throws Exception {
+    public String resetPassword(Model model) {
         email = ForgetPasswordFactory.getInstance().createForgetPassword().getEmail();
 
         model.addAttribute("title", "New password");
@@ -90,7 +83,6 @@ public class ForgetPasswordController {
     @PostMapping("/new_password")
     public String setNewPassword(Model model, HttpServletRequest request) throws Exception {
         IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
-//        email = iForgetPassword.getEmail();
         model.addAttribute("email", email);
         String password = request.getParameter("password");
         if (iForgetPassword.changeUserPassword(email, PasswordEncoder.getInstance().encodeString(password))) {
