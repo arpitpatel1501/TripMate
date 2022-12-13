@@ -19,11 +19,14 @@ public class EmailVerification implements IVerification{
     }
 
     @Override
-    public boolean verifyCode(String code) {
+    public boolean verifyCode(String code) throws InvalidTokenException{
         if (uniqueNumber == Integer.parseInt(code)) {
             return true;
         }
-        return false;
+        else {
+            throw new InvalidTokenException();
+        }
+//        return false;
     }
 
     private int generateNumber() {

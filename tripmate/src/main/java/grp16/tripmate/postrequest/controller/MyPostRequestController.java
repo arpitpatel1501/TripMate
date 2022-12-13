@@ -1,6 +1,7 @@
 package grp16.tripmate.postrequest.controller;
 
 import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
@@ -25,12 +26,14 @@ public class MyPostRequestController {
     private final IMyPostRequestDB myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
+    INotification notification;
 
     MyPostRequestController() throws Exception {
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
         logger = myPostRequestFactory.makeNewLogger(this);
+        notification = NotificationFactory.getInstance().createEmailNotification();
     }
 
     @GetMapping("/my_post_requests")
@@ -52,7 +55,7 @@ public class MyPostRequestController {
         myPostRequest.createJoinRequest(myPostRequestDB, postId);
         MyPostRequest postRequests = myPostRequest.getPostOwnerDetails(myPostRequestDB, postId);
 
-        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailCreator(),
+        notification.sendNotification(postRequests.getEmailCreator(),
                 "Join Request for " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
         return "redirect:/myRequests";
@@ -63,7 +66,7 @@ public class MyPostRequestController {
         myPostRequest.updateRequest(myPostRequestDB, requestId, PostRequestStatus.ACCEPT);
         MyPostRequest postRequests = myPostRequest.getPostRequesterDetails(myPostRequestDB, requestId);
 
-        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequester(),
+        notification.sendNotification(postRequests.getEmailRequester(),
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
 
@@ -75,7 +78,7 @@ public class MyPostRequestController {
         myPostRequest.updateRequest(myPostRequestDB, requestId, PostRequestStatus.DECLINE);
         MyPostRequest postRequests = myPostRequest.getPostRequesterDetails(myPostRequestDB, requestId);
 
-        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequester(),
+        notification.sendNotification(postRequests.getEmailRequester(),
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
