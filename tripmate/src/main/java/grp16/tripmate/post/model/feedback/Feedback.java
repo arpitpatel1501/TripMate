@@ -17,11 +17,6 @@ public class Feedback implements IFeedback {
         return database.createFeedback(this);
     }
 
-    @Override
-    public boolean updateFeedback(IFeedbackDatabase database) {
-        return database.updateFeedback(this);
-    }
-
     public int getId() {
         return id;
     }
