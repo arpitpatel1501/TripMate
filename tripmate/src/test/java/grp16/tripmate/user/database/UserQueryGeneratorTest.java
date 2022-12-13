@@ -9,8 +9,7 @@ import java.text.ParseException;
 
 class UserQueryGeneratorTest {
 
-
-    IUserQueryGenerator queryBuilder = UserQueryGenerator.getInstance();
+    IUserQueryGenerator queryGenerator = UserQueryGenerator.getInstance();
 
     @Test
     void getUserByUsername() {
@@ -25,7 +24,7 @@ class UserQueryGeneratorTest {
                 "FROM `User` where email = \"" + "email@mail.com" + "\"";
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.getUserByUsername("email@mail.com"));
+        Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUsername("email@mail.com"));
     }
 
     @Test
@@ -38,7 +37,7 @@ class UserQueryGeneratorTest {
                 "    `birthdate`," +
                 "    `gender`" +
                 "FROM `User` where id = " + 1;
-        Assertions.assertEquals(expectedQuery, queryBuilder.getUserByUserID(1));
+        Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUserID(1));
 
     }
 
@@ -72,7 +71,7 @@ class UserQueryGeneratorTest {
                 "\"" + "Male" + "\");";
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.createUser(user));
+        Assertions.assertEquals(expectedQuery, queryGenerator.createUser(user));
 
 
     }
@@ -96,6 +95,6 @@ class UserQueryGeneratorTest {
                 UserDbColumnNames.ID + " = " + 1;
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.changeUserDetails(user));
+        Assertions.assertEquals(expectedQuery, queryGenerator.changeUserDetails(user));
     }
 }
