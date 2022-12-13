@@ -120,25 +120,49 @@ class PostTest {
 
     @Test
     @Order(8)
-    void validatePostStartDateBeforeToday() throws Exception {
+    void validatePostStartDateBeforeTodayThrows() throws Exception {
         post.setStartDate("2022-12-01");
         post.createPost(database);
         assertThrows(StartDateBeforeTodayException.class, () -> post.validatePost(factory.makePostValidator()));
     }
 
     @Test
+    @Order(15)
+    void validatePostStartDateBeforeTodayDoesNotThrow() throws Exception {
+        post.setStartDate("2023-12-01");
+        post.createPost(database);
+        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
+    }
+
+    @Test
     @Order(9)
-    void validatePostStartDateAfterEndDate() throws Exception {
+    void validatePostStartDateAfterEndDateThrows() throws Exception {
         post.setStartDate("2040-12-01");
         post.createPost(database);
         assertThrows(StartDateAfterEndDateException.class, () -> post.validatePost(factory.makePostValidator()));
     }
 
     @Test
+    @Order(16)
+    void validatePostStartDateAfterEndDateDoesNotThrow() throws Exception {
+        post.setStartDate("2023-12-01");
+        post.createPost(database);
+        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
+    }
+
+    @Test
     @Order(10)
-    void validatePostMinAgeGreaterThanMaxAge() throws Exception {
+    void validatePostMinAgeGreaterThanMaxAgeThrows() throws Exception {
         post.setMinAge(15);
         post.createPost(database);
         assertThrows(MinAgeGreaterThanMaxAgeException.class, () -> post.validatePost(factory.makePostValidator()));
+    }
+
+    @Test
+    @Order(17)
+    void validatePostMinAgeGreaterThanMaxAgeDoesNotThrow() throws Exception {
+        post.setMinAge(6);
+        post.createPost(database);
+        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
     }
 }
