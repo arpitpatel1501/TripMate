@@ -7,9 +7,18 @@ import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.IVehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.model.*;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
+import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
+import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
+import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
+import grp16.tripmate.vehicle.model.Vehicle.IVehicle;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
+import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBookingPayment.IVehicleBookingPaymentFactory;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
+import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPaymentFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,21 +31,17 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class VehicleController implements IVehicleController {
+public class VehicleController{
     private final ILogger logger = new MyLoggerAdapter(this);
 
     private final IVehicleFactory vehicleFactory;
     private final IPostFactory postFactory;
-
     private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingPaymentFactory vehicleBookingPaymentFactory;
 
     private final IVehicle vehicle;
-
     private final IPostDatabase postDatabase;
-
     private final IVehicleBookingDatabase vehicleBookingDatabase;
-
     private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
 
     VehicleController() {
@@ -66,6 +71,7 @@ public class VehicleController implements IVehicleController {
         model.addAttribute("vehicle", vehicle);
 
         int userId = SessionManager.getInstance().getLoggedInUserId();
+
         Post post = (Post) postFactory.makeNewPost();
         List<Post> userPosts = post.getPostsByUserId(postDatabase, userId);
         model.addAttribute("userposts", userPosts);
@@ -85,12 +91,6 @@ public class VehicleController implements IVehicleController {
                                         @ModelAttribute VehicleBooking vehicleBooking,
                                         @ModelAttribute VehicleBookingPayment vehicleBookingPayment,
                                         @ModelAttribute Post userPost) throws ParseException {
-        logger.info("the vehiclebooking obj is: " + vehicleBooking);
-        logger.info("the User Post obj is: " + userPost);
-        logger.info("Vehicle booking payment is: " + vehicleBookingPayment);
-        logger.info("Vehicle booking payment amount is: " + vehicleBookingPayment.getAmount());
-        logger.info("Vehicle booking kilometers: " + vehicleBooking.getTotalKm());
-
         vehicleBooking.setVehicleId(vehicleId);
         vehicleBookingDatabase.createVehicleBooking(vehicleBooking);
 

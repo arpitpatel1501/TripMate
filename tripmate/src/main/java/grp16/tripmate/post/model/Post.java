@@ -10,8 +10,8 @@ import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.text.DateFormat;
 import java.text.ParseException;

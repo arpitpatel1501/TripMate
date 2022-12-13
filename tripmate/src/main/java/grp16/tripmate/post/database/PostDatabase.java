@@ -7,8 +7,8 @@ import grp16.tripmate.post.model.*;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

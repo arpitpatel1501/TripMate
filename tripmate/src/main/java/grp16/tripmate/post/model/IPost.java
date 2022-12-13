@@ -6,9 +6,8 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.IVehicleBookingFactory;
-import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.text.ParseException;
 import java.util.List;
