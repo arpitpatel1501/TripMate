@@ -91,7 +91,7 @@
                 </select>
                 <p>Booking Start Date : <input type="date" th:field="${vehicleBookingObj.bookingStartDate}" required></p>
                 <p>Booking End Date : <input type="date" th:field="${vehicleBookingObj.bookingEndDate}" required></p>
-                <p>Total Kilometers : <input id="totalkminput" type="number" onchange=fillPaymentAmount() required></p>
+                <p>Total Kilometers : <input id="totalkminput" type="number" onchange=fillPaymentAmount() th:field="${vehicleBookingObj.totalKm}" required></p>
                 <input type="hidden" id="totalPaymentAmount" th:field="${vehicleBookingPayment.amount}">
 
                 <div class="container">
