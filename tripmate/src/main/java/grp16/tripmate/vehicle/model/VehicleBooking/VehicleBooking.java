@@ -41,8 +41,7 @@ public class VehicleBooking implements IVehicleBooking {
         this.setBookingEndDate(new Date());
     }
 
-    public float getTotalBookingAmount()
-    {
+    public float getTotalBookingAmount() throws ParseException {
         return VehicleFactory.getInstance().getNewVehicle().getVehicleById(
                 this.vehicleId).getVehicleRatePerKmByVehicleId() * this.totalKm;
     }
@@ -133,5 +132,11 @@ public class VehicleBooking implements IVehicleBooking {
     @Override
     public VehicleBooking getVehicleBookingByBookingId(int bookingId) {
         return null;
+    }
+
+    @Override
+    public boolean createVehicleBooking(IVehicleBookingDatabase vehicleBookingDatabaseObj)
+    {
+        return vehicleBookingDatabaseObj.createVehicleBooking(this);
     }
 }

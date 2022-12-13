@@ -6,10 +6,9 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
 import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryBuilder;
-import grp16.tripmate.vehicle.database.Vehicle.VehicleDatabase;
-import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,13 +113,11 @@ public class Vehicle implements IVehicle
     public void setIsForLongJourney(boolean forLongJourney) {
         isForLongJourney = forLongJourney;
     }
-    public List<Vehicle> getAllVehicles()
-    {
+    public List<Vehicle> getAllVehicles() throws ParseException {
         return database.getAllVehicles();
     }
 
-    public Vehicle getVehicleById(int vehicleId)
-    {
+    public Vehicle getVehicleById(int vehicleId) throws ParseException {
         return database.getVehicleById(vehicleId);
     }
 
@@ -139,8 +136,7 @@ public class Vehicle implements IVehicle
         return new ArrayList<>();
     }
 
-    public float getVehicleRatePerKmByVehicleId()
-    {
+    public float getVehicleRatePerKmByVehicleId() throws ParseException {
         Vehicle vehicleObj = database.getVehicleById(this.id);
         return vehicleObj.getRatePerKm();
     }
