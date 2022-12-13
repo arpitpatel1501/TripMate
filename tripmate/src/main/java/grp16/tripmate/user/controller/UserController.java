@@ -59,7 +59,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
-        User loggedInUser = (User) userDatabase.getUserById(SessionManager.getInstance().getLoggedInUserId());
+        User loggedInUser = userFactory.makeNewUser().getUserById(userDatabase, SessionManager.getInstance().getLoggedInUserId());
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
         model.addAttribute("title", "View/Update Profile");
