@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 
-class UserQueryBuilderTest {
+class UserQueryGeneratorTest {
 
-
-    IUserQueryGenerator queryBuilder = UserQueryGenerator.getInstance();
+    IUserQueryGenerator queryGenerator = UserQueryGenerator.getInstance();
 
     @Test
     void getUserByUsername() {
@@ -25,7 +24,7 @@ class UserQueryBuilderTest {
                 "FROM `User` where email = \"" + "email@mail.com" + "\"";
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.getUserByUsername("email@mail.com"));
+        Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUsername("email@mail.com"));
     }
 
     @Test
@@ -38,7 +37,7 @@ class UserQueryBuilderTest {
                 "    `birthdate`," +
                 "    `gender`" +
                 "FROM `User` where id = " + 1;
-        Assertions.assertEquals(expectedQuery, queryBuilder.getUserByUserID(1));
+        Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUserID(1));
 
     }
 
@@ -72,7 +71,7 @@ class UserQueryBuilderTest {
                 "\"" + "Male" + "\");";
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.createUser(user));
+        Assertions.assertEquals(expectedQuery, queryGenerator.createUser(user));
 
 
     }
@@ -96,6 +95,6 @@ class UserQueryBuilderTest {
                 UserDbColumnNames.ID + " = " + 1;
 
 
-        Assertions.assertEquals(expectedQuery, queryBuilder.changeUserDetails(user));
+        Assertions.assertEquals(expectedQuery, queryGenerator.changeUserDetails(user));
     }
 }
