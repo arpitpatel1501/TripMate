@@ -1,0 +1,12 @@
+id,firstname,lastname,email,password,birthdate,gender
+1,Harshil,Shah,mail@mail.com,P@ss12,2022-11-19,Male
+2,"Harshil 2","Shah 2",mail1@mail.com,P@ss123,2022-11-20,Male
+3,Harshil,Shah,Username,771c7c0fb9e19c9b6d0755c25ae10a890d9302199741c57b18af716a45219883,2022-12-04,Male
+4,Harshil,Shah,harshil@gmail.com,86d1505766b68b1b3527361fddd86b48b8eda730c51b23083c05d2d8af3ad22d,2022-12-04,Male
+5,Harshil,Shah,harshil@mail.com,86d1505766b68b1b3527361fddd86b48b8eda730c51b23083c05d2d8af3ad22d,2022-12-04,Male
+6,Amanjot,Singh,amanjot.singh@dal.ca,678928b0f6de9cec5b2a65a127dd02d8500117b808e4eebcca6f70ef735dc66a,1994-01-01,Male
+7,Harshil,Shah,harshil123@mail.com,cd053d4ff3954e7e4111cf871ba5d63e2c7a3e67f8c140c61debffee5c6f19da,2022-12-05,Male
+8,test,test,test@mail.com,771c7c0fb9e19c9b6d0755c25ae10a890d9302199741c57b18af716a45219883,2022-12-06,Male
+9,"Harshil 1","Shah 2",mytest@mail.com,cd053d4ff3954e7e4111cf871ba5d63e2c7a3e67f8c140c61debffee5c6f19da,2022-12-06,Male
+11,"Harshil 1","Shah 2",harshil+1@mail.com,cd053d4ff3954e7e4111cf871ba5d63e2c7a3e67f8c140c61debffee5c6f19da,2022-12-06,Male
+12,Harshias,asdlna,mailajf@mail.com,11734a6dc7e8c087311da7288d2c4cc79f1af5a8bf2c6989ace225aef3bfb0ed,2022-12-29,MAale
