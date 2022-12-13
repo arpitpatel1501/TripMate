@@ -2,7 +2,9 @@ package grp16.tripmate.postrequest.database;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.database.PostDbColumnNames;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.user.database.UserDbColumnNames;
 
 public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
@@ -19,13 +21,13 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
     @Override
     public String getMyPostRequests(int loginUserId) {
-        String query = "SELECT pr.id as requestId, u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, u.id as idRequestee, p.title as postTitle, " +
-                "p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
-                "FROM PostRequest pr\n" +
-                "JOIN Post p on pr.Post_id = p.id\n" +
-                "JOIN User u on pr.request_owner = u.id\n" +
-                "JOIN User post_owner on post_owner.id = p.created_by\n" +
-                "WHERE pr.status = \"PENDING\" and p.created_by = " + loginUserId + ";";
+        String query = "SELECT pr." + MyPostRequestDbColumnNames.ID + " as requestId, u." + UserDbColumnNames.FIRSTNAME + " as firstNameRequestee, u." + UserDbColumnNames.LASTNAME + " as lastNameRequestee, u."+ UserDbColumnNames.ID + " as idRequestee, p."+ PostDbColumnNames.TITLE + " as postTitle, " +
+                "p."+ PostDbColumnNames.OWNER + " as idCreator, post_owner." + UserDbColumnNames.FIRSTNAME + " as firstNameCreator, post_owner." + UserDbColumnNames.LASTNAME + " lastNameCreator \n" +
+                "FROM " + MyPostRequestDbColumnNames.TABLE_NAME +" pr\n" +
+                "JOIN " + PostDbColumnNames.TABLE_NAME + " p on pr." + MyPostRequestDbColumnNames.POST_ID + " = p."+ PostDbColumnNames.ID +"\n" +
+                "JOIN " + UserDbColumnNames.TABLE_NAME + " u on pr." + MyPostRequestDbColumnNames.REQUEST_OWNER + " = u." + UserDbColumnNames.ID + "\n" +
+                "JOIN " + UserDbColumnNames.TABLE_NAME + " post_owner on post_owner." + UserDbColumnNames.ID + " = p." + PostDbColumnNames.OWNER + "\n" +
+                "WHERE pr." + MyPostRequestDbColumnNames.STATUS + " = \"PENDING\" and p." + PostDbColumnNames.OWNER + " = " + loginUserId + ";";
 
         logger.info(query);
         return query;
@@ -34,11 +36,11 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
     @Override
     public String createJoinRequest(int post_id, int user_id) {
-        String query = "INSERT INTO `PostRequest`\n" +
+        String query = "INSERT INTO "+MyPostRequestDbColumnNames.TABLE_NAME+"\n" +
                 "(" +
-                "`status`,\n" +
-                "`Post_id`,\n" +
-                "`request_owner`)\n" +
+                MyPostRequestDbColumnNames.STATUS + ",\n" +
+                MyPostRequestDbColumnNames.POST_ID + ",\n" +
+                MyPostRequestDbColumnNames.REQUEST_OWNER + ")\n" +
                 "VALUES\n" + "(" +
                 "'PENDING',\n" +
                 post_id + "," +
@@ -50,9 +52,10 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
     @Override
     public String getPostOwnerDetails(int post_id) {
-        String query = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.firstname as postOwnerFirstName, u.lastname as postOwnerLastName from Post p \n" +
-                "JOIN User u on p.created_by = u.id\n" +
-                "WHERE p.id = "+ post_id +";";
+        String query = "SELECT p." + PostDbColumnNames.TITLE + " as postTitle, u." + UserDbColumnNames.USERNAME + " as postOwnerEmail, u."+ UserDbColumnNames.FIRSTNAME +" as postOwnerFirstName, u." + UserDbColumnNames.LASTNAME + " as postOwnerLastName from " + PostDbColumnNames.TABLE_NAME + " p \n" +
+                "JOIN "+ UserDbColumnNames.TABLE_NAME +" u on p." + PostDbColumnNames.OWNER + " = u."+ UserDbColumnNames.ID +"\n" +
+                "WHERE p."+PostDbColumnNames.ID+" = "+ post_id +";";
+
         logger.info(query);
         return query;
     }
@@ -70,13 +73,12 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
     @Override
     public String getPostRequesteeDetails (int request_id) {
-        String query = "SELECT * from PostRequest pr \n" +
-                "JOIN User u on pr.request_owner = u.id \n" +
-                "JOIN Post p on pr.Post_id = p.id \n" +
-                "WHERE pr.id = " + request_id + ";";
+        String query = "SELECT * from " + MyPostRequestDbColumnNames.TABLE_NAME + " pr \n" +
+                "JOIN " + UserDbColumnNames.TABLE_NAME + " u on pr." + MyPostRequestDbColumnNames.REQUEST_OWNER + " = u."+UserDbColumnNames.ID+" \n" +
+                "JOIN "+PostDbColumnNames.TABLE_NAME+" p on pr."+MyPostRequestDbColumnNames.POST_ID+" = p."+ PostDbColumnNames.ID +" \n" +
+                "WHERE pr."+ MyPostRequestDbColumnNames.ID +" = " + request_id + ";";
+
         logger.info(query);
         return query;
     }
-
-
 }
