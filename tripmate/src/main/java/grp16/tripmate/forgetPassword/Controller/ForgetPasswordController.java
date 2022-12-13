@@ -1,6 +1,6 @@
 package grp16.tripmate.forgetPassword.Controller;
 
-import grp16.tripmate.forgetPassword.Model.ForgetPasswordFactory;
+import grp16.tripmate.forgetPassword.Model.factory.ForgetPasswordFactory;
 import grp16.tripmate.forgetPassword.Model.IForgetPassword;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
