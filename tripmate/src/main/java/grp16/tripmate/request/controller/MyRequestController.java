@@ -37,6 +37,6 @@ public class MyRequestController {
             e.printStackTrace();
             return "redirect:/error";
         }
-        return "my_requests";
+        return "myRequests";
     }
 }

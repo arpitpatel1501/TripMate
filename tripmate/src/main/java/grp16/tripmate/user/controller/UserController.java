@@ -63,14 +63,14 @@ public class UserController {
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
         model.addAttribute("title", "View/Update Profile");
-        return "view_profile";
+        return "viewProfile";
     }
 
     @PostMapping("/changeUserDetails")
     public String changeUserDetails(@ModelAttribute User user) throws Exception {
         logger.info("Change user to " + user);
         user.changeUserDetails(userDatabase);
-        return "view_profile";
+        return "viewProfile";
     }
 
     @GetMapping("/")

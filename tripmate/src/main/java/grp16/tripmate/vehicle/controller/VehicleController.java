@@ -60,7 +60,7 @@ public class VehicleController{
         model.addAttribute("title", "Vehicles");
         List<Vehicle> vehicles = vehicle.getAllVehicles();
         model.addAttribute("vehicles", vehicles);
-        return "listvehicles";
+        return "listVehicles";
     }
 
     @GetMapping("/vehicle/{id}")
@@ -82,7 +82,7 @@ public class VehicleController{
         VehicleBookingPayment vehicleBookingPayment = vehicleBookingPaymentFactory.getNewVehicleBookingPayment();
         model.addAttribute("vehicleBookingPayment", vehicleBookingPayment);
 
-        return "vehicledetails";
+        return "vehicleDetails";
     }
 
     @PostMapping("/confirm-booking/{id}")
@@ -111,7 +111,7 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "my_vehiclebookings";
+        return "myVehicleBookings";
     }
 
     @GetMapping("/my-vehicle-booking-transaction")
@@ -125,11 +125,11 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "my_transactions";
+        return "myTransactions";
     }
 
     @GetMapping("/recommended-vehicles")
     public String getRecommendedVehiclesByTripId(Model model) {
-        return "recommended_vehicles";
+        return "recommendedVehicles";
     }
 }

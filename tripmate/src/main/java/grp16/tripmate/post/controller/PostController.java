@@ -54,7 +54,7 @@ public class PostController {
             IPost post = postFactory.makeNewPost();
             List<Post> posts = post.getAllPosts(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-            return "listposts";
+            return "listPosts";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class PostController {
         Post myPost = (Post) postFactory.makeNewPost();
         model.addAttribute("title", "New Post");
         model.addAttribute("post", myPost);
-        return "createpost";
+        return "createPost";
     }
 
     @PostMapping("/createpost")
@@ -80,7 +80,7 @@ public class PostController {
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
-            return "createpost";
+            return "createPost";
         }
     }
 
@@ -91,7 +91,7 @@ public class PostController {
             Post post = (Post) postFactory.makeNewPost();
             List<Post> posts = post.getPostsByUserId(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-            return "listposts";
+            return "listPosts";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -113,7 +113,7 @@ public class PostController {
             model.addAttribute("feedbacks", myPost.getFeedbacks(postDatabase, feedbackDatabase));
             model.addAttribute("canJoin", myPost.isEligibleToJoin());
             model.addAttribute("vehicles", myPost.getVehiclesAssociatedWithCurrentPost(postDatabase, vehicleBookingDatabase));
-            return "viewpost";
+            return "viewPost";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -135,7 +135,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatepost";
+        return "updatePost";
     }
 
     @PostMapping("/updatepost")
@@ -149,7 +149,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatepost";
+        return "updatePost";
     }
 
     @PostMapping("/deletepost/{id}")
