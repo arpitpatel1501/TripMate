@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @Controller
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
@@ -35,23 +37,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String userLogin(@ModelAttribute User user) {
+    public String userLogin(Model model, @ModelAttribute User user) {
         logger.info(user.toString());
         try {
-            boolean isValidUser = user.validateUser(userDatabase, passwordEncoder);
-
-            if (isValidUser) {
-                logger.info(user.getUsername() + " Login SUCCESS");
-                return "redirect:/dashboard";
-            }
-        } catch (IndexOutOfBoundsException e) {
-            logger.error("Username doesn't exists");
+            user.validateUser(userDatabase, passwordEncoder);
+            logger.info(user.getUsername() + " Login SUCCESS");
+            return "redirect:/dashboard";
+        } catch (InvalidUsernamePasswordException | NoSuchAlgorithmException e) {
+            model.addAttribute("error", e.getMessage());
             e.printStackTrace();
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
+            return "login";
         }
-        return "redirect:/error";
     }
 
     @GetMapping("/register")

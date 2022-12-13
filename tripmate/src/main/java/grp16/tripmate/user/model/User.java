@@ -98,7 +98,7 @@ public class User implements IUser {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 
-    public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws Exception {
+    public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws InvalidUsernamePasswordException, NoSuchAlgorithmException {
         User userFromDb = userDatabase.getUserByUsername(this.getUsername());
         logger.info(userFromDb.toString());
         boolean isValidUser = userFromDb != null &&
@@ -110,6 +110,9 @@ public class User implements IUser {
             SessionManager.getInstance().setValue(UserDbColumnNames.USERNAME, userFromDb.getUsername());
             SessionManager.getInstance().setValue(UserDbColumnNames.FIRSTNAME, userFromDb.getFirstname());
             SessionManager.getInstance().setValue(UserDbColumnNames.LASTNAME, userFromDb.getLastname());
+        }
+        else{
+            throw new InvalidUsernamePasswordException();
         }
         return isValidUser;
     }
