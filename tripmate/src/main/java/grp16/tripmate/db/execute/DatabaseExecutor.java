@@ -75,15 +75,14 @@ public class DatabaseExecutor implements IDatabaseExecutor {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
 
+
         while (resultSet.next()) {
             Map<String, Object> row = new HashMap<>();
             for (int i = 1; i <= columnCount; i++) {
-                row.put(metaData.getColumnName(i), resultSet.getObject(i));
+                row.put(metaData.getColumnLabel(i), resultSet.getObject(i));
             }
             resultList.add(row);
         }
         return resultList;
     }
-
-
 }
