@@ -89,4 +89,10 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
     public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId) throws ParseException {
         return database.getVehicleBookingPaymentByUserId(userId);
     }
+
+    @Override
+    public boolean createVehicleBookingPayment(IVehicleBookingPaymentDatabase vehicleBookingPayment)
+    {
+        return vehicleBookingPayment.createVehicleBookingPayment(this);
+    }
 }

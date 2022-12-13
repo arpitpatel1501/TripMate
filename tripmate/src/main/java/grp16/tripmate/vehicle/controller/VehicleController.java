@@ -56,11 +56,11 @@ public class VehicleController{
     }
 
     @GetMapping("/all-vehicles")
-    public String getAllVehicles(Model model) {
+    public String getAllVehicles(Model model) throws ParseException {
         model.addAttribute("title", "Vehicles");
         List<Vehicle> vehicles = vehicle.getAllVehicles();
         model.addAttribute("vehicles", vehicles);
-        return "listVehicles";
+        return "listvehicles";
     }
 
     @GetMapping("/vehicle/{id}")
@@ -82,7 +82,7 @@ public class VehicleController{
         VehicleBookingPayment vehicleBookingPayment = vehicleBookingPaymentFactory.getNewVehicleBookingPayment();
         model.addAttribute("vehicleBookingPayment", vehicleBookingPayment);
 
-        return "vehicleDetails";
+        return "vehicledetails";
     }
 
     @PostMapping("/confirm-booking/{id}")
@@ -111,7 +111,7 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "myVehicleBookings";
+        return "my_vehiclebookings";
     }
 
     @GetMapping("/my-vehicle-booking-transaction")
@@ -125,11 +125,11 @@ public class VehicleController{
             e.printStackTrace();
             model.addAttribute("error", e.getMessage());
         }
-        return "myTransactions";
+        return "my_transactions";
     }
 
     @GetMapping("/recommended-vehicles")
     public String getRecommendedVehiclesByTripId(Model model) {
-        return "recommendedVehicles";
+        return "recommended_vehicles";
     }
 }
