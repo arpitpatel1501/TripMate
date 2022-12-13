@@ -1,7 +1,5 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.IPostDatabase;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.feedback.Feedback;
@@ -24,8 +22,7 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post extends PostSubject implements IPost {
-    private final ILogger logger = new MyLoggerAdapter(this);
+public class Post implements IPost {
     private int id;
     private int owner_id;
     private String title;
@@ -46,11 +43,7 @@ public class Post extends PostSubject implements IPost {
 
     @Override
     public boolean createPost(IPostDatabase database) throws Exception {
-        boolean isPostCreated = database.createPost(this);
-        if (isPostCreated) {
-            notifyObservers();
-        }
-        return isPostCreated;
+        return database.createPost(this);
     }
 
     @Override
@@ -221,7 +214,6 @@ public class Post extends PostSubject implements IPost {
     public void setHidden(int i) {
         isHidden = i == 0;
     }
-
 
     public int getOwner_id() {
         return owner_id;

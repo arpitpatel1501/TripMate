@@ -9,6 +9,7 @@ import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
+import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle.IVehicle;
@@ -33,6 +34,7 @@ import java.util.List;
 public class VehicleController{
     private final ILogger logger = new MyLoggerAdapter(this);
 
+    private final IVehicleFactory vehicleFactory;
     private final IPostFactory postFactory;
     private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingPaymentFactory vehicleBookingPaymentFactory;
@@ -42,9 +44,10 @@ public class VehicleController{
     private final IVehicleBookingDatabase vehicleBookingDatabase;
     private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
 
-    public VehicleController() {
+    VehicleController() {
         postFactory = PostFactory.getInstance();
-        vehicle = VehicleFactory.getInstance().getNewVehicle();
+        vehicleFactory = VehicleFactory.getInstance();
+        vehicle = vehicleFactory.getNewVehicle();
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
         vehicleBookingPaymentFactory = VehicleBookingPaymentFactory.getInstance();
         vehicleBookingPaymentDatabase = vehicleBookingPaymentFactory.getVehicleBookingPaymentDatabase();
@@ -86,15 +89,14 @@ public class VehicleController{
     public String confirmVehicleBooking(Model model,
                                         @PathVariable("id") int vehicleId,
                                         @ModelAttribute VehicleBooking vehicleBooking,
-                                        @ModelAttribute VehicleBookingPayment vehicleBookingPayment
-                                        ) throws ParseException {
-        logger.info(model.toString());
+                                        @ModelAttribute VehicleBookingPayment vehicleBookingPayment,
+                                        @ModelAttribute Post userPost) throws ParseException {
         vehicleBooking.setVehicleId(vehicleId);
-        vehicleBooking.createVehicleBooking(vehicleBookingDatabase);
+        vehicleBookingDatabase.createVehicleBooking(vehicleBooking);
 
         vehicleBookingPayment.setVehicleBookingId(vehicleBooking.getId());
         vehicleBookingPayment.setCreatedOn(new Date());
-        vehicleBookingPayment.createVehicleBookingPayment(vehicleBookingPaymentDatabase);
+        vehicleBookingPaymentDatabase.createVehicleBookingPayment(vehicleBookingPayment);
 
         return "redirect:/my-vehicle-bookings";
     }
@@ -104,7 +106,6 @@ public class VehicleController{
         model.addAttribute("title", "My Vehicle Bookings");
         try {
             List<VehicleBooking> vehicleBookings = vehicleBookingDatabase.getVehicleBookingByUserId(SessionManager.getInstance().getLoggedInUserId());
-            logger.info(vehicleBookings.toString());
             model.addAttribute("vehicleBookings", vehicleBookings);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,5 +126,10 @@ public class VehicleController{
             model.addAttribute("error", e.getMessage());
         }
         return "my_transactions";
+    }
+
+    @GetMapping("/recommended-vehicles")
+    public String getRecommendedVehiclesByTripId(Model model) {
+        return "recommended_vehicles";
     }
 }

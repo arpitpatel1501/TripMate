@@ -5,7 +5,7 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
+import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.factory.UserFactory;
@@ -59,18 +59,18 @@ public class UserController {
 
     @GetMapping("/profile")
     public String userProfile(Model model) throws Exception {
-        User loggedInUser = userDatabase.getUserById(SessionManager.getInstance().getLoggedInUserId());
+        User loggedInUser = userFactory.makeNewUser().getUserById(userDatabase, SessionManager.getInstance().getLoggedInUserId());
         model.addAttribute("user", loggedInUser);
         logger.info("loaded user: " + loggedInUser);
         model.addAttribute("title", "View/Update Profile");
-        return "view_profile";
+        return "viewProfile";
     }
 
     @PostMapping("/changeUserDetails")
     public String changeUserDetails(@ModelAttribute User user) throws Exception {
         logger.info("Change user to " + user);
         user.changeUserDetails(userDatabase);
-        return "view_profile";
+        return "viewProfile";
     }
 
     @GetMapping("/")

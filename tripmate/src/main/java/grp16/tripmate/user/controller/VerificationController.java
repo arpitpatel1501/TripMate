@@ -9,12 +9,10 @@ import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.factory.UserFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class VerificationController {
@@ -32,16 +30,13 @@ public class VerificationController {
 
     @PostMapping("/register")
     public String userVerification(@ModelAttribute User user) throws Exception {
-        verification.sendUniqueCode(user.getUsername(),
-                "Your user verification code is: ",
-                "User Verification for Tripmate");
+        verification.sendUniqueCode(user.getUsername(), "Your user verification code is: ", "User Verification for Tripmate");
         this.user = user;
-        return "user_verification";
+        return "userVerification";
     }
 
     @PostMapping("/verify")
-    public String userVerificationCode(Model model, HttpServletRequest request) {
-
+    public String userVerificationCode(HttpServletRequest request) {
         String code = request.getParameter("code");
 
         if (this.verification.verifyCode(code)) {
@@ -50,14 +45,7 @@ public class VerificationController {
                 if (isUserCreatedSuccessfully) {
                     logger.info(this.user.getUsername() + " Register SUCCESS");
                     return "redirect:/login";
-                } else {
-                    logger.error("Register FAILED");
-                    return "redirect:/error";
                 }
-            } catch (SQLIntegrityConstraintViolationException e) {
-                model.addAttribute("error", "User Already exists");
-                logger.info(e.getMessage());
-                e.printStackTrace();
             } catch (Exception e) {
                 logger.info(e.getMessage());
                 e.printStackTrace();
@@ -67,6 +55,6 @@ public class VerificationController {
             logger.error("Register FAILED");
             return "redirect:/error";
         }
-        return "redirect:/error";
+        return "redirect:/login";
     }
 }

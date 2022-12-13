@@ -7,6 +7,9 @@ import grp16.tripmate.notification.model.IVerification;
 
 public class NotificationFactory implements INotificationFactory {
     private static INotificationFactory intance;
+    private NotificationFactory() {
+
+    }
     public static INotificationFactory getInstance() {
         if (intance == null) {
             intance = new NotificationFactory();

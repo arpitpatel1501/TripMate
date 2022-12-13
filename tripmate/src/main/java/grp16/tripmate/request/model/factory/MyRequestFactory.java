@@ -14,6 +14,9 @@ import grp16.tripmate.request.model.MyRequest;
 public class MyRequestFactory implements IMyRequestFactory {
     private static IMyRequestFactory instance = null;
 
+    private MyRequestFactory() {
+
+    }
     public static IMyRequestFactory getInstance() {
         if (instance == null) {
             instance = new MyRequestFactory();

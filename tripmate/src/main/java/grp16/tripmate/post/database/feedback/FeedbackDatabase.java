@@ -24,12 +24,6 @@ public class FeedbackDatabase implements IFeedbackDatabase {
     }
 
     @Override
-    public boolean updateFeedback(Feedback feedback) {
-        String query = queryGenerator.updateFeedback(feedback);
-        return databaseExecutor.executeInsertQuery(query);
-    }
-
-    @Override
     public List<Feedback> getFeedbacksByPostId(int post_id){
         String query = queryGenerator.getFeedbacksByPostId(post_id);
         return listToFeedback(databaseExecutor.executeSelectQuery(query));

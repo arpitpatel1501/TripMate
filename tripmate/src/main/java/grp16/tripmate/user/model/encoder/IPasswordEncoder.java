@@ -1,4 +1,4 @@
-package grp16.tripmate.user.encoder;
+package grp16.tripmate.user.model.encoder;
 
 import java.security.NoSuchAlgorithmException;
 

@@ -16,7 +16,7 @@ public class MyProperties implements IProperties{
     private String databaseURL, databaseUserName, databasePassword;
     private String mailSender, host, port, password;
     Properties properties = new Properties();
-    public MyProperties(){
+    private MyProperties(){
         String activeProfile = getActiveProfile();
         setProfileProperties(activeProfile);
     }

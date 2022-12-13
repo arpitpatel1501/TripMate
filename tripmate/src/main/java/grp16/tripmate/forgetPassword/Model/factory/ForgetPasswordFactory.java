@@ -5,6 +5,9 @@ import grp16.tripmate.forgetPassword.Model.IForgetPassword;
 
 public class ForgetPasswordFactory implements IForgetPasswordFactory{
     private static IForgetPasswordFactory instance = null;
+    private ForgetPasswordFactory() {
+
+    }
 
     public static IForgetPasswordFactory getInstance() {
         if (instance == null) {
@@ -13,6 +16,7 @@ public class ForgetPasswordFactory implements IForgetPasswordFactory{
         return instance;
     }
 
+    @Override
     public IForgetPassword createForgetPassword() {
         return new ForgetPassword();
     }

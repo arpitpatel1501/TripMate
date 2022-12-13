@@ -18,6 +18,7 @@ public class FeedbackDatabaseMock implements IFeedbackDatabase {
         return feedbacks.add(feedback);
     }
 
+
     @Override
     public boolean deleteFeedbackByPostId(int postId) {
         List<Feedback> feedbacks = feedbackDb.getOrDefault(postId, new ArrayList<>());
@@ -27,12 +28,7 @@ public class FeedbackDatabaseMock implements IFeedbackDatabase {
     }
 
     @Override
-    public List<Feedback> getFeedbacksByPostId(int postId) throws Exception {
+    public List<Feedback> getFeedbacksByPostId(int postId) {
         return feedbackDb.getOrDefault(postId, new ArrayList<>());
-    }
-
-    @Override
-    public boolean updateFeedback(Feedback feedback) {
-        return false;
     }
 }

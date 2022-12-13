@@ -10,7 +10,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
     private static PostsQueryGenerator instance;
 
     private PostsQueryGenerator() {
-
     }
 
     public static PostsQueryGenerator getInstance() {
@@ -45,6 +44,7 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 post.getMaxAge() + ", " +
                 post.getCapacity() + ", " +
                 "'" + post.getDescription() + "' );";
+        logger.info(query);
         return query;
     }
 
@@ -66,6 +66,7 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 "FROM " + PostDbColumnNames.TABLE_NAME + " " +
                 "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1 " +
                 "AND " + PostDbColumnNames.OWNER + " != " + loggedInUser;
+        logger.info(query);
         return query;
     }
 
@@ -87,6 +88,7 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 "FROM " + PostDbColumnNames.TABLE_NAME + " " +
                 "WHERE " + PostDbColumnNames.ISHIDDEN + " != 1 AND  " +
                 PostDbColumnNames.OWNER + " = " + userId;
+        logger.info(query);
         return query;
     }
 
@@ -144,26 +146,6 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
         String query = "UPDATE " + PostDbColumnNames.TABLE_NAME + " " +
                 "    SET " + PostDbColumnNames.ISHIDDEN + "=" + true + " " +
                 "    WHERE " + PostDbColumnNames.ID + "=" + postId;
-        logger.info(query);
-        return query;
-    }
-
-    @Override
-    public String getFeedbackPosts() {
-        String query = "SELECT " + PostDbColumnNames.ID + "," +
-                PostDbColumnNames.TITLE + "," +
-                PostDbColumnNames.SOURCE + "," +
-                PostDbColumnNames.DESTINATION + "," +
-                PostDbColumnNames.STARTDATE + "," +
-                PostDbColumnNames.ENDDATE + "," +
-                PostDbColumnNames.MINAGE + "," +
-                PostDbColumnNames.MAXAGE + "," +
-                PostDbColumnNames.ISHIDDEN + "," +
-                PostDbColumnNames.CAPACITY + "," +
-                PostDbColumnNames.OWNER + "," +
-                PostDbColumnNames.DESCRIPTION +
-                "FROM " + PostDbColumnNames.TABLE_NAME +
-                "where " + PostDbColumnNames.ENDDATE + "< now()";
         logger.info(query);
         return query;
     }
