@@ -3,6 +3,7 @@ package grp16.tripmate.user.database;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.user.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 public class UserDatabase implements IUserDatabase {
@@ -36,6 +37,13 @@ public class UserDatabase implements IUserDatabase {
     @Override
     public Map<String, Object> getUserByUsername(String username) {
         String query = queryGenerator.getUserByUsername(username);
-        return databaseExecution.executeSelectQuery(query).get(0);
+        Map<String, Object> result = databaseExecution.executeSelectQuery(query).get(0);
+        return result;
+    }
+
+    @Override
+    public boolean changeUserPassword(String email, String password) {
+        String query = queryGenerator.changeUserPassword(email, password);
+        return databaseExecution.executeUpdateQuery(query);
     }
 }

@@ -56,4 +56,5 @@ public class UserFactory implements IUserFactory {
     public ILogger makeLogger(Object obj) {
         return new MyLoggerAdapter(obj);
     }
+
 }

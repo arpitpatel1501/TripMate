@@ -9,6 +9,9 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.user.model.factory.UserFactory;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -160,5 +163,35 @@ public class User implements IUser {
         user.setBirthDateAsDate((Date) result.get(UserDbColumnNames.BIRTHDATE));
         user.setGender((String) result.get(UserDbColumnNames.GENDER));
         return user;
+    }
+
+    @Override
+    public boolean checkUserExist(IUserDatabase userDatabase, String email) throws Exception {
+        Map<String, Object> result = userDatabase.getUserByUsername(email);
+        if (result.size() == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean changeUserPassword(IUserDatabase userDatabase, String email, String password) throws Exception {
+//        Connection connection = dbConnection.getDatabaseConnection();
+//        Statement statement = connection.createStatement();
+//        String query = queryBuilder.changeUserPassword(email, password);
+//        int rowUpdate = statement.executeUpdate(query);
+//        boolean isRowUpdated;
+//        if (rowUpdate == 1) {
+//            isRowUpdated = true;
+//        }
+//        else {
+//            isRowUpdated = false;
+//        }
+//        connection.close();
+//        return isRowUpdated;
+
+        return userDatabase.changeUserPassword(email, password);
     }
 }

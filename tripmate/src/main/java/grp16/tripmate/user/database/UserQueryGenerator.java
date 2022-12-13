@@ -35,6 +35,16 @@ public class UserQueryGenerator implements IUserQueryGenerator {
     public String changeUserDetails(User user) {
         return "update " + UserDbColumnNames.TABLE_NAME + " set " + UserDbColumnNames.PASSWORD + " = '" + user.getPassword() + "'" + "," + UserDbColumnNames.GENDER + " = '" + user.getGender() + "'" + "," + UserDbColumnNames.FIRSTNAME + " = '" + user.getFirstname() + "'" + "," + UserDbColumnNames.LASTNAME + " = '" + user.getLastname() + "'" + " where " + UserDbColumnNames.ID + " = " + user.getId();
     }
+
+    @Override
+    public String changeUserPassword(String email, String password) {
+        String query = "update " +
+                UserDbColumnNames.TABLE_NAME + " set " +
+                UserDbColumnNames.PASSWORD + " = '" + password + "'" +
+                " where " +
+                UserDbColumnNames.USERNAME + " = '" + email + "'";
+        return query;
+    }
 }
 
 

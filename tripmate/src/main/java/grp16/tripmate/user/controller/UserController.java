@@ -2,17 +2,21 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.notification.model.IVerification;
+import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
+import grp16.tripmate.user.model.encoder.PasswordEncoder;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.factory.UserFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
@@ -22,6 +26,8 @@ public class UserController {
     private final IUserDatabase userDatabase;
 
     private final IPasswordEncoder passwordEncoder;
+    private IVerification iVerification = null;
+    private String emailForgetPassword = null;
 
     public UserController() {
         userFactory = UserFactory.getInstance();
@@ -82,5 +88,85 @@ public class UserController {
     public String logout() {
         SessionManager.getInstance().removeValue(UserDbColumnNames.ID);
         return "redirect:/login";
+    }
+
+    @GetMapping("/forget_password")
+    public String forgetPassword(Model model) {
+        model.addAttribute("title", "Reset password");
+        model.addAttribute("email", this.emailForgetPassword);
+
+        return "forgotPassword";
+    }
+
+    @PostMapping("/forget_password")
+    public String sendResetPasswordCode(Model model, HttpServletRequest request) {
+        model.addAttribute("title", "Reset password");
+        model.addAttribute("email", "");
+        IUser user = UserFactory.getInstance().makeNewUser();
+        try {
+            if (user.checkUserExist(userDatabase, request.getParameter("email"))) {
+                System.out.println("---- user exist ----");
+            } else {
+                model.addAttribute("error", "User Not exists");
+                logger.info("User Not exists");
+                return "redirect:/error";
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+
+        this.emailForgetPassword = request.getParameter("email");
+
+        try {
+            iVerification = NotificationFactory.getInstance().createVerificationMethod();
+            iVerification.sendUniqueCode(this.emailForgetPassword,
+                    "Your reset password code is: ",
+                    "User reset password for Tripmate");
+        } catch (Exception e) {
+            model.addAttribute("error", "User Not exists");
+            logger.info("User Not exists");
+            return "redirect:/error";
+        }
+        return "redirect:/forget_password";
+    }
+
+    @PostMapping("/reset_password")
+    public String userVerificationCode(Model model, HttpServletRequest request) {
+        model.addAttribute("email", this.emailForgetPassword);
+        String code = request.getParameter("code");
+
+        if (this.iVerification.verifyCode(code)) {
+            return "newPassword";
+        } else {
+            return "redirect:/error";
+        }
+    }
+
+    @GetMapping("/new_password")
+    public String resetPassword(Model model) {
+//        this.emailForgetPassword = UserFactory.getInstance().makeNewUser().getEmail();
+
+        model.addAttribute("title", "New password");
+        model.addAttribute("email", this.emailForgetPassword);
+
+        return "newPassword";
+    }
+
+    @PostMapping("/new_password")
+    public String setNewPassword(Model model, HttpServletRequest request) throws Exception {
+        IUser user = UserFactory.getInstance().makeNewUser();
+        model.addAttribute("email", this.emailForgetPassword);
+        String password = request.getParameter("password");
+        if (user.changeUserPassword(userDatabase, this.emailForgetPassword, PasswordEncoder.getInstance().encodeString(password))) {
+            NotificationFactory.getInstance().createEmailNotification().sendNotification(this.emailForgetPassword,
+                    "Password Updated",
+                    "Password Reset successfully");
+
+            return "redirect:/login";
+        } else {
+            return "redirect:/error";
+        }
     }
 }

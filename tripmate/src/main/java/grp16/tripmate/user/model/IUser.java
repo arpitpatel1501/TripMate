@@ -10,4 +10,6 @@ public interface IUser {
     boolean createUser(IUserDatabase userDatabase) throws Exception;
 
     User getUserById(IUserDatabase userDatabase, int loggedInUserId) throws Exception;
+    boolean checkUserExist(IUserDatabase userDatabase, String email) throws Exception;
+    boolean changeUserPassword(IUserDatabase userDatabase, String email, String password) throws Exception;
 }

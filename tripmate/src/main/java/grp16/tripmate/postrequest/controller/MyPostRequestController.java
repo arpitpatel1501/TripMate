@@ -44,7 +44,7 @@ public class MyPostRequestController {
             model.addAttribute("error", e.getMessage());
             logger.error(e.getMessage());
         }
-        return "my_post_requests";
+        return "myPostRequests";
     }
 
     @PostMapping("/join/{id}")
@@ -55,7 +55,7 @@ public class MyPostRequestController {
         NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailCreator(),
                 "Join Request for " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
-        return "redirect:/my_requests";
+        return "redirect:/myRequests";
     }
 
     @PostMapping("/accept_request/{request_id}")
@@ -67,7 +67,7 @@ public class MyPostRequestController {
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
 
-        return "redirect:/my_post_requests";
+        return "redirect:/myPostRequests";
     }
 
     @PostMapping("/decline_request/{request_id}")
@@ -79,7 +79,7 @@ public class MyPostRequestController {
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
-        return "redirect:/my_post_requests";
+        return "redirect:/myPostRequests";
     }
 
 }

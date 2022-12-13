@@ -11,4 +11,5 @@ public interface IUserQueryGenerator {
     String createUser(User user);
 
     String changeUserDetails(User user);
+    String changeUserPassword(String email, String password);
 }
