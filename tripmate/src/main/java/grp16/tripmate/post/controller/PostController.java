@@ -12,9 +12,9 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.IVehicleBookingFactory;
-import grp16.tripmate.vehicle.model.VehicleBookingFactory;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +51,7 @@ public class PostController {
     }
 
     @GetMapping("/dashboard")
-    public String getAllPosts(Model model) {
+    public String getAllPosts(Model model) throws Exception{
         model.addAttribute("title", "Dashboard");
         try {
             IPost post = postFactory.makeNewPost();

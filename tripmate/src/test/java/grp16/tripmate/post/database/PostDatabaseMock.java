@@ -3,8 +3,8 @@ package grp16.tripmate.post.database;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -6,8 +6,8 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
-import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.text.ParseException;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface IPost {
 
     boolean createPost(IPostDatabase database) throws Exception;
 
-    List<Post> getAllPosts(IPostDatabase database, int loggedInUser);
+    List<Post> getAllPosts(IPostDatabase database, int loggedInUser) throws Exception;
 
     List<Post> getPostsByUserId(IPostDatabase database, int userid) throws Exception;
 
