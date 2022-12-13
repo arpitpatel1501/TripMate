@@ -2,19 +2,15 @@ package grp16.tripmate.forgetPassword.Controller;
 
 import grp16.tripmate.forgetPassword.Model.ForgetPasswordFactory;
 import grp16.tripmate.forgetPassword.Model.IForgetPassword;
-import grp16.tripmate.forgetPassword.Model.IForgetPasswordFactory;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.notification.EmailNotificationFactory;
-import grp16.tripmate.notification.EmailVerificationFactory;
-import grp16.tripmate.notification.INotificationFactory;
-import grp16.tripmate.notification.IVerification;
+import grp16.tripmate.notification.model.IVerification;
+import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +55,7 @@ public class ForgetPasswordController {
 
         this.email = request.getParameter("email");
 
-        iVerification = EmailVerificationFactory.getInstance().createVerificationMethod();
+        iVerification = NotificationFactory.getInstance().createVerificationMethod();
         iVerification.sendUniqueCode(this.email,
                 "Your reset password code is: ",
                 "User reset password for Tripmate");
@@ -98,7 +94,7 @@ public class ForgetPasswordController {
         model.addAttribute("email", email);
         String password = request.getParameter("password");
         if (iForgetPassword.changeUserPassword(email, PasswordEncoder.getInstance().encodeString(password))) {
-            EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(email,
+            NotificationFactory.getInstance().createEmailNotification().sendNotification(email,
                     "Password Updated",
                     "Password Reset successfully");
 

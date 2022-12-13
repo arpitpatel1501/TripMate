@@ -1,4 +1,4 @@
-package grp16.tripmate.notification;
+package grp16.tripmate.notification.model;
 
 public class NotificationException extends Exception{
     private final String errorMessage;

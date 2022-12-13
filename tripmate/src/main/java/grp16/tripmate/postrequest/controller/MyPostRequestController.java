@@ -2,17 +2,15 @@ package grp16.tripmate.postrequest.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.notification.EmailNotificationFactory;
+import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.database.MyPostRequestDB;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
-import grp16.tripmate.postrequest.model.MyPostRequest;
 import grp16.tripmate.postrequest.model.MyPostRequestFactory;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -62,7 +59,7 @@ public class MyPostRequestController {
         query = iMyPostRequestDB.getPostOwnerDetailsbyPostId(post_id);
         IMyPostRequest postRequests = myPostRequest.resultPostOwnerDetails(query);
 
-        EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailCreator(),
+        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailCreator(),
                 "Join Request for " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
         return "redirect:/my_requests";
@@ -78,7 +75,7 @@ public class MyPostRequestController {
         query = iMyPostRequestDB.getPostRequesteeDetailsbyRequestId(requestId);
         IMyPostRequest postRequests = myPostRequest.resultPostRequesteeDetails(query);
 
-        EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequestee(),
+        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequestee(),
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
 
@@ -95,7 +92,7 @@ public class MyPostRequestController {
         query = iMyPostRequestDB.getPostRequesteeDetailsbyRequestId(requestId);
         IMyPostRequest postRequests = myPostRequest.resultPostRequesteeDetails(query);
 
-        EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequestee(),
+        NotificationFactory.getInstance().createEmailNotification().sendNotification(postRequests.getEmailRequestee(),
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 

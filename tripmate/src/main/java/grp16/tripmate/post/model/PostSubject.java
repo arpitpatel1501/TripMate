@@ -1,6 +1,6 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.notification.INotificationObserver;
+import grp16.tripmate.notification.model.INotificationObserver;
 
 import java.util.ArrayList;
 import java.util.List;

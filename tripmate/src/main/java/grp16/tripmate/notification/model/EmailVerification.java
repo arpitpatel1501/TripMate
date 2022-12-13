@@ -1,6 +1,6 @@
-package grp16.tripmate.notification;
+package grp16.tripmate.notification.model;
 
-import grp16.tripmate.properties.MyProperties;
+import grp16.tripmate.notification.model.factory.NotificationFactory;
 
 public class EmailVerification implements IVerification{
 
@@ -14,7 +14,7 @@ public class EmailVerification implements IVerification{
     public void sendUniqueCode(String userEmail, String body, String subject) throws Exception {
         uniqueNumber = generateNumber();
         body += uniqueNumber;
-        iNotification = EmailNotificationFactory.getInstance().createEmailNotification();
+        iNotification = NotificationFactory.getInstance().createEmailNotification();
         iNotification.sendNotification(userEmail, subject, body);
     }
 
