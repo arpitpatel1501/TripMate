@@ -25,10 +25,12 @@ public class MyPostRequest implements IMyPostRequest {
     private String firstNameRequestee;
     private String lastNameRequestee;
     private int idRequestee;
+    private String emailRequestee;
     private String postTitle;
     private int idCreator;
     private String firstNameCreator;
     private String lastNameCreator;
+    private String emailCreator;
 
     public MyPostRequest() {
     }
@@ -45,6 +47,10 @@ public class MyPostRequest implements IMyPostRequest {
         return lastNameRequestee;
     }
 
+    public String getEmailRequestee() {
+        return emailRequestee;
+    }
+
     public String getPostTitle() {
         return postTitle;
     }
@@ -57,6 +63,18 @@ public class MyPostRequest implements IMyPostRequest {
         return idRequestee;
     }
 
+    public String getEmailCreator() {
+        return emailCreator;
+    }
+
+    public String getFirstNameCreator() {
+        return firstNameCreator;
+    }
+
+    public String getLastNameCreator() {
+        return lastNameCreator;
+    }
+
     public void setIdRequest(int idRequest) {
         this.idRequest = idRequest;
     }
@@ -67,6 +85,10 @@ public class MyPostRequest implements IMyPostRequest {
 
     public void setLastNameRequestee(String lastNameRequestee) {
         this.lastNameRequestee = lastNameRequestee;
+    }
+
+    public void setEmailRequestee(String emailRequestee) {
+        this.emailRequestee = emailRequestee;
     }
 
     public void setPostTitle(String postTitle) {
@@ -86,6 +108,10 @@ public class MyPostRequest implements IMyPostRequest {
 
     public void setLastNameCreator(String lastNameCreator) {
         this.lastNameCreator = lastNameCreator;
+    }
+
+    public void setEmailCreator(String emailCreator) {
+        this.emailCreator = emailCreator;
     }
 
     public Statement getConnection() throws Exception {
@@ -124,13 +150,43 @@ public class MyPostRequest implements IMyPostRequest {
             myPostRequest.setFirstNameCreator(resultSet.getString("firstNameCreator"));
             myPostRequest.setLastNameCreator(resultSet.getString("lastNameCreator"));
 
-            logger.info(resultSet.getString("firstNameRequestee"));
             results.add(myPostRequest);
         }
         connection.close();
         return results;
     }
 
+    public IMyPostRequest resultPostOwnerDetails(String query) throws Exception {
+        resultSet = resultExecuteQuery(query);
+
+        IMyPostRequest myPostRequest = null;
+        while (resultSet.next()) {
+            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+
+            myPostRequest.setPostTitle(resultSet.getString("postTitle"));
+            myPostRequest.setEmailCreator(resultSet.getString("postOwnerEmail"));
+            myPostRequest.setFirstNameCreator(resultSet.getString("postOwnerFirstName"));
+            myPostRequest.setLastNameCreator(resultSet.getString("postOwnerLastName"));
+        }
+        connection.close();
+        return myPostRequest;
+    }
+
+    @Override
+    public IMyPostRequest resultPostRequesteeDetails(String query) throws Exception {
+        resultSet = resultExecuteQuery(query);
+
+        IMyPostRequest myPostRequest = null;
+        while (resultSet.next()) {
+            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+
+            myPostRequest.setEmailRequestee(resultSet.getString("email"));
+            myPostRequest.setPostTitle(resultSet.getString("title"));
+
+        }
+        connection.close();
+        return myPostRequest;
+    }
     @Override
     public boolean updateRequest(String query) throws Exception {
         statement = getConnection();

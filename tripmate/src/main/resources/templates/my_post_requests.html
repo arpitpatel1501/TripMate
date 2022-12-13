@@ -12,7 +12,7 @@
 <p th:text="'Number of Requests: ' + ${requests_count}"/>
 
 <tr th:each="postRequest, iterstat: ${postRequests}">
-    <td><B><span th:text="${postRequest.getIdRequest()} + ' ' + ${postRequest.getFirstNameRequestee()}  + ' ' +${postRequest.getLastNameRequestee}"/> </B>
+    <td><B><span th:text="${iterstat.index}+1 + '. ' + ${postRequest.getFirstNameRequestee()}  + ' ' +${postRequest.getLastNameRequestee}"/> </B>
         requested to join post <B><span th:text="${postRequest.getPostTitle}"/></B> <br></td>
     <br>
     <td>
