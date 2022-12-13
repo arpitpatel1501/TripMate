@@ -12,7 +12,7 @@ import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import IVehicleBookingFactory;
+import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
