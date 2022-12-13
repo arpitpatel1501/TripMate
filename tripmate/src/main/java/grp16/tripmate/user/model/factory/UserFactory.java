@@ -2,6 +2,8 @@ package grp16.tripmate.user.model.factory;
 
 import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.database.UserDatabase;
@@ -48,5 +50,10 @@ public class UserFactory implements IUserFactory {
     @Override
     public IPasswordEncoder makePasswordEncoder() {
         return PasswordEncoder.getInstance();
+    }
+
+    @Override
+    public ILogger makeLogger(Object obj) {
+        return new MyLoggerAdapter(obj);
     }
 }

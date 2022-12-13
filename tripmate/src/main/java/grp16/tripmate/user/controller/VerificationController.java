@@ -54,10 +54,6 @@ public class VerificationController {
                     logger.error("Register FAILED");
                     return "redirect:/error";
                 }
-            } catch (SQLIntegrityConstraintViolationException e) {
-                model.addAttribute("error", "User Already exists");
-                logger.info(e.getMessage());
-                e.printStackTrace();
             } catch (Exception e) {
                 logger.info(e.getMessage());
                 e.printStackTrace();
@@ -67,6 +63,5 @@ public class VerificationController {
             logger.error("Register FAILED");
             return "redirect:/error";
         }
-        return "redirect:/error";
     }
 }

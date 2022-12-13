@@ -3,6 +3,7 @@ package grp16.tripmate.user.database;
 import grp16.tripmate.user.model.User;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 public interface IUserDatabase {
 
@@ -10,7 +11,7 @@ public interface IUserDatabase {
 
     boolean updateUser(User user) throws Exception;
 
-    User getUserById(int userid) throws Exception;
+    Map<String, Object> getUserById(int userid) throws Exception;
 
-    User getUserByUsername(String username) throws NoSuchAlgorithmException;
+    Map<String, Object> getUserByUsername(String username) throws NoSuchAlgorithmException;
 }

@@ -6,15 +6,18 @@ import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.user.encoder.IPasswordEncoder;
 import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.user.model.factory.UserFactory;
 
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class User implements IUser {
-    private final ILogger logger = new MyLoggerAdapter(this);
+    private final ILogger logger;
 
     private String username;
     private String password;
@@ -91,6 +94,7 @@ public class User implements IUser {
     }
 
     public User() {
+        logger = UserFactory.getInstance().makeLogger(this);
     }
 
     @Override
@@ -99,26 +103,23 @@ public class User implements IUser {
     }
 
     public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws InvalidUsernamePasswordException, NoSuchAlgorithmException {
-        User userFromDb = userDatabase.getUserByUsername(this.getUsername());
+        User userFromDb = mapToUser(userDatabase.getUserByUsername(this.getUsername()));
         logger.info(userFromDb.toString());
-        boolean isValidUser = userFromDb != null &&
-                userFromDb.getUsername().equals(this.getUsername()) &&
-                userFromDb.getPassword().equals(this.getPassword());
+        boolean isValidUser = userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(this.getPassword());
         if (isValidUser) {
             logger.info("Current User: " + userFromDb);
             SessionManager.getInstance().setValue(UserDbColumnNames.ID, userFromDb.getId());
             SessionManager.getInstance().setValue(UserDbColumnNames.USERNAME, userFromDb.getUsername());
             SessionManager.getInstance().setValue(UserDbColumnNames.FIRSTNAME, userFromDb.getFirstname());
             SessionManager.getInstance().setValue(UserDbColumnNames.LASTNAME, userFromDb.getLastname());
-        }
-        else{
+        } else {
             throw new InvalidUsernamePasswordException();
         }
-        return isValidUser;
+        return true;
     }
 
     @Override
-    public boolean createUser(IUserDatabase userDatabase) throws Exception {
+    public boolean createUser(IUserDatabase userDatabase) {
         return userDatabase.insertUser(this);
     }
 
@@ -135,5 +136,25 @@ public class User implements IUser {
     public boolean changeUserDetails(IUserDatabase userDatabase) throws Exception {
         this.setId(SessionManager.getInstance().getLoggedInUserId());
         return userDatabase.updateUser(this);
+    }
+
+    private List<User> listToUsers(List<Map<String, Object>> results) {
+        List<User> users = new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            users.add(mapToUser(result));
+        }
+        return users;
+    }
+
+    private User mapToUser(Map<String, Object> result) {
+        User user = (User) UserFactory.getInstance().makeNewUser();
+        user.setUsername((String) result.get(UserDbColumnNames.USERNAME));
+        user.setPasswordWithOutEncoding((String) result.get(UserDbColumnNames.PASSWORD));
+        user.setId((Integer) result.get(UserDbColumnNames.ID));
+        user.setFirstname((String) result.get(UserDbColumnNames.FIRSTNAME));
+        user.setLastname((String) result.get(UserDbColumnNames.LASTNAME));
+        user.setBirthDateAsDate((Date) result.get(UserDbColumnNames.BIRTHDATE));
+        user.setGender((String) result.get(UserDbColumnNames.GENDER));
+        return user;
     }
 }
