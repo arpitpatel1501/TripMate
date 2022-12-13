@@ -37,7 +37,12 @@ public class SessionManager {
     }
 
 
-    public int getLoggedInUserId() {
-        return (Integer) session.get(UserDbColumnNames.ID);
+    public int getLoggedInUserId() throws SessionEndedException {
+         try {
+             return (Integer) session.get(UserDbColumnNames.ID);
+         }
+         catch (NullPointerException ex){
+             throw new SessionEndedException();
+         }
     }
 }
