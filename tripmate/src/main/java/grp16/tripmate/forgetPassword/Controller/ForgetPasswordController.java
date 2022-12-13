@@ -30,10 +30,10 @@ public class ForgetPasswordController {
     }
 
     @PostMapping("/forget_password")
-    public String sendResetPasswordCode(Model model, HttpServletRequest request) throws Exception {
+    public String sendResetPasswordCode(Model model, HttpServletRequest request) {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", "");
-        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
+        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().makeForgetPassword();
         try {
             if (iForgetPassword.checkUserExist(request.getParameter("email"))) {
                 System.out.println("---- user exist ----");
@@ -50,10 +50,17 @@ public class ForgetPasswordController {
 
         this.email = request.getParameter("email");
 
-        iVerification = NotificationFactory.getInstance().createVerificationMethod();
-        iVerification.sendUniqueCode(this.email,
-                "Your reset password code is: ",
-                "User reset password for Tripmate");
+        try {
+            iVerification = NotificationFactory.getInstance().createVerificationMethod();
+            iVerification.sendUniqueCode(this.email,
+                    "Your reset password code is: ",
+                    "User reset password for Tripmate");
+        } catch (Exception e) {
+            model.addAttribute("error", "User Not exists");
+            logger.info("User Not exists");
+            return "redirect:/error";
+        }
+
 
         return "redirect:/forget_password";
     }
@@ -72,7 +79,7 @@ public class ForgetPasswordController {
 
     @GetMapping("/new_password")
     public String resetPassword(Model model) {
-        email = ForgetPasswordFactory.getInstance().createForgetPassword().getEmail();
+        email = ForgetPasswordFactory.getInstance().makeForgetPassword().getEmail();
 
         model.addAttribute("title", "New password");
         model.addAttribute("email", email);
@@ -82,7 +89,7 @@ public class ForgetPasswordController {
 
     @PostMapping("/new_password")
     public String setNewPassword(Model model, HttpServletRequest request) throws Exception {
-        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().createForgetPassword();
+        IForgetPassword iForgetPassword = ForgetPasswordFactory.getInstance().makeForgetPassword();
         model.addAttribute("email", email);
         String password = request.getParameter("password");
         if (iForgetPassword.changeUserPassword(email, PasswordEncoder.getInstance().encodeString(password))) {

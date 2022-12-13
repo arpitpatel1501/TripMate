@@ -17,7 +17,7 @@ public class ForgetPasswordFactory implements IForgetPasswordFactory{
     }
 
     @Override
-    public IForgetPassword createForgetPassword() {
+    public IForgetPassword makeForgetPassword() {
         return new ForgetPassword();
     }
 }
