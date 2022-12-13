@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class EmailNotification implements INotification{
+public class EmailNotification implements INotification, INotificationObserver{
     private final ILogger logger = new MyLoggerAdapter(this);
 
     JavaMailSenderImpl javaMailSenderImpl = null;
@@ -58,5 +58,10 @@ public class EmailNotification implements INotification{
         mailSenderProperties.put("mail.debug", "true");
 
         return mailSenderProperties;
+    }
+
+    @Override
+    public void update(String sendTo, String subject, String body) throws Exception {
+        sendNotification(sendTo, subject, body);
     }
 }
