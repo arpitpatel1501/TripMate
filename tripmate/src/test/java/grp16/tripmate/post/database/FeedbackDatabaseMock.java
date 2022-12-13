@@ -31,9 +31,4 @@ public class FeedbackDatabaseMock implements IFeedbackDatabase {
     public List<Feedback> getFeedbacksByPostId(int postId) {
         return feedbackDb.getOrDefault(postId, new ArrayList<>());
     }
-
-    @Override
-    public boolean updateFeedback(Feedback feedback) {
-        return false;
-    }
 }

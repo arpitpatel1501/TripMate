@@ -50,11 +50,10 @@ public class PostDatabase implements IPostDatabase {
     public Post getPostByPostId(int postId) {
         String query = queryGenerator.getPostByPostId(postId);
         List<Post> posts = listToPosts(databaseExecutor.executeSelectQuery(query));
-        if (posts != null) {
-            return posts.get(0);
-        } else {
+        if (posts.isEmpty()) {
             return null;
         }
+        return posts.get(0);
     }
 
     @Override

@@ -12,8 +12,6 @@ import grp16.tripmate.post.database.feedback.FeedbackDatabase;
 import grp16.tripmate.post.database.feedback.FeedbackQueryGenerator;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.database.feedback.IFeedbackQueryGenerator;
-import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.post.model.feedback.IFeedback;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostValidator;
