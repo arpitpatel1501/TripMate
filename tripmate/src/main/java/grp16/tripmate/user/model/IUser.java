@@ -1,7 +1,7 @@
 package grp16.tripmate.user.model;
 
 import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
+import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 
 public interface IUser {
 

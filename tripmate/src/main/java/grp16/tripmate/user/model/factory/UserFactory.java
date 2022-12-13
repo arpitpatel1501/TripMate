@@ -8,8 +8,8 @@ import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.database.UserDatabase;
 import grp16.tripmate.user.database.UserQueryGenerator;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
-import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.encoder.IPasswordEncoder;
+import grp16.tripmate.user.model.encoder.PasswordEncoder;
 import grp16.tripmate.user.model.IUser;
 import grp16.tripmate.user.model.User;
 
