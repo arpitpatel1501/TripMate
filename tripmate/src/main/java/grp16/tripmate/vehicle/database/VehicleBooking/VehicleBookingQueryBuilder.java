@@ -63,7 +63,7 @@ public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
                 vehicleBooking.getTotalKm() + ", " +
                 "'" + vehicleBooking.getBookingStartDate() + "', " +
                 "'" + vehicleBooking.getBookingEndDate() + "', " +
-                vehicleBooking.getHasPaid() + ");";
+                "1" + ");";
         logger.info(query);
         return query;
     }
