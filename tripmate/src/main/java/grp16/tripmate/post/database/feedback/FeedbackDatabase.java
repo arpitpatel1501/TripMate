@@ -2,8 +2,6 @@ package grp16.tripmate.post.database.feedback;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FeedbackDatabase implements IFeedbackDatabase {
-    private final ILogger logger = new MyLoggerAdapter(this);
-
     private final IDatabaseExecutor databaseExecutor;
     private final IFeedbackQueryGenerator queryGenerator;
 
@@ -28,15 +24,21 @@ public class FeedbackDatabase implements IFeedbackDatabase {
     }
 
     @Override
-    public boolean deleteFeedbackByPostId(int postId) {
-        String query = queryGenerator.deleteFeedbackByPostId(postId);
-        return databaseExecutor.executeDeleteQuery(query);
+    public boolean updateFeedback(Feedback feedback) {
+        String query = queryGenerator.updateFeedback(feedback);
+        return databaseExecutor.executeInsertQuery(query);
     }
 
     @Override
-    public List<Feedback> getFeedbacksByPostId(int post_id) throws Exception {
+    public List<Feedback> getFeedbacksByPostId(int post_id){
         String query = queryGenerator.getFeedbacksByPostId(post_id);
         return listToFeedback(databaseExecutor.executeSelectQuery(query));
+    }
+
+    @Override
+    public boolean deleteFeedbackByPostId(int postId) {
+        String query = queryGenerator.deleteFeedbackByPostId(postId);
+        return databaseExecutor.executeDeleteQuery(query);
     }
 
     private List<Feedback> listToFeedback(List<Map<String, Object>> results) {
@@ -54,6 +56,4 @@ public class FeedbackDatabase implements IFeedbackDatabase {
         }
         return feedbacks;
     }
-
-
 }

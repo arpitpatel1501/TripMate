@@ -1,36 +1,42 @@
 package grp16.tripmate.request.controller;
 
-import grp16.tripmate.request.database.IMyRequestDB;
-import grp16.tripmate.request.database.MyRequestDB;
+import grp16.tripmate.request.database.IMyRequestDatabase;
 import grp16.tripmate.request.model.IMyRequest;
+import grp16.tripmate.request.model.IMyRequestFactory;
 import grp16.tripmate.request.model.MyRequest;
+import grp16.tripmate.request.model.MyRequestFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 public class MyRequestController {
-    private IMyRequestDB iMyRequestDB;
-    private MyRequest myRequest;
-    private String query;
+    private final IMyRequestFactory myRequestFactory;
+    private final IMyRequestDatabase myRequestDatabase;
+    private final IMyRequest myRequest;
 
     MyRequestController() {
-        iMyRequestDB = MyRequestDB.getInstance();
-        myRequest = new MyRequest();
+        myRequestFactory = MyRequestFactory.getInstance();
+        myRequestDatabase = myRequestFactory.makeMyRequestDatabase();
+        myRequest = myRequestFactory.makeMyRequest();
     }
 
     @GetMapping("/my_requests")
-    public String myRequest(Model model) throws Exception {
+    public String myRequest(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("title", "My Request");
-        query = iMyRequestDB.getMyRequestByUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
-        List<IMyRequest> myRequestList = myRequest.resultMyRequests(query);
-        model.addAttribute("requests_count", myRequestList.size());
-
-        model.addAttribute("myRequests", myRequestList);
+        try {
+            List<MyRequest> myRequestList = myRequest.getMyRequestByUserId(myRequestFactory, myRequestDatabase, SessionManager.getInstance().getLoggedInUserId());
+            model.addAttribute("requests_count", myRequestList.size());
+            model.addAttribute("myRequests", myRequestList);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            e.printStackTrace();
+            return "redirect:/error";
+        }
         return "my_requests";
     }
 }

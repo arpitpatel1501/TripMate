@@ -12,6 +12,16 @@ public class Feedback implements IFeedback {
     public Feedback() {
     }
 
+    @Override
+    public boolean createFeedback(IFeedbackDatabase database) {
+        return database.createFeedback(this);
+    }
+
+    @Override
+    public boolean updateFeedback(IFeedbackDatabase database) {
+        return database.updateFeedback(this);
+    }
+
     public int getId() {
         return id;
     }
@@ -50,9 +60,5 @@ public class Feedback implements IFeedback {
 
     public void setRating(float rating) {
         this.rating = rating;
-    }
-
-    public void createFeedback(IFeedbackDatabase database) {
-        database.createFeedback(this);
     }
 }

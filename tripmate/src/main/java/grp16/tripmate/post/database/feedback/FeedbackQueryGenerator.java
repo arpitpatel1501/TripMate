@@ -1,13 +1,11 @@
 package grp16.tripmate.post.database.feedback;
 
+import grp16.tripmate.post.database.PostDbColumnNames;
 import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
 
 public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
 
     static IFeedbackQueryGenerator instance;
-    private final ILogger logger = new MyLoggerAdapter(this);
 
     private FeedbackQueryGenerator() {
         //Required empty constructor
@@ -22,7 +20,6 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
 
     @Override
     public String createFeedback(Feedback feedback) {
-
         String query = "INSERT INTO " +
                 FeedbackDbColumnNames.TABLE_NAME +
                 " (" +
@@ -50,6 +47,15 @@ public class FeedbackQueryGenerator implements IFeedbackQueryGenerator {
     @Override
     public String getFeedbacksByPostId(int postId) {
         String query = "select * from " + FeedbackDbColumnNames.TABLE_NAME + " where " + FeedbackDbColumnNames.POST_ID + " = " + postId;
+        return query;
+    }
+
+    @Override
+    public String updateFeedback(Feedback feedback) {
+        String query = "UPDATE " + FeedbackDbColumnNames.TABLE_NAME + "    SET " +
+                FeedbackDbColumnNames.FEEDBACK + "='" + feedback.getFeedback() + "', " +
+                FeedbackDbColumnNames.RATING + "=" + feedback.getRating() +
+                "    WHERE " + PostDbColumnNames.ID + "=" + feedback.getPostId();
         return query;
     }
 }
