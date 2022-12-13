@@ -6,7 +6,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
 import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryBuilder;
-import IVehicleDatabase;
+import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
