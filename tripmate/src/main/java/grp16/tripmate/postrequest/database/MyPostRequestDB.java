@@ -1,80 +1,68 @@
 package grp16.tripmate.postrequest.database;
 
+import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.PostDbColumnNames;
+import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
+import grp16.tripmate.session.SessionManager;
+import grp16.tripmate.user.database.IUserQueryGenerator;
 import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.model.User;
+
+import java.util.*;
 
 public class MyPostRequestDB implements IMyPostRequestDB {
+
     private final ILogger logger = new MyLoggerAdapter(this);
+    private final IMyPostRequestQueryBuilder queryGenerator;
+    private final IDatabaseExecutor databaseExecution;
 
-    private static MyPostRequestDB instance;
-
-    public static MyPostRequestDB getInstance() {
-        if (instance == null) {
-            instance = new MyPostRequestDB();
-        }
-        return instance;
+    public MyPostRequestDB(IMyPostRequestQueryBuilder queryGenerator, IDatabaseExecutor databaseExecution) {
+        this.queryGenerator = queryGenerator;
+        this.databaseExecution = databaseExecution;
     }
 
     @Override
-    public String getPostRequestByUserId(int loginUserId) {
-        String query = "SELECT pr.id as requestId, u.firstname as firstNameRequestee, u.lastname as lastNameRequestee, u.id as idRequestee, p.title as postTitle, " +
-                "p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
-                "FROM PostRequest pr\n" +
-                "JOIN Post p on pr.Post_id = p.id\n" +
-                "JOIN User u on pr.request_owner = u.id\n" +
-                "JOIN User post_owner on post_owner.id = p.created_by\n" +
-                "WHERE pr.status = \"PENDING\" and p.created_by = " + loginUserId + ";";
+    public List<Map<String, Object>> getMyPostRequests() throws Exception {
 
+        String query = queryGenerator.getMyPostRequests((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
         logger.info(query);
-        return query;
+//        List<IMyPostRequest> myPostRequestList = listToMyPostRequest(databaseExecution.executeSelectQuery(query));
+        List<Map<String, Object>> result = databaseExecution.executeSelectQuery(query);
+        return result;
     }
 
     @Override
-    public String createJoinRequest(int post_id, int user_id) {
-        String query = "INSERT INTO `PostRequest`\n" +
-                "(" +
-                "`status`,\n" +
-                "`Post_id`,\n" +
-                "`request_owner`)\n" +
-                "VALUES\n" + "(" +
-                "'PENDING',\n" +
-                post_id + "," +
-                user_id + ");\n";
-
+    public boolean createJoinRequest(int postId) throws Exception {
+        String query = queryGenerator.createJoinRequest(postId, (Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
         logger.info(query);
-        return query;
+        boolean isCreateJoinRequest = databaseExecution.executeUpdateQuery(query);
+        return isCreateJoinRequest;
     }
 
     @Override
-    public String getPostOwnerDetailsbyPostId(int post_id) {
-        String query = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.firstname as postOwnerFirstName, u.lastname as postOwnerLastName from Post p \n" +
-                "JOIN User u on p.created_by = u.id\n" +
-                "WHERE p.id = "+ post_id +";";
+    public List<Map<String, Object>> getPostOwnerDetails(int postId) {
+        String query = queryGenerator.getPostOwnerDetails(postId);
         logger.info(query);
-        return query;
+        List<Map<String, Object>> result = databaseExecution.executeSelectQuery(query);
+        return result;
     }
 
     @Override
-    public String getPostRequesteeDetailsbyRequestId (int request_id) {
-        String query = "SELECT * from PostRequest pr \n" +
-                "JOIN User u on pr.request_owner = u.id \n" +
-                "JOIN Post p on pr.Post_id = p.id \n" +
-                "WHERE pr.id = " + request_id + ";";
+    public List<Map<String, Object>> getPostRequesteeDetails(int requestId) {
+        String query = queryGenerator.getPostRequesteeDetails(requestId);
         logger.info(query);
-        return query;
+        return databaseExecution.executeSelectQuery(query);
     }
 
     @Override
-    public String updateRequestStatus(int requestId, PostRequestStatus postRequestStatus) {
-        String query = "update " +
-                PostRequestDbColumnNames.TABLE_NAME + " set " +
-                PostRequestDbColumnNames.STATUS + " = '" + postRequestStatus.toString() + "'" +
-                " where " +
-                PostRequestDbColumnNames.ID + " = " + requestId + ";";
+    public boolean updateRequest(int requestId, PostRequestStatus postRequestStatus) {
+        String query = queryGenerator.updateRequestStatus(requestId, postRequestStatus);
         logger.info(query);
-        return query;
+        return databaseExecution.executeUpdateQuery(query);
     }
+
 }

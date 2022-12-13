@@ -9,6 +9,7 @@ import grp16.tripmate.post.model.PostValidator;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.post.model.feedback.Feedback;
+import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
@@ -50,17 +51,18 @@ public class PostController {
     }
 
     @GetMapping("/dashboard")
-    public String getAllPosts(Model model) {
+    public String getAllPosts(Model model) throws Exception{
         model.addAttribute("title", "Dashboard");
         try {
             IPost post = postFactory.makeNewPost();
             List<Post> posts = post.getAllPosts(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-        } catch (Exception e) {
+            return "listposts";
+        } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
+            return "redirect:/login";
         }
-        return "listposts";
     }
 
     @GetMapping("/createpost")
@@ -77,7 +79,7 @@ public class PostController {
         try {
             post.validatePost(validator);
             post.createPost(postDatabase);
-            return "redirect:/dashboard";
+            return "redirect:/myposts";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -92,11 +94,13 @@ public class PostController {
             Post post = (Post) postFactory.makeNewPost();
             List<Post> posts = post.getPostsByUserId(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-        } catch (Exception e) {
+            return "listposts";
+        } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
+            e.printStackTrace();
             logger.error(e.getMessage());
+            return "redirect:/login";
         }
-        return "listposts";
     }
 
     @GetMapping("/viewpost/{id}")
@@ -112,13 +116,15 @@ public class PostController {
             model.addAttribute("feedbacks", myPost.getFeedbacks(postDatabase, feedbackDatabase));
             model.addAttribute("canJoin", myPost.isEligibleToJoin());
             model.addAttribute("vehicles", myPost.getVehiclesAssociatedWithCurrentPost(postDatabase, vehicleBookingDatabase));
-
-        } catch (Exception e) {
+            return "viewpost";
+        } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
+            logger.error(e.getMessage());
+            return "redirect:/login";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return "viewpost";
-
     }
 
     @GetMapping("/editpost/{id}")

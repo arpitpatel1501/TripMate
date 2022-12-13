@@ -4,13 +4,16 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
+import grp16.tripmate.user.database.IUserDatabase;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MyPostRequest implements IMyPostRequest {
 
@@ -114,93 +117,150 @@ public class MyPostRequest implements IMyPostRequest {
         this.emailCreator = emailCreator;
     }
 
-    public Statement getConnection() throws Exception {
-        databaseConnection = new DatabaseConnection();
-        connection = databaseConnection.getDatabaseConnection();
-        statement = connection.createStatement();
-
-        return statement;
+    @Override
+    public List<IMyPostRequest> getMyPostRequests(IMyPostRequestDB myPostRequestDB) throws Exception {
+        List<IMyPostRequest> myPostRequestList = listToMyPostRequest(myPostRequestDB.getMyPostRequests());
+        return myPostRequestList;
     }
 
-    public ResultSet resultExecuteQuery(String query) throws Exception {
-        statement = getConnection();
-        resultSet = statement.executeQuery(query);
-
-        return resultSet;
+    @Override
+    public boolean createJoinRequest(IMyPostRequestDB myPostRequestDB, int postId) throws Exception {
+        return myPostRequestDB.createJoinRequest(postId);
     }
 
-    public boolean executeQuery(String query) throws Exception {
-        statement = getConnection();
-        boolean returnResult = statement.execute(query);
-        return returnResult;
+    @Override
+    public IMyPostRequest getPostOwnerDetails(IMyPostRequestDB myPostRequestDB, int postId) throws Exception {
+        List<IMyPostRequest> myPostRequestPostOwnerList = listToMyPostRequestPostOwner(myPostRequestDB.getPostOwnerDetails(postId));
+        return myPostRequestPostOwnerList.get(0);
     }
 
-    public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception {
-        resultSet = resultExecuteQuery(query);
+    @Override
+    public boolean updateRequest(IMyPostRequestDB myPostRequestDB, int requestId, PostRequestStatus postRequestStatus) {
+        return myPostRequestDB.updateRequest(requestId, postRequestStatus);
+    }
 
-        List<IMyPostRequest> results = new ArrayList<>();
-        while (resultSet.next()) {
+    @Override
+    public IMyPostRequest getPostRequesteeDetails(IMyPostRequestDB myPostRequestDB, int requestId) throws Exception {
+        List<IMyPostRequest> postRequesteeDetails = listToPostRequesteeDetails(myPostRequestDB.getPostRequesteeDetails(requestId));
+        return postRequesteeDetails.get(0);
+    }
+
+    public List<IMyPostRequest> listToMyPostRequest(List<Map<String, Object>> results) throws Exception {
+        List<IMyPostRequest> myPostRequestList = new ArrayList<>();
+        for (Map<String, Object> result : results) {
             IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
 
-            myPostRequest.setIdRequest(resultSet.getInt("requestId"));
-            myPostRequest.setFirstNameRequestee(resultSet.getString("firstNameRequestee"));
-            myPostRequest.setLastNameRequestee(resultSet.getString("lastNameRequestee"));
-            myPostRequest.setIdRequestee(resultSet.getInt("idRequestee"));
-            myPostRequest.setPostTitle(resultSet.getString("postTitle"));
-            myPostRequest.setFirstNameCreator(resultSet.getString("firstNameCreator"));
-            myPostRequest.setLastNameCreator(resultSet.getString("lastNameCreator"));
+            myPostRequest.setIdRequest((Integer) result.get("requestId"));
+            myPostRequest.setFirstNameRequestee((String) result.get("firstNameRequestee"));
+            myPostRequest.setLastNameRequestee((String) result.get("lastNameRequestee"));
+            myPostRequest.setIdRequestee((Integer) result.get("idRequestee"));
+            myPostRequest.setPostTitle((String) result.get("postTitle"));
+            myPostRequest.setFirstNameCreator((String) result.get("firstNameCreator"));
+            myPostRequest.setLastNameCreator((String) result.get("lastNameCreator"));
 
-            results.add(myPostRequest);
+            myPostRequestList.add(myPostRequest);
         }
-        connection.close();
-        return results;
+        return myPostRequestList;
     }
 
-    public IMyPostRequest resultPostOwnerDetails(String query) throws Exception {
-        resultSet = resultExecuteQuery(query);
+    public List<IMyPostRequest> listToMyPostRequestPostOwner(List<Map<String, Object>> results) throws Exception {
+        List<IMyPostRequest> myPostRequestPostOwnerList = new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
 
-        IMyPostRequest myPostRequest = null;
-        while (resultSet.next()) {
-            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+            myPostRequest.setPostTitle((String) result.get("postTitle"));
+            myPostRequest.setEmailCreator((String) result.get("postOwnerEmail"));
+            myPostRequest.setFirstNameCreator((String) result.get("postOwnerFirstName"));
+            myPostRequest.setLastNameCreator((String) result.get("postOwnerLastName"));
 
-            myPostRequest.setPostTitle(resultSet.getString("postTitle"));
-            myPostRequest.setEmailCreator(resultSet.getString("postOwnerEmail"));
-            myPostRequest.setFirstNameCreator(resultSet.getString("postOwnerFirstName"));
-            myPostRequest.setLastNameCreator(resultSet.getString("postOwnerLastName"));
+            myPostRequestPostOwnerList.add(myPostRequest);
         }
-        connection.close();
-        return myPostRequest;
+        return myPostRequestPostOwnerList;
     }
 
-    @Override
-    public IMyPostRequest resultPostRequesteeDetails(String query) throws Exception {
-        resultSet = resultExecuteQuery(query);
+    public List<IMyPostRequest> listToPostRequesteeDetails(List<Map<String, Object>> results) throws Exception {
+        List<IMyPostRequest> postRequesteeDetails = new ArrayList<>();
+        for (Map<String, Object> result : results) {
+            IMyPostRequest myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
 
-        IMyPostRequest myPostRequest = null;
-        while (resultSet.next()) {
-            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+            myPostRequest.setEmailRequestee((String) result.get("email"));
+            myPostRequest.setPostTitle((String) result.get("title"));
 
-            myPostRequest.setEmailRequestee(resultSet.getString("email"));
-            myPostRequest.setPostTitle(resultSet.getString("title"));
-
+            postRequesteeDetails.add(myPostRequest);
         }
-        connection.close();
-        return myPostRequest;
+        return postRequesteeDetails;
     }
-    @Override
-    public boolean updateRequest(String query) throws Exception {
-        statement = getConnection();
-        int rowUpdate = statement.executeUpdate(query);
-        boolean isRowUpdated;
-        if (rowUpdate == 1) {
-            isRowUpdated = true;
-        }
-        else {
-            isRowUpdated = false;
-        }
-        connection.close();
-        return isRowUpdated;
-    }
+
+//    public Statement getConnection() throws Exception {
+//        databaseConnection = new DatabaseConnection();
+//        connection = databaseConnection.getDatabaseConnection();
+//        statement = connection.createStatement();
+//
+//        return statement;
+//    }
+//
+//    public ResultSet resultExecuteQuery(String query) throws Exception {
+//        statement = getConnection();
+//        resultSet = statement.executeQuery(query);
+//
+//        return resultSet;
+//    }
+//
+//    public boolean executeQuery(String query) throws Exception {
+//        statement = getConnection();
+//        boolean returnResult = statement.execute(query);
+//        return returnResult;
+//    }
+//
+////    public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception {
+////
+////    }
+//
+//    public IMyPostRequest resultPostOwnerDetails(String query) throws Exception {
+//        resultSet = resultExecuteQuery(query);
+//
+//        IMyPostRequest myPostRequest = null;
+//        while (resultSet.next()) {
+//            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+//
+//            myPostRequest.setPostTitle(resultSet.getString("postTitle"));
+//            myPostRequest.setEmailCreator(resultSet.getString("postOwnerEmail"));
+//            myPostRequest.setFirstNameCreator(resultSet.getString("postOwnerFirstName"));
+//            myPostRequest.setLastNameCreator(resultSet.getString("postOwnerLastName"));
+//        }
+//        connection.close();
+//        return myPostRequest;
+//    }
+//
+//    @Override
+//    public IMyPostRequest resultPostRequesteeDetails(String query) throws Exception {
+//        resultSet = resultExecuteQuery(query);
+//
+//        IMyPostRequest myPostRequest = null;
+//        while (resultSet.next()) {
+//            myPostRequest = MyPostRequestFactory.getInstance().createMyPostRequest();
+//
+//            myPostRequest.setEmailRequestee(resultSet.getString("email"));
+//            myPostRequest.setPostTitle(resultSet.getString("title"));
+//
+//        }
+//        connection.close();
+//        return myPostRequest;
+//    }
+//    @Override
+//    public boolean updateRequest(String query) throws Exception {
+//        statement = getConnection();
+//        int rowUpdate = statement.executeUpdate(query);
+//        boolean isRowUpdated;
+//        if (rowUpdate == 1) {
+//            isRowUpdated = true;
+//        }
+//        else {
+//            isRowUpdated = false;
+//        }
+//        connection.close();
+//        return isRowUpdated;
+//    }
 
 
 }
