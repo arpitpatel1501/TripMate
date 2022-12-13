@@ -28,19 +28,24 @@ public class MyRequestDatabase implements IMyRequestDatabase {
         List<MyRequest> myRequests = new ArrayList<>();
 
         for (Map<String, Object> result : results) {
+            System.out.println(result);
+            System.out.println("title: " + result.get("title"));
+            System.out.println("firstname: " + result.get("firstname"));
+            System.out.println("lastname: " + result.get("lastname"));
+
             MyRequest myRequest = (MyRequest) requestFactory.makeMyRequest();
             String status = (String) result.get("status");
-            //TODO: do something about this
-            if (status.equals("pending")) {
+            if (status.equals("PENDING")) {
                 myRequest.setStatus(PostRequestStatus.PENDING);
-            } else if (status.equals("approved")) {
+            } else if (status.equals("ACCEPT")) {
                 myRequest.setStatus(PostRequestStatus.ACCEPT);
-            } else {
+            } else if (status.equals("DECLINE")){
                 myRequest.setStatus(PostRequestStatus.DECLINE);
             }
-            myRequest.setPostTitle((String) result.get("postTitle"));
-            myRequest.setFirstNameCreator((String) result.get("firstNameCreator"));
-            myRequest.setLastNameCreator((String) result.get("lastNameCreator"));
+//            myRequest.setStatus(status);
+            myRequest.setPostTitle((String) result.get("title"));
+            myRequest.setFirstNameCreator((String) result.get("firstname"));
+            myRequest.setLastNameCreator((String) result.get("lastname"));
 
             myRequests.add(myRequest);
         }
