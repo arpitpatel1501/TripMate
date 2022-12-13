@@ -1,4 +1,7 @@
-package grp16.tripmate.postrequest.model;
+package grp16.tripmate.postrequest.model.factory;
+
+import grp16.tripmate.postrequest.model.IMyPostRequest;
+import grp16.tripmate.postrequest.model.MyPostRequest;
 
 public class MyPostRequestFactory implements IMyPostRequestFactory{
 

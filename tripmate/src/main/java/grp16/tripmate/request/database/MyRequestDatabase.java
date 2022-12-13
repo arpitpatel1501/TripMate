@@ -2,7 +2,7 @@ package grp16.tripmate.request.database;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
-import grp16.tripmate.request.model.IMyRequestFactory;
+import grp16.tripmate.request.model.factory.IMyRequestFactory;
 import grp16.tripmate.request.model.MyRequest;
 
 import java.util.ArrayList;
