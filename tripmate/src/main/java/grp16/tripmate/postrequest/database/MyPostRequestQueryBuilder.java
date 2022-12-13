@@ -24,7 +24,7 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
 
     @Override
     public String getMyPostRequests(int loginUserId) {
-        String query = "SELECT pr." + MyPostRequestDbColumnNames.ID + " as requestId, u." + UserDbColumnNames.FIRSTNAME + " as firstNameRequestee, u." + UserDbColumnNames.LASTNAME + " as lastNameRequestee, u."+ UserDbColumnNames.ID + " as idRequestee, p."+ PostDbColumnNames.TITLE + " as postTitle, " +
+        String query = "SELECT pr." + MyPostRequestDbColumnNames.ID + " as requestId, u." + UserDbColumnNames.FIRSTNAME + " as firstNameRequester, u." + UserDbColumnNames.LASTNAME + " as lastNameRequester, u."+ UserDbColumnNames.ID + " as idRequester, p."+ PostDbColumnNames.TITLE + " as postTitle, " +
                 "p."+ PostDbColumnNames.OWNER + " as idCreator, post_owner." + UserDbColumnNames.FIRSTNAME + " as firstNameCreator, post_owner." + UserDbColumnNames.LASTNAME + " lastNameCreator \n" +
                 "FROM " + MyPostRequestDbColumnNames.TABLE_NAME +" pr\n" +
                 "JOIN " + PostDbColumnNames.TABLE_NAME + " p on pr." + MyPostRequestDbColumnNames.POST_ID + " = p."+ PostDbColumnNames.ID +"\n" +
@@ -75,7 +75,7 @@ public class MyPostRequestQueryBuilder implements IMyPostRequestQueryBuilder {
     }
 
     @Override
-    public String getPostRequesteeDetails (int request_id) {
+    public String getPostRequesterDetails (int request_id) {
         String query = "SELECT * from " + MyPostRequestDbColumnNames.TABLE_NAME + " pr \n" +
                 "JOIN " + UserDbColumnNames.TABLE_NAME + " u on pr." + MyPostRequestDbColumnNames.REQUEST_OWNER + " = u."+UserDbColumnNames.ID+" \n" +
                 "JOIN "+PostDbColumnNames.TABLE_NAME+" p on pr."+MyPostRequestDbColumnNames.POST_ID+" = p."+ PostDbColumnNames.ID +" \n" +

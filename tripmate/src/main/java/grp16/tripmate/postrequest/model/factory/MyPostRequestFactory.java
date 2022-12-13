@@ -2,6 +2,8 @@ package grp16.tripmate.postrequest.model.factory;
 
 import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.logger.ILogger;
+import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
 import grp16.tripmate.postrequest.database.IMyPostRequestQueryBuilder;
 import grp16.tripmate.postrequest.database.MyPostRequestDB;
@@ -27,12 +29,12 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
     }
 
     @Override
-    public IMyPostRequest createMyPostRequest() throws Exception {
+    public IMyPostRequest makeMyPostRequest() throws Exception {
         return new MyPostRequest();
     }
 
     @Override
-    public IMyPostRequestDB createMyPostRequestDB() {
+    public IMyPostRequestDB makeMyPostRequestDB() {
         return new MyPostRequestDB(makeMyPostRequestQueryBuilder(), makeNewDatabaseExecutor());
     }
 
@@ -44,6 +46,11 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
     @Override
     public IDatabaseExecutor makeNewDatabaseExecutor() {
         return new DatabaseExecutor();
+    }
+
+    @Override
+    public ILogger makeNewLogger(Object object) {
+        return new MyLoggerAdapter(object);
     }
 
 }
