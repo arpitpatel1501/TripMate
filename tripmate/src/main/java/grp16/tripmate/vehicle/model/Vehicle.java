@@ -135,4 +135,10 @@ public class Vehicle implements IVehicle
     {
         return new ArrayList<>();
     }
+
+    public float getVehicleRatePerKmByVehicleId()
+    {
+        Vehicle vehicleObj = database.getVehicleById(this.id);
+        return vehicleObj.getRatePerKm();
+    }
 }
