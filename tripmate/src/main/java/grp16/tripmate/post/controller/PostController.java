@@ -162,7 +162,7 @@ public class PostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
-            return "redirect:/viewpost/" + postId;
+            return "redirect:/viewPost/" + postId;
         }
     }
 
@@ -176,7 +176,7 @@ public class PostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
-            return "redirect:/viewpost/" + postId;
+            return "redirect:/viewPost/" + postId;
         }
     }
 
