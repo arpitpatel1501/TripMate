@@ -32,16 +32,13 @@ public class VerificationController {
 
     @PostMapping("/register")
     public String userVerification(@ModelAttribute User user) throws Exception {
-        verification.sendUniqueCode(user.getUsername(),
-                "Your user verification code is: ",
-                "User Verification for Tripmate");
+        verification.sendUniqueCode(user.getUsername(), "Your user verification code is: ", "User Verification for Tripmate");
         this.user = user;
         return "user_verification";
     }
 
     @PostMapping("/verify")
-    public String userVerificationCode(Model model, HttpServletRequest request) {
-
+    public String userVerificationCode(HttpServletRequest request) {
         String code = request.getParameter("code");
 
         if (this.verification.verifyCode(code)) {
@@ -50,9 +47,6 @@ public class VerificationController {
                 if (isUserCreatedSuccessfully) {
                     logger.info(this.user.getUsername() + " Register SUCCESS");
                     return "redirect:/login";
-                } else {
-                    logger.error("Register FAILED");
-                    return "redirect:/error";
                 }
             } catch (Exception e) {
                 logger.info(e.getMessage());
@@ -63,5 +57,6 @@ public class VerificationController {
             logger.error("Register FAILED");
             return "redirect:/error";
         }
+        return "redirect:/login";
     }
 }
