@@ -26,7 +26,7 @@ public class ForgetPasswordController {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", this.email);
 
-        return "/forget_password";
+        return "forgotPassword";
     }
 
     @PostMapping("/forget_password")
@@ -64,7 +64,7 @@ public class ForgetPasswordController {
         String code = request.getParameter("code");
 
         if (this.iVerification.verifyCode(code)) {
-            return "new_password";
+            return "newPassword";
         } else {
             return "redirect:/error";
         }
@@ -77,7 +77,7 @@ public class ForgetPasswordController {
         model.addAttribute("title", "New password");
         model.addAttribute("email", email);
 
-        return "/new_password";
+        return "newPassword";
     }
 
     @PostMapping("/new_password")

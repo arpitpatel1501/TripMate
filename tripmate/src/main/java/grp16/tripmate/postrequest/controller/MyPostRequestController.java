@@ -5,7 +5,6 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.postrequest.database.IMyPostRequestDB;
-import grp16.tripmate.postrequest.database.MyPostRequestDB;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.factory.IMyPostRequestFactory;
 import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
@@ -51,7 +50,7 @@ public class MyPostRequestController {
             model.addAttribute("error", e.getMessage());
             logger.error(e.getMessage());
         }
-        return "my_post_requests";
+        return "myPostRequests";
     }
 
     @PostMapping("/join/{id}")

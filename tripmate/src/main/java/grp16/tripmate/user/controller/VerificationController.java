@@ -9,12 +9,10 @@ import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.factory.UserFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class VerificationController {
@@ -34,7 +32,7 @@ public class VerificationController {
     public String userVerification(@ModelAttribute User user) throws Exception {
         verification.sendUniqueCode(user.getUsername(), "Your user verification code is: ", "User Verification for Tripmate");
         this.user = user;
-        return "user_verification";
+        return "userVerification";
     }
 
     @PostMapping("/verify")
