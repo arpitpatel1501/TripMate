@@ -132,7 +132,7 @@ public class MyPostRequest implements IMyPostRequest {
     }
 
     @Override
-    public boolean updateRequestAccept(String query, int requestId, PostRequestStatus postRequestStatus) throws Exception {
+    public boolean updateRequest(String query) throws Exception {
         statement = getConnection();
         int rowUpdate = statement.executeUpdate(query);
         boolean isRowUpdated;

@@ -27,5 +27,5 @@ public interface IMyPostRequest {
     public List<IMyPostRequest> resultMyPostRequests(String query) throws Exception;
 
     boolean executeQuery(String query) throws Exception;
-    public boolean updateRequestAccept(String query, int requestId, PostRequestStatus postRequestStatus) throws Exception;
+    public boolean updateRequest(String query) throws Exception;
 }

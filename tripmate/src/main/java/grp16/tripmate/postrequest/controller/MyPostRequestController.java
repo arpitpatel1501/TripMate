@@ -41,8 +41,8 @@ public class MyPostRequestController {
     public String postRequest(Model model) {
         model.addAttribute("title", "Post Request");
         try {
-//            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
-            query = iMyPostRequestDB.getPostRequestByUserId(11);
+            query = iMyPostRequestDB.getPostRequestByUserId((Integer) SessionManager.getInstance().getValue(UserDbColumnNames.ID));
+//            query = iMyPostRequestDB.getPostRequestByUserId(11);
             List<IMyPostRequest> postRequests = myPostRequest.resultMyPostRequests(query);
             model.addAttribute("requests_count", postRequests.size());
             model.addAttribute("postRequests", postRequests);
@@ -65,7 +65,7 @@ public class MyPostRequestController {
         System.out.println("--- After accept request ----");
         System.out.println("--- "+requestId);
         query = iMyPostRequestDB.updateRequestStatus(requestId, PostRequestStatus.ACCEPT);
-        myPostRequest.updateRequestAccept(query, requestId, PostRequestStatus.ACCEPT);
+        myPostRequest.updateRequest(query);
         return "redirect:/my_post_requests";
     }
 
@@ -74,7 +74,7 @@ public class MyPostRequestController {
         System.out.println("--- After decline request ----");
         System.out.println("--- "+requestId);
         query = iMyPostRequestDB.updateRequestStatus(requestId, PostRequestStatus.DECLINE);
-        myPostRequest.updateRequestAccept(query, requestId, PostRequestStatus.DECLINE);
+        myPostRequest.updateRequest(query);
         return "redirect:/my_post_requests";
     }
 
