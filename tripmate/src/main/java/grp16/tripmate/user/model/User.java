@@ -3,8 +3,8 @@ package grp16.tripmate.user.model;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
-import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.encoder.IPasswordEncoder;
+import grp16.tripmate.user.model.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.user.model.factory.UserFactory;
 

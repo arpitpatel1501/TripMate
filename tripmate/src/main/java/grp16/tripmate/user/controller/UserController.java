@@ -5,7 +5,7 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
 import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.user.encoder.IPasswordEncoder;
+import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.factory.UserFactory;

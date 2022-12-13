@@ -6,7 +6,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.notification.model.IVerification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.user.encoder.PasswordEncoder;
+import grp16.tripmate.user.model.encoder.PasswordEncoder;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
