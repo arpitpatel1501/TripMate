@@ -9,6 +9,9 @@ import grp16.tripmate.vehicle.database.IVehicleBookingPaymentQueryBuilder;
 import grp16.tripmate.vehicle.database.IVehicleDatabase;
 import grp16.tripmate.vehicle.database.IVehicleQueryBuilder;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,12 +29,25 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
         this.amount = amount;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
+    public String getCreatedOn() {
+        return getSQLParsableDate(this.createdOn);
     }
 
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+    private String getSQLParsableDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    protected Date getJavaDate(String date) throws ParseException
+    {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateSetter = dateFormatter.parse(date);
+        java.sql.Date finalDate = new java.sql.Date(dateSetter.getTime());
+        return finalDate;
+    }
+    public void setCreatedOn(Date todaysDate) throws ParseException {
+        String todaysDateOnly = new SimpleDateFormat("yyyy-MM-dd").format(todaysDate);
+        this.createdOn = getJavaDate(todaysDateOnly);
     }
 
     private float amount;
@@ -71,8 +87,7 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
         dbConnection = new DatabaseConnection();
     }
     @Override
-    public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId)
-    {
+    public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId) throws ParseException {
         return database.getVehicleBookingPaymentByUserId(userId);
     }
 }
