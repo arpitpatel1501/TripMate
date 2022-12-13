@@ -33,13 +33,9 @@ import java.util.List;
 public class PostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
-
-    private final IFeedbackDatabase feedbackDatabase;
-
     private final IPostDatabase postDatabase;
-
     private final PostValidator validator;
-
+    private final IFeedbackDatabase feedbackDatabase;
     private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingDatabase vehicleBookingDatabase;
 
@@ -49,17 +45,15 @@ public class PostController {
         feedbackDatabase = postFactory.makeFeedbackDatabase();
         postDatabase = postFactory.makePostDatabase();
         validator = postFactory.makePostValidator();
-
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
         vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
-
     }
 
     @GetMapping("/dashboard")
     public String getAllPosts(Model model) {
         model.addAttribute("title", "Dashboard");
         try {
-            IPost post = (Post) postFactory.makeNewPost();
+            IPost post = postFactory.makeNewPost();
             List<Post> posts = post.getAllPosts(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
         } catch (Exception e) {

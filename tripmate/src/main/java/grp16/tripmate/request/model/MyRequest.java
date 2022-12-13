@@ -1,27 +1,11 @@
 package grp16.tripmate.request.model;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.request.database.IMyRequestDatabase;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyRequest implements IMyRequest {
-
-    private final ILogger logger = new MyLoggerAdapter(this);
-    private final IDatabaseConnection databaseConnection;
-    private Connection connection;
-    private Statement statement;
-    private ResultSet resultSet;
-
-
     private int id;
     private PostRequestStatus status;
     private String postTitle;
@@ -29,7 +13,6 @@ public class MyRequest implements IMyRequest {
     private String lastNameCreator;
 
     public MyRequest() {
-        databaseConnection = new DatabaseConnection();
     }
 
     public PostRequestStatus getStatus() {
@@ -64,56 +47,8 @@ public class MyRequest implements IMyRequest {
         this.lastNameCreator = lastNameCreator;
     }
 
-    public Statement getConnection() throws Exception {
-        connection = databaseConnection.getDatabaseConnection();
-        statement = connection.createStatement();
 
-        return statement;
-    }
-
-    @Override
-    public ResultSet resultExecuteQuery(String query) throws Exception {
-        statement = getConnection();
-        resultSet = statement.executeQuery(query);
-
-        return resultSet;
-    }
-
-    @Override
-    public List<IMyRequest> resultMyRequests(String query) throws Exception {
-        resultSet = resultExecuteQuery(query);
-
-        List<IMyRequest> results = new ArrayList<>();
-        while (resultSet.next()) {
-            IMyRequest myRequest = MyRequestFactory.getInstance().createMyRequest();
-            if (resultSet.getString("status").equals("pending")) {
-                myRequest.setStatus(PostRequestStatus.PENDING);
-            } else if (resultSet.getString("status").equals("approved")) {
-                myRequest.setStatus(PostRequestStatus.ACCEPT);
-            } else {
-                myRequest.setStatus(PostRequestStatus.DECLINE);
-            }
-            myRequest.setPostTitle(resultSet.getString("postTitle"));
-            myRequest.setFirstNameCreator(resultSet.getString("firstNameCreator"));
-            myRequest.setLastNameCreator(resultSet.getString("lastNameCreator"));
-
-            logger.info(resultSet.getString("firstNameCreator"));
-            results.add(myRequest);
-
-//            myRequest.id = 1;
-//            myRequest.userName = "Harshil";
-//            myRequest.postId = 3;
-//            myRequest.status = PostRequestStatus.PENDING;
-//            results.add(myRequest);
-//
-//            MyRequest myRequest2 = new MyRequest();
-//            myRequest2.id = 4;
-//            myRequest2.userName = "Harshil 2";
-//            myRequest2.postId = 5;
-//            myRequest2.status = PostRequestStatus.PENDING;
-//            results.add(myRequest2);
-        }
-        connection.close();
-        return results;
+    public List<MyRequest> getMyRequestByUserId(IMyRequestFactory requestFactory, IMyRequestDatabase database, int userId) {
+        return database.getMyRequestByUserId(requestFactory, userId);
     }
 }

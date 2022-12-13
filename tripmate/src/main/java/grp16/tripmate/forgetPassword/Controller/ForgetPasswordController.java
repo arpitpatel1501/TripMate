@@ -9,6 +9,7 @@ import grp16.tripmate.notification.EmailNotificationFactory;
 import grp16.tripmate.notification.EmailVerificationFactory;
 import grp16.tripmate.notification.INotificationFactory;
 import grp16.tripmate.notification.IVerification;
+import grp16.tripmate.user.encoder.PasswordEncoder;
 import grp16.tripmate.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,7 +97,7 @@ public class ForgetPasswordController {
 //        email = iForgetPassword.getEmail();
         model.addAttribute("email", email);
         String password = request.getParameter("password");
-        if (iForgetPassword.changeUserPassword(email, password)) {
+        if (iForgetPassword.changeUserPassword(email, PasswordEncoder.getInstance().encodeString(password))) {
             EmailNotificationFactory.getInstance().createEmailNotification().sendNotification(email,
                     "Password Updated",
                     "Password Reset successfully");
