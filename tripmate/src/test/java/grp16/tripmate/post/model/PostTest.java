@@ -85,7 +85,7 @@ class PostTest {
 
     @Test
     @Order(14)
-    void getPostByPostIdWithNoPost(){
+    void getPostByPostIdWithNoPost() {
         Post postFromDb = post.getPostByPostId(database, 5);
         assertNull(postFromDb);
     }
@@ -131,7 +131,7 @@ class PostTest {
     void validatePostStartDateBeforeTodayDoesNotThrow() throws Exception {
         post.setStartDate("2023-12-01");
         post.createPost(database);
-        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
+        assertDoesNotThrow(() -> post.validatePost(factory.makePostValidator()));
     }
 
     @Test
@@ -147,7 +147,7 @@ class PostTest {
     void validatePostStartDateAfterEndDateDoesNotThrow() throws Exception {
         post.setStartDate("2023-12-01");
         post.createPost(database);
-        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
+        assertDoesNotThrow(() -> post.validatePost(factory.makePostValidator()));
     }
 
     @Test
@@ -163,6 +163,6 @@ class PostTest {
     void validatePostMinAgeGreaterThanMaxAgeDoesNotThrow() throws Exception {
         post.setMinAge(6);
         post.createPost(database);
-        assertDoesNotThrow( () -> post.validatePost(factory.makePostValidator()));
+        assertDoesNotThrow(() -> post.validatePost(factory.makePostValidator()));
     }
 }
