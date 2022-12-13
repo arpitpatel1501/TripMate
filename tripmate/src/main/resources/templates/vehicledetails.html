@@ -6,7 +6,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/menubar.css">
     <link rel="stylesheet" href="/css/error.css">
+    <style>
+         .container {
+            border: 3px solid black;
+            padding: 10px;
+            vertical-align: middle;
+         }
+         .price {
+            text-align: center
+         }
+         button {
+            display: block;
+            margin: 0 auto;
+         }
+      </style>
 </head>
+<script type="text/javascript">
+        function fillPaymentAmount(){
+            document.getElementById('fillPrice').innerHTML = document.getElementById('totalkminput').value;
+        }
+    </script>
 <body>
 <div th:replace="../fragments/menubar :: menubar"></div>
 <h1 th:text="${title}"></h1>
@@ -55,17 +74,13 @@
                 </select>
                 <p>Booking Start Date : <input type="date" th:field="${vehicleBookingObj.bookingStartDate}" required></p>
                 <p>Booking End Date : <input type="date" th:field="${vehicleBookingObj.bookingEndDate}" required></p>
-                <p>Total Kilometers : <input type="number" th:field="${vehicleBookingObj.totalKm}" required></p>
+                <p>Total Kilometers : <input id="totalkminput" type="number" th:field="${vehicleBookingObj.totalKm}" onchange=fillPaymentAmount() required></p>
                 <div class="container">
-                    <div class="main-content">
-                        <p class="text">C$ 2400/-</p>
-                    </div>
                     <div class="centre-content">
-                        <h1 class="price"><span>C$ 20/-</span></h1>
-                        <p class="course">This Vehicle is Awesome!</p>
+                        <p class="price">Pay using Credit or Debit card</p>
+                        <h3 class="price" id="fillPrice"><span>CAD(C$)/-</span></h3>
                     </div>
                     <div class="card-details">
-                        <p>Pay using Credit or Debit card</p>
                         <div class="card-number">
                             <label> Card Number </label>
                             <input type="text" class="card-number-field" placeholder="###-###-###"/>
@@ -87,8 +102,8 @@
                         </div>
                         <br />
                     </div>
+                    <button type="submit">Pay & Confirm Booking</button>
                 </div>
-                <button type="submit">Pay & Confirm Booking</button>
             </form>
         </td>
     </tr>

@@ -71,6 +71,9 @@ public class VehicleController implements IVehicleController {
         VehicleBooking vehicleBooking = vehicleBookingFactory.getNewVehicleBooking();
         model.addAttribute("vehicleBookingObj", vehicleBooking);
 
+        VehicleBookingPayment vehicleBookingPayment = vehicleBookingPaymentFactory.getNewVehicleBookingPayment();
+        model.addAttribute("vehicleBookingPayment", vehicleBookingPayment);
+
         return "vehicledetails";
     }
 
