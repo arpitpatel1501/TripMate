@@ -8,6 +8,7 @@ import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.vehicle.database.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.database.IVehicleBookingPaymentDatabase;
 import grp16.tripmate.vehicle.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ public class VehicleController implements IVehicleController {
     private final IPostFactory postFactory;
 
     private final IVehicleBookingFactory vehicleBookingFactory;
+    private final IVehicleBookingPaymentFactory vehicleBookingPaymentFactory;
 
     private final IVehicle vehicle;
 
@@ -33,11 +35,15 @@ public class VehicleController implements IVehicleController {
 
     private final IVehicleBookingDatabase vehicleBookingDatabase;
 
+    private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
+
     VehicleController() {
         postFactory = PostFactory.getInstance();
         vehicleFactory = VehicleFactory.getInstance();
         vehicle = vehicleFactory.getNewVehicle();
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
+        vehicleBookingPaymentFactory = VehicleBookingPaymentFactory.getInstance();
+        vehicleBookingPaymentDatabase = vehicleBookingPaymentFactory.getVehicleBookingPaymentDatabase();
         postDatabase = postFactory.makePostDatabase();
         vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
     }
@@ -92,6 +98,20 @@ public class VehicleController implements IVehicleController {
             model.addAttribute("error", e.getMessage());
         }
         return "my_vehiclebookings";
+    }
+
+    @GetMapping("/my-vehicle-booking-transaction")
+    public String getAllVehicleBookingPaymentTransactionByUserId(Model model) {
+        model.addAttribute("title", "Vehicle Booking Transactions");
+        try {
+            List<VehicleBookingPayment> paymentTransactions = vehicleBookingPaymentDatabase.getVehicleBookingPaymentByUserId(
+                    SessionManager.getInstance().getLoggedInUserId());
+            model.addAttribute("vehicleBookingTransactions", paymentTransactions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", e.getMessage());
+        }
+        return "my_transactions";
     }
 
     @GetMapping("/recommended-vehicles")
