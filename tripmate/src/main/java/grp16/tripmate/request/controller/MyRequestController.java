@@ -1,6 +1,6 @@
 package grp16.tripmate.request.controller;
 
-import grp16.tripmate.request.database.IMyRequestDatabase;
+import grp16.tripmate.request.persistence.IMyRequestPersistence;
 import grp16.tripmate.request.model.IMyRequest;
 import grp16.tripmate.request.model.factory.IMyRequestFactory;
 import grp16.tripmate.request.model.MyRequest;
@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 public class MyRequestController {
     private final IMyRequestFactory myRequestFactory;
-    private final IMyRequestDatabase myRequestDatabase;
+    private final IMyRequestPersistence myRequestDatabase;
     private final IMyRequest myRequest;
 
     MyRequestController() {

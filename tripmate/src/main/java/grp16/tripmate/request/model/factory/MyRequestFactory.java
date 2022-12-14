@@ -4,10 +4,10 @@ import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.request.database.IMyRequestDatabase;
-import grp16.tripmate.request.database.IMyRequestQueryGenerator;
-import grp16.tripmate.request.database.MyRequestDatabase;
-import grp16.tripmate.request.database.MyRequestQueryGenerator;
+import grp16.tripmate.request.persistence.IMyRequestPersistence;
+import grp16.tripmate.request.persistence.IMyRequestQueryGenerator;
+import grp16.tripmate.request.persistence.MyRequestPersistence;
+import grp16.tripmate.request.persistence.MyRequestQueryGenerator;
 import grp16.tripmate.request.model.IMyRequest;
 import grp16.tripmate.request.model.MyRequest;
 
@@ -35,8 +35,8 @@ public class MyRequestFactory implements IMyRequestFactory {
     }
 
     @Override
-    public IMyRequestDatabase makeMyRequestDatabase() {
-        return new MyRequestDatabase(makeDatabaseExecutor(), makeMyRequestQueryGenerator());
+    public IMyRequestPersistence makeMyRequestDatabase() {
+        return new MyRequestPersistence(makeDatabaseExecutor(), makeMyRequestQueryGenerator());
     }
 
     private IDatabaseExecutor makeDatabaseExecutor() {

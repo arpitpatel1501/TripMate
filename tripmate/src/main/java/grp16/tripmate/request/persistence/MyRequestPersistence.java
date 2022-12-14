@@ -1,4 +1,4 @@
-package grp16.tripmate.request.database;
+package grp16.tripmate.request.persistence;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.postrequest.model.PostRequestStatus;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MyRequestDatabase implements IMyRequestDatabase {
+public class MyRequestPersistence implements IMyRequestPersistence {
     IDatabaseExecutor databaseExecutor;
     IMyRequestQueryGenerator queryGenerator;
 
-    public MyRequestDatabase(IDatabaseExecutor databaseExecutor, IMyRequestQueryGenerator queryGenerator) {
+    public MyRequestPersistence(IDatabaseExecutor databaseExecutor, IMyRequestQueryGenerator queryGenerator) {
         this.databaseExecutor = databaseExecutor;
         this.queryGenerator = queryGenerator;
     }
@@ -31,13 +31,8 @@ public class MyRequestDatabase implements IMyRequestDatabase {
 
             MyRequest myRequest = (MyRequest) requestFactory.makeMyRequest();
             String status = (String) result.get("status");
-            if (status.equals("PENDING")) {
-                myRequest.setStatus(PostRequestStatus.PENDING);
-            } else if (status.equals("ACCEPT")) {
-                myRequest.setStatus(PostRequestStatus.ACCEPT);
-            } else if (status.equals("DECLINE")){
-                myRequest.setStatus(PostRequestStatus.DECLINE);
-            }
+            myRequest.setStatus(PostRequestStatus.valueOf(status));
+
             myRequest.setPostTitle((String) result.get("postTitle"));
             myRequest.setFirstNameCreator((String) result.get("firstNameCreator"));
             myRequest.setLastNameCreator((String) result.get("lastNameCreator"));

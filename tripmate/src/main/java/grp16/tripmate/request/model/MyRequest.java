@@ -1,26 +1,26 @@
 package grp16.tripmate.request.model;
 
 import grp16.tripmate.postrequest.model.PostRequestStatus;
-import grp16.tripmate.request.database.IMyRequestDatabase;
+import grp16.tripmate.request.persistence.IMyRequestPersistence;
 import grp16.tripmate.request.model.factory.IMyRequestFactory;
 
 import java.util.List;
 
 public class MyRequest implements IMyRequest {
-    private int id;
-    private PostRequestStatus status;
-    private String postTitle;
+//    private int id;
+    private PostRequestStatus status;   // Required in HTML
+    private String postTitle;     // Required in HTML
     private String firstNameCreator;
     private String lastNameCreator;
 
     public MyRequest() {
     }
 
-    public PostRequestStatus getStatus() {
+    public PostRequestStatus getStatus() {  // Required in HTML
         return status;
     }
 
-    public String getPostTitle() {
+    public String getPostTitle() {    // Required in HTML
         return postTitle;
     }
 
@@ -28,15 +28,15 @@ public class MyRequest implements IMyRequest {
         return firstNameCreator;
     }
 
-    public String getLastNameCreator() {
+    public String getLastNameCreator() {    // Required in HTML
         return lastNameCreator;
     }
 
-    public void setStatus(PostRequestStatus status) {
+    public void setStatus(PostRequestStatus status) {   // Required in HTML
         this.status = status;
     }
 
-    public void setPostTitle(String postTitle) {
+    public void setPostTitle(String postTitle) {      // Required in HTML
         this.postTitle = postTitle;
     }
 
@@ -49,7 +49,7 @@ public class MyRequest implements IMyRequest {
     }
 
 
-    public List<MyRequest> getMyRequestByUserId(IMyRequestFactory requestFactory, IMyRequestDatabase database, int userId) {
+    public List<MyRequest> getMyRequestByUserId(IMyRequestFactory requestFactory, IMyRequestPersistence database, int userId) {
         return database.getMyRequestByUserId(requestFactory, userId);
     }
 }
