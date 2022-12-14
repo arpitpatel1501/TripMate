@@ -70,6 +70,4 @@ public class PostFactory implements IPostFactory {
     public IDatabaseExecutor makeNewDatabaseExecutor() {
         return new DatabaseExecutor();
     }
-
-
 }
