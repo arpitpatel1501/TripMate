@@ -13,7 +13,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void getMyPostRequestsTest() {
-        String actual = "SELECT pr.id as requestId, u.firstname as firstNameRequester, u.lastname as lastNameRequester, u.id as idRequester, p.title as postTitle, p.created_by as idCreator, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator \n" +
+        String actual = "SELECT pr.id as requestId, u.first_name as firstNameRequester, u.last_name as lastNameRequester, u.id as idRequester, p.title as postTitle, p.created_by as idCreator, post_owner.first_name as firstNameCreator, post_owner.last_name lastNameCreator \n" +
                 "FROM PostRequest pr\n" +
                 "JOIN Post p on pr.post_id = p.id\n" +
                 "JOIN User u on pr.request_owner = u.id\n" +
@@ -37,7 +37,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void createJoinRequestTest() {
-        String actual ="INSERT INTO PostRequest\n" +
+        String actual = "INSERT INTO PostRequest\n" +
                 "(status,\n" +
                 "post_id,\n" +
                 "request_owner)\n" +
@@ -49,7 +49,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void createJoinRequestNegativeTest() {
-        String actual ="INSERT INTO PostRequest\n" +
+        String actual = "INSERT INTO PostRequest\n" +
                 "(status,\n" +
                 "post_id,\n" +
                 "request_owner)\n" +
@@ -61,7 +61,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void getPostOwnerDetailsTest() {
-        String actual = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.firstname as postOwnerFirstName, u.lastname as postOwnerLastName from Post p \n" +
+        String actual = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.first_name as postOwnerFirstName, u.last_name as postOwnerLastName from Post p \n" +
                 "JOIN User u on p.created_by = u.id\n" +
                 "WHERE p.id = 1;";
         Assertions.assertEquals(actual, queryGenerator.getPostOwnerDetails(1));
@@ -89,7 +89,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void getPostRequesterDetailsTest() {
-        String actual = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.firstname as postOwnerFirstName, u.lastname as postOwnerLastName from Post p \n" +
+        String actual = "SELECT p.title as postTitle, u.email as postOwnerEmail, u.first_name as postOwnerFirstName, u.last_name as postOwnerLastName from Post p \n" +
                 "JOIN User u on p.created_by = u.id\n" +
                 "WHERE p.id = 1;";
         Assertions.assertEquals(actual, queryGenerator.getPostOwnerDetails(1));
@@ -105,7 +105,7 @@ class MyPostRequestQueryGeneratorTest {
 
     @Test
     void getMyRequestByUserIdTest() {
-        String actual = "SELECT p.title as postTitle, status, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator FROM PostRequest pr JOIN Post p on pr.post_id = p.id JOIN User u on pr.request_owner = u.id JOIN User post_owner on post_owner.id = p.created_by WHERE u.id = 1;";
+        String actual = "SELECT p.title as postTitle, status, post_owner.first_name as firstNameCreator, post_owner.last_name lastNameCreator FROM PostRequest pr JOIN Post p on pr.post_id = p.id JOIN User u on pr.request_owner = u.id JOIN User post_owner on post_owner.id = p.created_by WHERE u.id = 1;";
         Assertions.assertEquals(actual, queryGenerator.getMyRequestByUserId(1));
     }
 

@@ -14,14 +14,7 @@ class UserQueryGeneratorTest {
     @Test
     void getUserByUsername() {
 
-        String expectedQuery = "SELECT `id`," +
-                "    `firstname`," +
-                "    `lastname`," +
-                "    `email`," +
-                "    `password`," +
-                "    `birthdate`," +
-                "    `gender` " +
-                "FROM `User` where email = '" + "email@mail.com" + "'";
+        String expectedQuery = "SELECT `id`,    `first_name`,    `last_name`,    `email`,    `password`,    `birthdate`,    `gender` FROM `User` where email = 'email@mail.com'";
 
 
         Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUsername("email@mail.com"));
@@ -29,14 +22,7 @@ class UserQueryGeneratorTest {
 
     @Test
     void expectedQuery() {
-        String expectedQuery = "SELECT `id`," +
-                "    `firstname`," +
-                "    `lastname`," +
-                "    `email`," +
-                "    `password`," +
-                "    `birthdate`," +
-                "    `gender`" +
-                "FROM `User` where id = " + 1;
+        String expectedQuery = "SELECT `id`,    `first_name`,    `last_name`,    `email`,    `password`,    `birthdate`,    `gender`FROM `User` where id = 1";
         Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUserID(1));
 
     }
