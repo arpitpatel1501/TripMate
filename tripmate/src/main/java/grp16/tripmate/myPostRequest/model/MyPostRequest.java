@@ -140,7 +140,7 @@ public class MyPostRequest implements IMyPostRequest {
         return postRequesterDetails.get(0);
     }
 
-    public List<MyPostRequest> listToMyPostRequest(List<Map<String, Object>> results) throws Exception {
+    private List<MyPostRequest> listToMyPostRequest(List<Map<String, Object>> results) throws Exception {
         List<MyPostRequest> myPostRequestList = new ArrayList<>();
         for (Map<String, Object> result : results) {
             MyPostRequest myPostRequest = (MyPostRequest) MyPostRequestFactory.getInstance().makeMyPostRequest();
@@ -158,7 +158,7 @@ public class MyPostRequest implements IMyPostRequest {
         return myPostRequestList;
     }
 
-    public List<MyPostRequest> listToMyPostRequestPostOwner(List<Map<String, Object>> results) throws Exception {
+    private List<MyPostRequest> listToMyPostRequestPostOwner(List<Map<String, Object>> results) throws Exception {
         List<MyPostRequest> myPostRequestPostOwnerList = new ArrayList<>();
         for (Map<String, Object> result : results) {
             MyPostRequest myPostRequest = (MyPostRequest) MyPostRequestFactory.getInstance().makeMyPostRequest();
@@ -173,7 +173,7 @@ public class MyPostRequest implements IMyPostRequest {
         return myPostRequestPostOwnerList;
     }
 
-    public List<MyPostRequest> listToPostRequesterDetails(List<Map<String, Object>> results) throws Exception {
+    private List<MyPostRequest> listToPostRequesterDetails(List<Map<String, Object>> results) throws Exception {
         List<MyPostRequest> postRequesterDetails = new ArrayList<>();
         for (Map<String, Object> result : results) {
             MyPostRequest myPostRequest = (MyPostRequest) MyPostRequestFactory.getInstance().makeMyPostRequest();

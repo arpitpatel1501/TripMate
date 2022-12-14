@@ -29,6 +29,7 @@ public class MyPostRequestDatabaseMock implements IMyPostRequestPersistence {
         myPostRequest.put("lastNameCreator", "Shah");
         myPostRequest.put("idCreator", 6);
         myPostRequest.put("postId", 1);
+        myPostRequest.put("postTitle", "Arpit_Trip");
         myPostRequest.put("status", PostRequestStatus.PENDING);
 
         myPostRequests.add(myPostRequest);
@@ -99,6 +100,20 @@ public class MyPostRequestDatabaseMock implements IMyPostRequestPersistence {
 
     @Override
     public List<MyPostRequest> getMyRequestByUserId(IMyPostRequestFactory myPostRequestFactory, int userId) {
-        return null;
+        List<MyPostRequest> myPostRequestList = new ArrayList<>();
+        MyPostRequest myRequest = (MyPostRequest) myPostRequestFactory.makeMyPostRequest();
+
+        myRequest.setStatus((PostRequestStatus) myPostRequest.get("status"));
+        myRequest.setPostTitle((String) myPostRequest.get("postTitle"));
+        myRequest.setFirstNameCreator((String) myPostRequest.get("firstNameCreator"));
+        myRequest.setLastNameCreator((String) myPostRequest.get("lastNameCreator"));
+
+        System.out.println(myRequest.getStatus());
+        System.out.println(myRequest.getPostTitle());
+        System.out.println(myRequest.getFirstNameCreator());
+        System.out.println(myRequest.getLastNameCreator());
+
+        myPostRequestList.add(myRequest);
+        return myPostRequestList;
     }
 }
