@@ -30,8 +30,8 @@ public class UserController {
 
     private final IPasswordEncoder passwordEncoder;
     private String emailForgetPassword = null;
-    private INotification notification;
-    private IVerification verification;
+    private final INotification notification;
+    private final IVerification verification;
 
     private String codeMessage;
 
@@ -130,7 +130,7 @@ public class UserController {
         }
 
         this.emailForgetPassword = request.getParameter("email");
-        this.codeMessage = "Please enter the code that you got on "+this.emailForgetPassword;
+        this.codeMessage = "Please enter the code that you got on " + this.emailForgetPassword;
 
         try {
             verification.sendUniqueCode(this.emailForgetPassword,
@@ -145,7 +145,7 @@ public class UserController {
     }
 
     @PostMapping("/reset_password")
-    public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes)  {
+    public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         model.addAttribute("email", this.emailForgetPassword);
         model.addAttribute("message", this.codeMessage);
         String code = request.getParameter("code");
