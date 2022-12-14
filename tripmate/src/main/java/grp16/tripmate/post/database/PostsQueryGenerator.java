@@ -109,7 +109,7 @@ public class PostsQueryGenerator implements IPostsQueryGenerator {
                 PostDbColumnNames.ISHIDDEN + ",  " +
                 PostDbColumnNames.DESCRIPTION + "  " +
                 "FROM " + PostDbColumnNames.TABLE_NAME + " " +
-                "WHERE " + PostDbColumnNames.ID + " = " + postId;
+                "WHERE " + PostDbColumnNames.ID + " = " + postId + ";";
         logger.info(query);
         return query;
     }
