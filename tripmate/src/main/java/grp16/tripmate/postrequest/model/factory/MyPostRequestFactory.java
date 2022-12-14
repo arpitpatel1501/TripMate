@@ -27,7 +27,7 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
     }
 
     @Override
-    public IMyPostRequest makeMyPostRequest() throws Exception {
+    public IMyPostRequest makeMyPostRequest() {
         return new MyPostRequest();
     }
 

@@ -7,7 +7,7 @@ import grp16.tripmate.postrequest.persistence.IMyPostRequestQueryGenerator;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
 
 public interface IMyPostRequestFactory {
-    IMyPostRequest makeMyPostRequest() throws Exception;
+    IMyPostRequest makeMyPostRequest();
     IMyPostRequestPersistence makeMyPostRequestDB();
     IMyPostRequestQueryGenerator makeMyPostRequestQueryBuilder();
     IDatabaseExecutor makeNewDatabaseExecutor();

@@ -9,7 +9,6 @@ import java.util.Map;
 public class MyPostRequest implements IMyPostRequest {
 
     private int idRequest;
-    private PostRequestStatus status;
     private int postId;
     private String firstNameRequester;
     private String lastNameRequester;

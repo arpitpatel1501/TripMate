@@ -51,7 +51,7 @@ public class VerificationController {
         } catch (InvalidTokenException e) {
             logger.info(e.getMessage());
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/forget_password";
+            return "redirect:/register";
         }
         return "redirect:/login";
     }
