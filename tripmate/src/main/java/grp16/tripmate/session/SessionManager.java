@@ -1,6 +1,6 @@
 package grp16.tripmate.session;
 
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 
 import java.util.HashMap;
 import java.util.Map;

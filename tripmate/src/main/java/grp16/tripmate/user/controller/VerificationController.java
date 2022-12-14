@@ -5,7 +5,7 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.notification.model.IVerification;
 import grp16.tripmate.notification.model.InvalidTokenException;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.user.database.IUserDatabase;
+import grp16.tripmate.user.persistence.IUserPersistence;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.User;
 import grp16.tripmate.user.model.factory.UserFactory;
@@ -22,7 +22,7 @@ public class VerificationController {
     private IVerification verification;
     private User user;
 
-    private final IUserDatabase database;
+    private final IUserPersistence database;
 
     VerificationController() throws Exception {
         IUserFactory userFactory = UserFactory.getInstance();

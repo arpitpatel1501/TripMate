@@ -1,8 +1,8 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.persistance.IPostPersistence;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostValidator;
@@ -11,8 +11,8 @@ import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +33,10 @@ import java.util.List;
 public class PostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
-    private final IPostDatabase postDatabase;
+    private final IPostPersistence postDatabase;
     private final PostValidator validator;
-    private final IFeedbackDatabase feedbackDatabase;
-    private final IVehicleBookingDatabase vehicleBookingDatabase;
+    private final IFeedbackPersistence feedbackDatabase;
+    private final IVehicleBookingPersistence vehicleBookingDatabase;
 
     PostController() {
         postFactory = PostFactory.getInstance();

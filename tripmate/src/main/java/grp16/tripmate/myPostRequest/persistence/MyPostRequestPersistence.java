@@ -1,13 +1,13 @@
 package grp16.tripmate.myPostRequest.persistence;
 
-import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.persistence.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.myPostRequest.model.MyPostRequest;
 import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 
 import java.util.*;
 

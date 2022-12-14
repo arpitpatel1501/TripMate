@@ -2,15 +2,14 @@ package grp16.tripmate.vehicle.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostDatabase;
+import grp16.tripmate.post.persistance.IPostPersistence;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;
-import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.IVehicleBookingPaymentPersistence;
 import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle.IVehicle;
@@ -23,7 +22,6 @@ import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPaymentFactory;
 import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategory;
 import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategoryFactory;
-import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategoryFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,9 +45,9 @@ public class VehicleController{
     private final IVehicleCategoryFactory vehicleCategoryFactory;
     private final IVehicle vehicle;
     private final IVehicleCategory vehicleCategory;
-    private final IPostDatabase postDatabase;
-    private final IVehicleBookingDatabase vehicleBookingDatabase;
-    private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
+    private final IPostPersistence postDatabase;
+    private final IVehicleBookingPersistence vehicleBookingDatabase;
+    private final IVehicleBookingPaymentPersistence vehicleBookingPaymentDatabase;
     private final VehicleBookingValidator validator;
 
     public VehicleController() {

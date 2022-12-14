@@ -7,8 +7,8 @@ import grp16.tripmate.notification.model.IVerification;
 import grp16.tripmate.notification.model.InvalidTokenException;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.IUserPersistence;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
 import grp16.tripmate.user.model.encoder.PasswordEncoder;
@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IUserFactory userFactory;
-    private final IUserDatabase userDatabase;
+    private final IUserPersistence userDatabase;
 
     private final IPasswordEncoder passwordEncoder;
     private String emailForgetPassword = null;
