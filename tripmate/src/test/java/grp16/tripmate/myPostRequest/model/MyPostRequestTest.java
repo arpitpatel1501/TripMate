@@ -2,11 +2,11 @@ package grp16.tripmate.myPostRequest.model;
 
 import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
 import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.myPostRequest.persistence.MyPostRequestDatabaseMock;
+import grp16.tripmate.myPostRequest.persistence.MyPostRequestPersistenceMock;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ class MyPostRequestTest {
     private MyPostRequest myPostRequest;
 
     public MyPostRequestTest() {
-        databaseMock = new MyPostRequestDatabaseMock();
+        databaseMock = new MyPostRequestPersistenceMock();
         factory = (MyPostRequestFactory) MyPostRequestFactory.getInstance();
         myPostRequest = (MyPostRequest) MyPostRequestFactory.getInstance().makeMyPostRequest();
     }
@@ -111,20 +111,43 @@ class MyPostRequestTest {
     }
 
     @Test
-    void getMyRequestByUserId() {
-    }
-    @Test
-    void listToMyPostRequest() {
+    void getMyRequestByUserIdTest() {
+        int userId = 2;
+        List<MyPostRequest> myPostRequestListExpected = new ArrayList<>();
+        MyPostRequest myRequest = (MyPostRequest) factory.makeMyPostRequest();
+
+        myRequest.setStatus(PostRequestStatus.PENDING);
+        myRequest.setPostTitle("Arpit_Trip");
+        myRequest.setFirstNameCreator("Aman");
+        myRequest.setLastNameCreator("Shah");
+        myPostRequestListExpected.add(myRequest);
+
+        List<MyPostRequest> myPostRequestList = databaseMock.getMyRequestByUserId(factory, userId);
+
+        Assertions.assertEquals(myPostRequestListExpected.get(0).getStatus(), myPostRequestList.get(0).getStatus());
+        Assertions.assertEquals(myPostRequestListExpected.get(0).getPostTitle(), myPostRequestList.get(0).getPostTitle());
+        Assertions.assertEquals(myPostRequestListExpected.get(0).getFirstNameCreator(), myPostRequestList.get(0).getFirstNameCreator());
+        Assertions.assertEquals(myPostRequestListExpected.get(0).getLastNameCreator(), myPostRequestList.get(0).getLastNameCreator());
 
     }
 
     @Test
-    void listToMyPostRequestPostOwner() {
+    void getMyRequestByUserIdNegativeTest() {
+        int userId = 2;
+        List<MyPostRequest> myPostRequestListExpected = new ArrayList<>();
+        MyPostRequest myRequest = (MyPostRequest) factory.makeMyPostRequest();
+
+        myRequest.setStatus(PostRequestStatus.ACCEPT);
+        myRequest.setPostTitle("Aman_Trip");
+        myRequest.setFirstNameCreator("Arpit");
+        myRequest.setLastNameCreator("Patel");
+        myPostRequestListExpected.add(myRequest);
+
+        List<MyPostRequest> myPostRequestList = databaseMock.getMyRequestByUserId(factory, userId);
+
+        Assertions.assertNotEquals(myPostRequestListExpected.get(0).getStatus(), myPostRequestList.get(0).getStatus());
+        Assertions.assertNotEquals(myPostRequestListExpected.get(0).getPostTitle(), myPostRequestList.get(0).getPostTitle());
+        Assertions.assertNotEquals(myPostRequestListExpected.get(0).getFirstNameCreator(), myPostRequestList.get(0).getFirstNameCreator());
+        Assertions.assertNotEquals(myPostRequestListExpected.get(0).getLastNameCreator(), myPostRequestList.get(0).getLastNameCreator());
     }
-
-    @Test
-    void listToPostRequesterDetails() {
-    }
-
-
 }

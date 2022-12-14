@@ -39,6 +39,6 @@ public class UserPersistenceMock {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 }

@@ -24,7 +24,7 @@ public class VehicleBookingQueryGenerator implements IVehicleBookingQueryGenerat
     @Override
     public String getVehicleBookingByPostId(int postId) {
         String query = "select * from " +
-                VehicleBookingDbColumnNames.TABLENAME +
+                VehicleBookingDbColumnNames.TABLE_NAME +
                 " where " + VehicleBookingDbColumnNames.POST_ID + "  = " + postId + ";\n";
         logger.info(query);
         return query;
@@ -33,7 +33,7 @@ public class VehicleBookingQueryGenerator implements IVehicleBookingQueryGenerat
     @Override
     public String getVehicleBookingByUserId(int userId) {
         String query = "select * from " +
-                VehicleBookingDbColumnNames.TABLENAME + " where " +
+                VehicleBookingDbColumnNames.TABLE_NAME + " where " +
                 VehicleBookingDbColumnNames.POST_ID + " in ( select " + PostDbColumnNames.ID + " from " + PostDbColumnNames.TABLE_NAME
                 + " where " + PostDbColumnNames.OWNER + " = " + userId + ");\n";
 
@@ -49,14 +49,14 @@ public class VehicleBookingQueryGenerator implements IVehicleBookingQueryGenerat
     public String getLastVehicleBookingByUserId(int userId)
     {
         String query = "SELECT * FROM " +
-                VehicleBookingDbColumnNames.TABLENAME +
+                VehicleBookingDbColumnNames.TABLE_NAME +
                 " ORDER BY " + VehicleBookingDbColumnNames.ID+ " DESC;";
         logger.info("query to get the last booking object : " + query);
         return query;
     }
     @Override
     public String createVehicleBooking(VehicleBooking vehicleBooking) {
-        String query = "INSERT INTO " + VehicleBookingDbColumnNames.TABLENAME +
+        String query = "INSERT INTO " + VehicleBookingDbColumnNames.TABLE_NAME +
                 " (" +
                 VehicleBookingDbColumnNames.POST_ID + ", " +
                 VehicleBookingDbColumnNames.VEHICLE_ID + ", " +

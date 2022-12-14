@@ -11,13 +11,14 @@ import grp16.tripmate.myPostRequest.persistence.MyPostRequestQueryGenerator;
 import grp16.tripmate.myPostRequest.model.IMyPostRequest;
 import grp16.tripmate.myPostRequest.model.MyPostRequest;
 
-public class MyPostRequestFactory implements IMyPostRequestFactory{
+public class MyPostRequestFactory implements IMyPostRequestFactory {
 
     private static IMyPostRequestFactory instance = null;
 
     private MyPostRequestFactory() {
 
     }
+
     public static IMyPostRequestFactory getInstance() {
         if (instance == null) {
             instance = new MyPostRequestFactory();
@@ -33,11 +34,11 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
 
     @Override
     public IMyPostRequestPersistence makeMyPostRequestDB() {
-        return new MyPostRequestPersistence(makeMyPostRequestQueryBuilder(), makeNewDatabaseExecutor());
+        return new MyPostRequestPersistence(makeMyPostRequestQueryGenerator(), makeNewDatabaseExecutor());
     }
 
     @Override
-    public IMyPostRequestQueryGenerator makeMyPostRequestQueryBuilder() {
+    public IMyPostRequestQueryGenerator makeMyPostRequestQueryGenerator() {
         return MyPostRequestQueryGenerator.getInstance();
     }
 

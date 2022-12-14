@@ -29,7 +29,7 @@ public class MyPostRequestController {
     private final ILogger logger;
     private final INotification notification;
 
-    MyPostRequestController() throws Exception {
+    MyPostRequestController() {
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
@@ -56,9 +56,7 @@ public class MyPostRequestController {
         myPostRequest.createJoinRequest(myPostRequestDB, postId);
         MyPostRequest postRequests = myPostRequest.getPostOwnerDetails(myPostRequestDB, postId);
 
-        notification.sendNotification(postRequests.getEmailCreator(),
-                "Join Request for " + postRequests.getPostTitle(),
-                SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
+        notification.sendNotification(postRequests.getEmailCreator(), "Join Request for " + postRequests.getPostTitle(), SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
         return "redirect:/my_requests";
     }
 
@@ -67,9 +65,7 @@ public class MyPostRequestController {
         myPostRequest.updateRequest(myPostRequestDB, requestId, PostRequestStatus.ACCEPT);
         MyPostRequest postRequests = myPostRequest.getPostRequesterDetails(myPostRequestDB, requestId);
 
-        notification.sendNotification(postRequests.getEmailRequester(),
-                "Update on request for joining " + postRequests.getPostTitle(),
-                SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
+        notification.sendNotification(postRequests.getEmailRequester(), "Update on request for joining " + postRequests.getPostTitle(), SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
 
         return "redirect:/my_post_requests";
     }
@@ -79,9 +75,7 @@ public class MyPostRequestController {
         myPostRequest.updateRequest(myPostRequestDB, requestId, PostRequestStatus.DECLINE);
         MyPostRequest postRequests = myPostRequest.getPostRequesterDetails(myPostRequestDB, requestId);
 
-        notification.sendNotification(postRequests.getEmailRequester(),
-                "Update on request for joining " + postRequests.getPostTitle(),
-                SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
+        notification.sendNotification(postRequests.getEmailRequester(), "Update on request for joining " + postRequests.getPostTitle(), SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
         return "redirect:/my_post_requests";
     }
