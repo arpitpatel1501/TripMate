@@ -175,20 +175,6 @@ public class User implements IUser {
 
     @Override
     public boolean changeUserPassword(IUserPersistence userDatabase, String email, String password) throws Exception {
-//        Connection connection = dbConnection.getDatabaseConnection();
-//        Statement statement = connection.createStatement();
-//        String query = queryBuilder.changeUserPassword(email, password);
-//        int rowUpdate = statement.executeUpdate(query);
-//        boolean isRowUpdated;
-//        if (rowUpdate == 1) {
-//            isRowUpdated = true;
-//        }
-//        else {
-//            isRowUpdated = false;
-//        }
-//        connection.close();
-//        return isRowUpdated;
-
         return userDatabase.changeUserPassword(email, password);
     }
 }
