@@ -2,7 +2,7 @@ package grp16.tripmate.vehicle.database.VehicleCategory;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.model.Vehicle.VehicleDbColumnNames;
+import grp16.tripmate.vehicle.database.Vehicle.VehicleDbColumnNames;
 
 public class VehicleCategoryQueryGenerator implements IVehicleCategoryQueryGenerator
 {

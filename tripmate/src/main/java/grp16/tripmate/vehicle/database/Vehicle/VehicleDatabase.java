@@ -5,10 +5,8 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
-import grp16.tripmate.vehicle.model.Vehicle.VehicleDbColumnNames;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 import grp16.tripmate.db.execute.DatabaseExecutor;
-import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategory;
 import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategoryFactory;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategoryFactory;
@@ -21,7 +19,7 @@ import java.util.Map;
 public class VehicleDatabase implements IVehicleDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    IVehicleQueryBuilder queryBuilder;
+    IVehicleQueryGenerator queryBuilder;
 
     private final IVehicleFactory factory;
     private final IVehicleCategoryFactory categoryFactory;
@@ -29,7 +27,7 @@ public class VehicleDatabase implements IVehicleDatabase {
     private final IDatabaseExecutor databaseExecutor;
 
     public VehicleDatabase() {
-        queryBuilder = VehiclesQueryBuilder.getInstance();
+        queryBuilder = VehiclesQueryGenerator.getInstance();
         databaseExecutor = new DatabaseExecutor();
         factory = VehicleFactory.getInstance();
         categoryFactory = VehicleCategoryFactory.getInstance();

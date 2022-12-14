@@ -1,4 +1,4 @@
-package grp16.tripmate.vehicle.model.VehicleBookingPayment;
+package grp16.tripmate.vehicle.database.VehicleBookingPayment;
 
 public class VehicleBookingPaymentDbColumns
 {

@@ -5,8 +5,7 @@ import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryBuilder;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
+import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryGenerator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -72,7 +71,7 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
     }
 
     private final IDatabaseConnection dbConnection;
-    private final IVehicleBookingPaymentQueryBuilder queryBuilder;
+    private final IVehicleBookingPaymentQueryGenerator queryBuilder;
 
     private static IVehicleBookingPaymentFactory vehicleBookingPaymentFactory = null;
 

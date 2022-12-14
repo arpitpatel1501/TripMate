@@ -18,7 +18,7 @@ public class VehicleBookingPaymentDatabase implements IVehicleBookingPaymentData
 {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    IVehicleBookingPaymentQueryBuilder queryBuilder;
+    IVehicleBookingPaymentQueryGenerator queryBuilder;
 
     private final IDatabaseConnection dbConnection;
 
@@ -28,7 +28,7 @@ public class VehicleBookingPaymentDatabase implements IVehicleBookingPaymentData
 
     public VehicleBookingPaymentDatabase()
     {
-        queryBuilder = VehicleBookingPaymentQueryBuilder.getInstance();
+        queryBuilder = VehicleBookingPaymentQueryGenerator.getInstance();
         dbConnection = new DatabaseConnection();
         factory = VehicleBookingPaymentFactory.getInstance();
         databaseExecutor = new DatabaseExecutor();

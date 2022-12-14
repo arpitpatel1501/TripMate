@@ -1,7 +1,7 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryBuilder;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryGenerator;
 import grp16.tripmate.vehicle.database.VehicleBooking.VehicleBookingDatabase;
 
 public class VehicleBookingFactory implements IVehicleBookingFactory {
@@ -29,7 +29,7 @@ public class VehicleBookingFactory implements IVehicleBookingFactory {
     }
 
     @Override
-    public IVehicleBookingQueryBuilder getVehicleBookingQueryBuilder() {
+    public IVehicleBookingQueryGenerator getVehicleBookingQueryBuilder() {
         return null;
     }
 

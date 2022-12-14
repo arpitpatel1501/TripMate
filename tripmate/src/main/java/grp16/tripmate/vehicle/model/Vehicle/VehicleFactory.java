@@ -1,9 +1,9 @@
 package grp16.tripmate.vehicle.model.Vehicle;
 
 import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryBuilder;
+import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryGenerator;
 import grp16.tripmate.vehicle.database.Vehicle.VehicleDatabase;
-import grp16.tripmate.vehicle.database.Vehicle.VehiclesQueryBuilder;
+import grp16.tripmate.vehicle.database.Vehicle.VehiclesQueryGenerator;
 
 public class VehicleFactory implements IVehicleFactory
 {
@@ -31,8 +31,8 @@ public class VehicleFactory implements IVehicleFactory
     {
         return new VehicleDatabase();
     }
-    public IVehicleQueryBuilder getVehicleQueryBuilder()
+    public IVehicleQueryGenerator getVehicleQueryBuilder()
     {
-        return VehiclesQueryBuilder.getInstance();
+        return VehiclesQueryGenerator.getInstance();
     }
 }

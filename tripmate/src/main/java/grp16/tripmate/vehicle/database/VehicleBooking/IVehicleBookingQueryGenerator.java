@@ -2,7 +2,7 @@ package grp16.tripmate.vehicle.database.VehicleBooking;
 
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
-public interface IVehicleBookingQueryBuilder
+public interface IVehicleBookingQueryGenerator
 {
     String getVehicleBookingByPostId(int postId);
 
