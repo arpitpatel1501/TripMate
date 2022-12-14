@@ -5,5 +5,6 @@ import grp16.tripmate.notification.model.IVerification;
 
 public interface INotificationFactory {
     INotification createEmailNotification();
+
     IVerification createVerificationMethod();
 }

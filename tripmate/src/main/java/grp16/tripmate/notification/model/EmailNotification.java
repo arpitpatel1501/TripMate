@@ -29,9 +29,7 @@ public class EmailNotification implements INotification{
 
             for (Map.Entry<String, String> property : this.setMailSenderProperties().entrySet()) {
                 properties.put(property.getKey(), property.getValue());
-                System.out.println(property.getKey() + " -> " + property.getValue());
             }
-
             mailSender = javaMailSenderImpl;
         }
         catch(Exception e) {

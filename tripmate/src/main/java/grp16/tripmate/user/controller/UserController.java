@@ -117,7 +117,7 @@ public class UserController {
         IUser user = UserFactory.getInstance().makeNewUser();
         try {
             if (user.checkUserExist(userDatabase, request.getParameter("email"))) {
-                System.out.println("---- user exist ----");
+
             } else {
                 model.addAttribute("error", "User Not exists");
                 logger.info("User Not exists");

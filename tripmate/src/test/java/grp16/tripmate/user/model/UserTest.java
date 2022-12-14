@@ -80,4 +80,22 @@ class UserTest {
         user.setId(4);
         Assertions.assertFalse(userPersistence.updateUser(user));
     }
+
+    @Test
+    void checkUserExistTest() throws NoSuchAlgorithmException {
+        userPersistence.insertUser(user);
+        Assertions.assertEquals(user, userPersistence.getUserByUsername("uname"));
+    }
+
+    @Test
+    void checkUserExistNegativeTest() throws NoSuchAlgorithmException {
+        Assertions.assertNull(userPersistence.getUserByUsername("arpitpatel@gmail.com"));
+    }
+
+    @Test
+    void changeUserPassword() throws NoSuchAlgorithmException {
+        String email = "arpitpatel1501@gmail.com";
+        String password = "newpassword";
+        Assertions.assertTrue(userPersistence.changeUserPassword(email, password));
+    }
 }

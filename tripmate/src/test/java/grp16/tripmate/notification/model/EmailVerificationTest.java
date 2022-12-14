@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmailVerificationTest {
 
     private IVerification verification;
+
     public EmailVerificationTest() {
         verification = new EmailVerificationMock();
     }

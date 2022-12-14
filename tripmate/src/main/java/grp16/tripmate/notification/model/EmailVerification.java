@@ -2,7 +2,7 @@ package grp16.tripmate.notification.model;
 
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 
-public class EmailVerification implements IVerification{
+public class EmailVerification implements IVerification {
 
     int uniqueNumber;
 
@@ -17,11 +17,10 @@ public class EmailVerification implements IVerification{
     }
 
     @Override
-    public boolean verifyCode(String code) throws InvalidTokenException{
+    public boolean verifyCode(String code) throws InvalidTokenException {
         if (uniqueNumber == Integer.parseInt(code)) {
             return true;
-        }
-        else {
+        } else {
             throw new InvalidTokenException();
         }
     }
@@ -29,7 +28,7 @@ public class EmailVerification implements IVerification{
     private int generateNumber() {
         int min = 1000;
         int max = 9999;
-        int range = (max-min+1);
+        int range = (max - min + 1);
         double random = Math.random();
         double finalNumber = Math.floor((random * range) + min);
         return (int) finalNumber;

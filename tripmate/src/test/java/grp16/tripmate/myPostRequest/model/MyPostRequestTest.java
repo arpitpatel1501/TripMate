@@ -2,12 +2,11 @@ package grp16.tripmate.myPostRequest.model;
 
 import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
 import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.myPostRequest.persistence.MyPostRequestDatabaseMock;
+import grp16.tripmate.myPostRequest.persistence.MyPostRequestPersistenceMock;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ class MyPostRequestTest {
     private MyPostRequest myPostRequest;
 
     public MyPostRequestTest() {
-        databaseMock = new MyPostRequestDatabaseMock();
+        databaseMock = new MyPostRequestPersistenceMock();
         factory = (MyPostRequestFactory) MyPostRequestFactory.getInstance();
         myPostRequest = (MyPostRequest) MyPostRequestFactory.getInstance().makeMyPostRequest();
     }
@@ -29,6 +28,7 @@ class MyPostRequestTest {
         int postId = 1;
         Assertions.assertTrue(myPostRequest.createJoinRequest(databaseMock, postId));
     }
+
     @Test
     void getMyPostRequestsTest() throws Exception {
         List<Map<String, Object>> myPostRequests = databaseMock.getMyPostRequests();
