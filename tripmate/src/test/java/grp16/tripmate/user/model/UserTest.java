@@ -15,8 +15,6 @@ import java.text.SimpleDateFormat;
 
 @SpringBootTest
 class UserTest {
-    private final ILogger logger = new MyLoggerAdapter(this);
-
     private final IUserFactory userFactory;
 
     private User user;
@@ -41,85 +39,7 @@ class UserTest {
     }
 
     @Test
-    void getIdTest() {
-        Assertions.assertEquals(1, user.getId());
-    }
-
-    @Test
-    void setIdTest() {
-        user.setId(2);
-        Assertions.assertEquals(2, user.getId());
-    }
-
-    @Test
-    void getFirstnameTest() {
-        Assertions.assertEquals("firstname", user.getFirstname());
-    }
-
-    @Test
-    void setFirstnameTest() {
-        user.setFirstname("first name 2");
-        Assertions.assertEquals("first name 2", user.getFirstname());
-    }
-
-    @Test
-    void getLastnameTest() {
-        Assertions.assertEquals("lastname", user.getLastname());
-    }
-
-    @Test
-    void setLastnameTest() {
-        user.setLastname("last name 2");
-        Assertions.assertEquals("last name 2", user.getLastname());
-    }
-
-    @Test
-    void getBirthDateTest() throws ParseException {
-        Assertions.assertEquals(new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1999"), user.getBirthDate());
-    }
-
-    @Test
-    void setBirthDateTest() throws ParseException {
-        user.setBirthDate("12-01-1999");
-        Assertions.assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("12-01-1999"), user.getBirthDate());
-    }
-
-    @Test
-    void getGenderTest() {
-        Assertions.assertEquals("Male", user.getGender());
-    }
-
-    @Test
-    void setGenderTest() {
-        user.setGender("Female");
-        Assertions.assertEquals("Female", user.getGender());
-    }
-
-    @Test
-    void getUsernameTest() {
-        Assertions.assertEquals("uname", user.getUsername());
-    }
-
-    @Test
-    void setUsernameTest() {
-        user.setUsername("username 2");
-        Assertions.assertEquals("username 2", user.getUsername());
-    }
-
-    @Test
-    void getPasswordTest() throws NoSuchAlgorithmException {
-        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password"), user.getPassword());
-    }
-
-    @Test
-    void setPasswordTest() throws NoSuchAlgorithmException {
-        user.setPassword("password 2");
-        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password 2"), user.getPassword());
-    }
-
-    @Test
     void testToStringTest() {
-        logger.info(user.toString());
         Assertions.assertEquals(user.toString(), user.toString());
     }
 

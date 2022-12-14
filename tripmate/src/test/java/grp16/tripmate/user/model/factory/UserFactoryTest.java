@@ -18,7 +18,6 @@ class UserFactoryTest {
         factory = UserFactory.getInstance();
     }
 
-
     @Test
     void makeNewUserTest() {
         Assertions.assertInstanceOf(IUser.class, factory.makeNewUser());
