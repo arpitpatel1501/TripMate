@@ -4,7 +4,6 @@ import grp16.tripmate.vehicle.persistence.Vehicle.IVehiclePersistence;
 import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +13,7 @@ public class VehiclePersistenceMock implements IVehiclePersistence {
 
     private static final Map<Integer, Vehicle> vehicleDb = new HashMap<>();
 
-    public VehiclePersistenceMock()
-    {
+    public VehiclePersistenceMock() {
         Vehicle vehicle = VehicleFactory.getInstance().getNewVehicle();
         vehicle.setId(1);
         vehicle.setName("Maruti 800");
@@ -28,17 +26,18 @@ public class VehiclePersistenceMock implements IVehiclePersistence {
         vehicle.setCategoryName("Sedan");
         vehicleDb.put(1, vehicle);
     }
+
     @Override
-    public List<Vehicle> getAllVehicles() throws ParseException {
+    public List<Vehicle> getAllVehicles() {
         List<Vehicle> vehicles = new ArrayList<>();
-        for (Map.Entry<Integer, Vehicle> entry: vehicleDb.entrySet()){
+        for (Map.Entry<Integer, Vehicle> entry : vehicleDb.entrySet()) {
             vehicles.add(entry.getValue());
         }
         return vehicles;
     }
 
     @Override
-    public Vehicle getVehicleById(int vehicleId) throws ParseException {
+    public Vehicle getVehicleById(int vehicleId) {
         return vehicleDb.get(vehicleId);
     }
 
@@ -47,8 +46,7 @@ public class VehiclePersistenceMock implements IVehiclePersistence {
         return (vehicleDb.remove(vehicleId) == null);
     }
 
-    public float getVehicleRatePerKmByVehicleId(int vehicleId)
-    {
+    public float getVehicleRatePerKmByVehicleId(int vehicleId) {
         return vehicleDb.get(vehicleId).getRatePerKm();
     }
 }
