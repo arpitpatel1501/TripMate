@@ -1,21 +1,18 @@
 package grp16.tripmate.vehicle.database.Vehicle;
 
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.model.Vehicle.VehicleDbColumnNames;
-import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingDbColumnNames;
+import grp16.tripmate.vehicle.database.VehicleBooking.VehicleBookingDbColumnNames;
 
 
-public class VehiclesQueryBuilder implements IVehicleQueryBuilder {
-    private static VehiclesQueryBuilder instance;
+public class VehiclesQueryGenerator implements IVehicleQueryGenerator {
+    private static VehiclesQueryGenerator instance;
 
-    private VehiclesQueryBuilder() {
+    private VehiclesQueryGenerator() {
 
     }
 
-    public static VehiclesQueryBuilder getInstance() {
+    public static VehiclesQueryGenerator getInstance() {
         if (instance == null) {
-            instance = new VehiclesQueryBuilder();
+            instance = new VehiclesQueryGenerator();
         }
         return instance;
     }

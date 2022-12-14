@@ -9,10 +9,8 @@ import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBooking;
 import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
-import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +19,7 @@ import java.util.Map;
 public class VehicleBookingDatabase implements IVehicleBookingDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    IVehicleBookingQueryBuilder queryBuilder;
+    IVehicleBookingQueryGenerator queryBuilder;
 
     private final IDatabaseConnection dbConnection;
 
@@ -30,7 +28,7 @@ public class VehicleBookingDatabase implements IVehicleBookingDatabase {
     private final IDatabaseExecutor databaseExecutor;
 
     public VehicleBookingDatabase() {
-        queryBuilder = VehicleBookingQueryBuilder.getInstance();
+        queryBuilder = VehicleBookingQueryGenerator.getInstance();
         dbConnection = new DatabaseConnection();
         factory = VehicleBookingFactory.getInstance();
         databaseExecutor = new DatabaseExecutor();

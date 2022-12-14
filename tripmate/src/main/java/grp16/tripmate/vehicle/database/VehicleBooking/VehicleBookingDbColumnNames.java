@@ -1,4 +1,4 @@
-package grp16.tripmate.vehicle.model.VehicleBooking;
+package grp16.tripmate.vehicle.database.VehicleBooking;
 
 public class VehicleBookingDbColumnNames {
     public static final String TABLENAME = "VehicleBooking";

@@ -1,9 +1,8 @@
 package grp16.tripmate.vehicle.database.VehicleBookingPayment;
 
-import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBooking;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
 
-public interface IVehicleBookingPaymentQueryBuilder
+public interface IVehicleBookingPaymentQueryGenerator
 {
     String getVehicleBookingPaymentByUserId(int userId);
 

@@ -3,26 +3,25 @@ package grp16.tripmate.vehicle.database.VehicleBookingPayment;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.PostDbColumnNames;
-import grp16.tripmate.vehicle.model.Vehicle.VehicleDbColumnNames;
-import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingDbColumnNames;
+import grp16.tripmate.vehicle.database.Vehicle.VehicleDbColumnNames;
+import grp16.tripmate.vehicle.database.VehicleBooking.VehicleBookingDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
-import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPaymentDbColumns;
 
-public class VehicleBookingPaymentQueryBuilder implements IVehicleBookingPaymentQueryBuilder
+public class VehicleBookingPaymentQueryGenerator implements IVehicleBookingPaymentQueryGenerator
 {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private static VehicleBookingPaymentQueryBuilder instance;
+    private static VehicleBookingPaymentQueryGenerator instance;
 
-    private VehicleBookingPaymentQueryBuilder()
+    private VehicleBookingPaymentQueryGenerator()
     {
 
     }
 
-    public static VehicleBookingPaymentQueryBuilder getInstance()
+    public static VehicleBookingPaymentQueryGenerator getInstance()
     {
         if (instance == null)
         {
-            instance = new VehicleBookingPaymentQueryBuilder();
+            instance = new VehicleBookingPaymentQueryGenerator();
         }
         return instance;
     }

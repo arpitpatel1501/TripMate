@@ -1,4 +1,4 @@
-package grp16.tripmate.vehicle.model.Vehicle;
+package grp16.tripmate.vehicle.database.Vehicle;
 
 public class VehicleDbColumnNames
 {

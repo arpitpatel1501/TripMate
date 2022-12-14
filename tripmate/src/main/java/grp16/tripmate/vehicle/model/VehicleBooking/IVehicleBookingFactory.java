@@ -1,7 +1,7 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryBuilder;
+import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryGenerator;
 
 
 public interface IVehicleBookingFactory {
@@ -9,7 +9,7 @@ public interface IVehicleBookingFactory {
 
     IVehicleBookingDatabase getVehicleBookingDatabase();
 
-    IVehicleBookingQueryBuilder getVehicleBookingQueryBuilder();
+    IVehicleBookingQueryGenerator getVehicleBookingQueryBuilder();
 
 
     VehicleBookingValidator getVehicleBookingValidator();

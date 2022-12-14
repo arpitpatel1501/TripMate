@@ -1,7 +1,7 @@
 package grp16.tripmate.vehicle.model.VehicleBookingPayment;
 
 import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryBuilder;
+import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryGenerator;
 
 public interface IVehicleBookingPaymentFactory
 {
@@ -9,5 +9,5 @@ public interface IVehicleBookingPaymentFactory
 
     IVehicleBookingPaymentDatabase getVehicleBookingPaymentDatabase();
 
-    IVehicleBookingPaymentQueryBuilder getVehicleBookingPaymentQueryBuilder();
+    IVehicleBookingPaymentQueryGenerator getVehicleBookingPaymentQueryBuilder();
 }

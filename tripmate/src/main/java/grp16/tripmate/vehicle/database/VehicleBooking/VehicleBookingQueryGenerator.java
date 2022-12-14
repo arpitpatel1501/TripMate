@@ -4,20 +4,19 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.PostDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
-import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingDbColumnNames;
 
-public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
+public class VehicleBookingQueryGenerator implements IVehicleBookingQueryGenerator {
     private final ILogger logger = new MyLoggerAdapter(this);
 
-    private static VehicleBookingQueryBuilder instance;
+    private static VehicleBookingQueryGenerator instance;
 
-    private VehicleBookingQueryBuilder() {
+    private VehicleBookingQueryGenerator() {
 
     }
 
-    public static VehicleBookingQueryBuilder getInstance() {
+    public static VehicleBookingQueryGenerator getInstance() {
         if (instance == null) {
-            instance = new VehicleBookingQueryBuilder();
+            instance = new VehicleBookingQueryGenerator();
         }
         return instance;
     }
