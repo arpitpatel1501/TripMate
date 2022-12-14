@@ -4,6 +4,7 @@ import grp16.tripmate.db.connection.DatabaseConnection;
 import grp16.tripmate.db.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryBuilder;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
@@ -138,5 +139,9 @@ public class VehicleBooking implements IVehicleBooking {
     public boolean createVehicleBooking(IVehicleBookingDatabase vehicleBookingDatabaseObj)
     {
         return vehicleBookingDatabaseObj.createVehicleBooking(this);
+    }
+
+    public void validateBooking(VehicleBookingValidator validator) throws ParseException, StartDateAfterEndDateException {
+        validator.isStartDateBeforeEndDate(this);
     }
 }

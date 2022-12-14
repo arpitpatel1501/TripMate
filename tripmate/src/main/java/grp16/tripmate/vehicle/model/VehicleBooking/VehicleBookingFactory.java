@@ -32,4 +32,9 @@ public class VehicleBookingFactory implements IVehicleBookingFactory {
     public IVehicleBookingQueryBuilder getVehicleBookingQueryBuilder() {
         return null;
     }
+
+    @Override
+    public VehicleBookingValidator getVehicleBookingValidator(){
+        return new VehicleBookingValidator();
+    }
 }
