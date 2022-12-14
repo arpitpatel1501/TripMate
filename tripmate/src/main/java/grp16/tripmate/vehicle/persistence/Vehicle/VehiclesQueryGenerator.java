@@ -41,6 +41,6 @@ public class VehiclesQueryGenerator implements IVehicleQueryGenerator {
 
     @Override
     public String deleteVehiclesByPostId(int postId) {
-        return "DELETE FROM " + VehicleBookingDbColumnNames.TABLENAME + " WHERE " + VehicleBookingDbColumnNames.POST_ID + " = " + postId;
+        return "DELETE FROM " + VehicleBookingDbColumnNames.TABLE_NAME + " WHERE " + VehicleBookingDbColumnNames.POST_ID + " = " + postId;
     }
 }

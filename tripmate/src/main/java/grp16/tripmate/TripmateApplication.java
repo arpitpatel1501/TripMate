@@ -14,11 +14,5 @@ public class TripmateApplication {
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(TripmateApplication.class).profiles("devint", "production", "test").run(args);
-
-        IDatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.getDatabaseConnection();
-
-        LoadSQLProfile loadSQLProfile = new LoadSQLProfile();
-        loadSQLProfile.loadSQLforProfile(connection, MyProperties.getInstance().getActiveProfile());
     }
 }

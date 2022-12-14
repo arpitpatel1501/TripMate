@@ -32,8 +32,8 @@ public class VehicleBookingPaymentQueryGenerator implements IVehicleBookingPayme
                 VehicleBookingPaymentDbColumns.VEHICLE_BOOKING_ID + ", vbp." +
                 VehicleBookingPaymentDbColumns.AMOUNT + ", vbp." +
                 VehicleBookingPaymentDbColumns.CREATED_ON + " from " +
-                VehicleBookingPaymentDbColumns.TABLENAME + " vbp inner join " +
-                VehicleBookingDbColumnNames.TABLENAME + " vb on vbp." +
+                VehicleBookingPaymentDbColumns.TABLE_NAME + " vbp inner join " +
+                VehicleBookingDbColumnNames.TABLE_NAME + " vb on vbp." +
                 VehicleBookingPaymentDbColumns.VEHICLE_BOOKING_ID + "=vb." +
                 VehicleBookingDbColumnNames.ID + " inner join " +
                 PostDbColumnNames.TABLE_NAME + " p on p." +
@@ -50,7 +50,7 @@ public class VehicleBookingPaymentQueryGenerator implements IVehicleBookingPayme
     @Override
     public String createVehicleBookingPayment(VehicleBookingPayment vehicleBookingPayment)
     {
-        String query = "INSERT INTO " + VehicleBookingPaymentDbColumns.TABLENAME +
+        String query = "INSERT INTO " + VehicleBookingPaymentDbColumns.TABLE_NAME +
                 "(" +
                 VehicleBookingPaymentDbColumns.AMOUNT + ", " +
                 VehicleBookingPaymentDbColumns.VEHICLE_BOOKING_ID + ", " +
