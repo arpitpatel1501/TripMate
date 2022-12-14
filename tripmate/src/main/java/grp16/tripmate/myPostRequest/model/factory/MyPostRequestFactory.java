@@ -33,11 +33,11 @@ public class MyPostRequestFactory implements IMyPostRequestFactory{
 
     @Override
     public IMyPostRequestPersistence makeMyPostRequestDB() {
-        return new MyPostRequestPersistence(makeMyPostRequestQueryBuilder(), makeNewDatabaseExecutor());
+        return new MyPostRequestPersistence(makeMyPostRequestQueryGenerator(), makeNewDatabaseExecutor());
     }
 
     @Override
-    public IMyPostRequestQueryGenerator makeMyPostRequestQueryBuilder() {
+    public IMyPostRequestQueryGenerator makeMyPostRequestQueryGenerator() {
         return MyPostRequestQueryGenerator.getInstance();
     }
 
