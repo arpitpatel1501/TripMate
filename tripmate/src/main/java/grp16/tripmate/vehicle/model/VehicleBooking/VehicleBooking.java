@@ -1,12 +1,12 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.persistence.connection.DatabaseConnection;
+import grp16.tripmate.persistence.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryGenerator;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingQueryGenerator;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 
 import java.text.DateFormat;
@@ -30,7 +30,7 @@ public class VehicleBooking implements IVehicleBooking {
 
     private static IVehicleBookingFactory vehicleBookingFactory = null;
 
-    private final IVehicleBookingDatabase database;
+    private final IVehicleBookingPersistence database;
 
     public VehicleBooking() {
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
@@ -136,7 +136,7 @@ public class VehicleBooking implements IVehicleBooking {
     }
 
     @Override
-    public boolean createVehicleBooking(IVehicleBookingDatabase vehicleBookingDatabaseObj)
+    public boolean createVehicleBooking(IVehicleBookingPersistence vehicleBookingDatabaseObj)
     {
         return vehicleBookingDatabaseObj.createVehicleBooking(this);
     }
