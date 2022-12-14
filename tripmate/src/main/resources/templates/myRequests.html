@@ -12,7 +12,6 @@
 <p th:text="'Number of Requests: ' + ${requests_count}"/>
 
 <tr th:each="myRequest, iterstat: ${myRequests}">
-    <!--  <td><B><span th:text="${postRequest.getFirstNameRequester}  + ' ' +${postRequest.getLastNameRequester}" /> </B> requested to join post <B><span th:text="${postRequest.getPostTitle}"/></B> <br> </td>-->
     <td><B><span th:text="${iterstat.index}+1 +'. '+ ${myRequest.getPostTitle()}"/></B> post joining request is <B><span
             th:text="${myRequest.getStatus()}"/> </B> by <B><span
             th:text="${myRequest.getFirstNameCreator()} +' '+ ${myRequest.getLastNameCreator()}"/></B>

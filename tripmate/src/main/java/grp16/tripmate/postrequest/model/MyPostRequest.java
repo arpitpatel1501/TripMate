@@ -23,15 +23,15 @@ public class MyPostRequest implements IMyPostRequest {
     public MyPostRequest() {
     }
 
-    public int getIdRequest() {
+    public int getIdRequest() {     // Required in HTML
         return this.idRequest;
     }
 
-    public String getFirstNameRequester() {
+    public String getFirstNameRequester() {     // Required in HTML
         return firstNameRequester;
     }
 
-    public String getLastNameRequester() {
+    public String getLastNameRequester() { // Required in HTML
         return lastNameRequester;
     }
 
@@ -39,7 +39,7 @@ public class MyPostRequest implements IMyPostRequest {
         return emailRequester;
     }
 
-    public String getPostTitle() {
+    public String getPostTitle() {      // Required in HTML
         return postTitle;
     }
 
@@ -47,7 +47,7 @@ public class MyPostRequest implements IMyPostRequest {
         return idCreator;
     }
 
-    public int getIdRequester() {
+    public int getIdRequester() {   // Required in HTML
         return idRequester;
     }
 
@@ -59,7 +59,7 @@ public class MyPostRequest implements IMyPostRequest {
         return firstNameCreator;
     }
 
-    public String getLastNameCreator() {
+    public String getLastNameCreator() {    // Required in HTML
         return lastNameCreator;
     }
 

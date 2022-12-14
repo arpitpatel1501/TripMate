@@ -1,6 +1,6 @@
-package grp16.tripmate.request.model;
+package grp16.tripmate.request.persistence;
 
-public class MyRequestDbColumnNames {
+public class MyRequestDBColumnNames {
     public static final String TABLE_NAME = "PostRequest";
     public static final String ID = TABLE_NAME + ".id";
     public static final String POST_ID = TABLE_NAME + ".Post_id";
