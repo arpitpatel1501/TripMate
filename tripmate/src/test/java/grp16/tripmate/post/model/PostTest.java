@@ -1,7 +1,7 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.PostDatabaseMock;
+import grp16.tripmate.post.persistance.IPostPersistence;
+import grp16.tripmate.post.persistance.PostPersistenceMock;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PostTest {
 
     IPostFactory factory;
-    IPostDatabase database;
+    IPostPersistence database;
     Post post;
 
     public PostTest() throws ParseException {
         factory = PostFactory.getInstance();
-        database = new PostDatabaseMock();
+        database = new PostPersistenceMock();
 
         post = (Post) factory.makeNewPost();
         post.setId(1);

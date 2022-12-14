@@ -1,7 +1,7 @@
 package grp16.tripmate.myPostRequest.model.factory;
 
-import grp16.tripmate.db.execute.DatabaseExecutor;
-import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.persistence.execute.DatabaseExecutor;
+import grp16.tripmate.persistence.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;

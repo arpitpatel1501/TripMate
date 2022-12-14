@@ -1,7 +1,7 @@
 package grp16.tripmate.vehicle.model;
 
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
-import grp16.tripmate.vehicle.database.VehicleDatabaseMock;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehiclePersistence;
+import grp16.tripmate.vehicle.persistence.VehiclePersistenceMock;
 import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
 import grp16.tripmate.vehicle.model.Vehicle.Vehicle;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
@@ -20,13 +20,13 @@ public class TestVehicle {
 
     IVehicleFactory factory;
 
-    IVehicleDatabase database;
+    IVehiclePersistence database;
 
     Vehicle vehicle;
 
     public TestVehicle() throws ParseException {
         factory = VehicleFactory.getInstance();
-        database = new VehicleDatabaseMock();
+        database = new VehiclePersistenceMock();
     }
 
     public float getVehicleRatePerKmByVehicleId() throws ParseException {

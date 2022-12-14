@@ -1,6 +1,6 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface IVehicleBooking
 
     VehicleBooking getVehicleBookingByBookingId(int bookingId);
 
-    boolean createVehicleBooking(IVehicleBookingDatabase vehicleBookingDatabaseObj);
+    boolean createVehicleBooking(IVehicleBookingPersistence vehicleBookingDatabaseObj);
 }

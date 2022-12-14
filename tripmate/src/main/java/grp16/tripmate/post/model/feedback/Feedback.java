@@ -1,6 +1,6 @@
 package grp16.tripmate.post.model.feedback;
 
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
 
 public class Feedback implements IFeedback {
     private int id;
@@ -13,7 +13,7 @@ public class Feedback implements IFeedback {
     }
 
     @Override
-    public boolean createFeedback(IFeedbackDatabase database) {
+    public boolean createFeedback(IFeedbackPersistence database) {
         return database.createFeedback(this);
     }
 

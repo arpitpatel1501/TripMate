@@ -1,17 +1,14 @@
 package grp16.tripmate.user.model;
 
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.IUserPersistence;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.encoder.PasswordEncoder;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.user.model.factory.UserFactory;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -105,7 +102,7 @@ public class User implements IUser {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + ", birthDate=" + birthDate + ", gender='" + gender + '\'' + '}';
     }
 
-    public boolean validateUser(IUserDatabase userDatabase, IPasswordEncoder passwordEncoder) throws InvalidUsernamePasswordException, NoSuchAlgorithmException {
+    public boolean validateUser(IUserPersistence userDatabase, IPasswordEncoder passwordEncoder) throws InvalidUsernamePasswordException, NoSuchAlgorithmException {
         User userFromDb = mapToUser(userDatabase.getUserByUsername(this.getUsername()));
         logger.info(userFromDb.toString());
         boolean isValidUser = userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(this.getPassword());
@@ -122,7 +119,7 @@ public class User implements IUser {
     }
 
     @Override
-    public boolean createUser(IUserDatabase userDatabase) {
+    public boolean createUser(IUserPersistence userDatabase) {
         return userDatabase.insertUser(this);
     }
 
@@ -136,12 +133,12 @@ public class User implements IUser {
         return "";
     }
 
-    public boolean changeUserDetails(IUserDatabase userDatabase) throws Exception {
+    public boolean changeUserDetails(IUserPersistence userDatabase) throws Exception {
         this.setId(SessionManager.getInstance().getLoggedInUserId());
         return userDatabase.updateUser(this);
     }
 
-    public User getUserById(IUserDatabase userDatabase, int userId) throws Exception {
+    public User getUserById(IUserPersistence userDatabase, int userId) throws Exception {
         return mapToUser(userDatabase.getUserById(userId));
     }
 
@@ -166,7 +163,7 @@ public class User implements IUser {
     }
 
     @Override
-    public boolean checkUserExist(IUserDatabase userDatabase, String email) throws Exception {
+    public boolean checkUserExist(IUserPersistence userDatabase, String email) throws Exception {
         Map<String, Object> result = userDatabase.getUserByUsername(email);
         if (result.size() == 0) {
             return false;
@@ -177,7 +174,7 @@ public class User implements IUser {
     }
 
     @Override
-    public boolean changeUserPassword(IUserDatabase userDatabase, String email, String password) throws Exception {
+    public boolean changeUserPassword(IUserPersistence userDatabase, String email, String password) throws Exception {
 //        Connection connection = dbConnection.getDatabaseConnection();
 //        Statement statement = connection.createStatement();
 //        String query = queryBuilder.changeUserPassword(email, password);

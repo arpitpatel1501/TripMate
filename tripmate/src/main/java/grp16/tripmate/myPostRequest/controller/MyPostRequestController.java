@@ -10,7 +10,7 @@ import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
 import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
 import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

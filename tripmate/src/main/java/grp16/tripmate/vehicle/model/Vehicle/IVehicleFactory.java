@@ -1,12 +1,12 @@
 package grp16.tripmate.vehicle.model.Vehicle;
 
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryGenerator;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehiclePersistence;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehicleQueryGenerator;
 
 public interface IVehicleFactory
 {
     Vehicle getNewVehicle();
-    IVehicleDatabase getVehicleDataBase();
+    IVehiclePersistence getVehicleDataBase();
     IVehicleQueryGenerator getVehicleQueryBuilder();
 
 }
