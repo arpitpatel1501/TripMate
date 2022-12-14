@@ -7,12 +7,13 @@ public class EmailVerification implements IVerification{
     int uniqueNumber;
 
     @Override
-    public void sendUniqueCode(String userEmail, String body, String subject) throws Exception {
+    public boolean sendUniqueCode(String userEmail, String body, String subject) throws Exception {
         INotification iNotification;
         uniqueNumber = generateNumber();
         body += uniqueNumber;
         iNotification = NotificationFactory.getInstance().createEmailNotification();
         iNotification.sendNotification(userEmail, subject, body);
+        return true;
     }
 
     @Override

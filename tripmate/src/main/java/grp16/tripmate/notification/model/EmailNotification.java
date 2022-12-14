@@ -40,7 +40,7 @@ public class EmailNotification implements INotification{
     }
 
     @Override
-    public void sendNotification(String sendTo, String subject, String body) throws Exception {
+    public boolean sendNotification(String sendTo, String subject, String body) throws Exception {
 
         SimpleMailMessage message;
 
@@ -53,6 +53,7 @@ public class EmailNotification implements INotification{
 
         mailSender.send(message);
         logger.info("Mail sent successfully");
+        return true;
     }
 
     private Map<String, String> setMailSenderProperties() {
