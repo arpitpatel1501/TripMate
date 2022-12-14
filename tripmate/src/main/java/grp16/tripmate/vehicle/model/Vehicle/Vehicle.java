@@ -24,11 +24,29 @@ public class Vehicle implements IVehicle
     private boolean isForLongJourney;
     private float ratePerKm;
     private String description;
+    private int categoryId;
+
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private final IDatabaseConnection dbConnection;
     private final IVehicleQueryBuilder queryBuilder;
-
     private static IVehicleFactory vehicleFactory = null;
-
     private final IVehicleDatabase database;
 
     public Vehicle()
@@ -69,9 +87,14 @@ public class Vehicle implements IVehicle
         return vehicleCategory.getName();
     }
 
-    public void setVehicleCategory(int vehicleCategoryId)
+    public void setVehicleCategory(VehicleCategory vehicleCategory)
     {
-        this.vehicleCategory = new VehicleCategory(vehicleCategoryId);
+        this.vehicleCategory = vehicleCategory;
+    }
+
+    public void setVehicleCategoryId(int categoryId)
+    {
+        this.vehicleCategory = new VehicleCategory(categoryId);
     }
 
     public int getId() {

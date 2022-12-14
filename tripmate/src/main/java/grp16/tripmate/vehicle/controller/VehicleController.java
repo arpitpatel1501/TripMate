@@ -18,6 +18,10 @@ import grp16.tripmate.vehicle.model.VehicleBookingPayment.IVehicleBookingPayment
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPaymentFactory;
+import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategory;
+import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategoryFactory;
+import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
+import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategoryFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +40,9 @@ public class VehicleController{
     private final IPostFactory postFactory;
     private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingPaymentFactory vehicleBookingPaymentFactory;
-
+    private final IVehicleCategoryFactory vehicleCategoryFactory;
     private final IVehicle vehicle;
+    private final IVehicleCategory vehicleCategory;
     private final IPostDatabase postDatabase;
     private final IVehicleBookingDatabase vehicleBookingDatabase;
     private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
@@ -45,11 +50,13 @@ public class VehicleController{
     public VehicleController() {
         postFactory = PostFactory.getInstance();
         vehicle = VehicleFactory.getInstance().getNewVehicle();
+        vehicleCategory = VehicleCategoryFactory.getInstance().getNewVehicleCategory();
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
         vehicleBookingPaymentFactory = VehicleBookingPaymentFactory.getInstance();
         vehicleBookingPaymentDatabase = vehicleBookingPaymentFactory.getVehicleBookingPaymentDatabase();
         postDatabase = postFactory.makePostDatabase();
         vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
+        vehicleCategoryFactory = VehicleCategoryFactory.getInstance();
     }
 
     @GetMapping("/all-vehicles")
