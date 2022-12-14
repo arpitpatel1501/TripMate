@@ -40,7 +40,6 @@ public class VerificationController {
     @PostMapping("/verify")
     public String userVerificationCode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String code = request.getParameter("code");
-        boolean isUserCreatedSuccessfully = this.user.createUser(database);
 
         try {
             this.verification.verifyCode(code);
