@@ -15,8 +15,20 @@ class PostsQueryGeneratorTest {
     IPostsQueryGenerator queryGenerator = PostsQueryGenerator.getInstance();
 
     @Test
-    void getCreatePostQuery() {
-
+    void getCreatePostQuery() throws ParseException {
+        String actual = "INSERT INTO Post(  created_by,title,source_location,destination_location,start_ts,end_ts,min_age,max_age,capacity,description)  VALUES ( 0, 'sharshil1299@gmail.com', 'source 2', 'destination 3', '2024-12-14', '2024-12-22', 10, 20, 10, 'description 3' );";
+        Post post = (Post) PostFactory.getInstance().makeNewPost();
+        post.setTitle("sharshil1299@gmail.com");
+        post.setSource("source 2");
+        post.setDestination("destination 3");
+        post.setStartDate("2024-12-14");
+        post.setEndDate("2024-12-22");
+        post.setMinAge(10);
+        post.setMaxAge(20);
+        post.setCapacity(10);
+        post.setDescription("description 3");
+        post.setId(23);
+        Assertions.assertEquals(actual, queryGenerator.getCreatePostQuery(post));
     }
 
     @Test
@@ -56,6 +68,8 @@ class PostsQueryGeneratorTest {
 
     @Test
     void deletePostQuery() {
+        String actual = "DELETE FROM Post WHERE id = 15";
+        Assertions.assertEquals(actual, queryGenerator.deletePostQuery(15));
     }
 
     @Test
