@@ -7,8 +7,8 @@ import grp16.tripmate.notification.model.IVerification;
 import grp16.tripmate.notification.model.InvalidTokenException;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.IUserDatabase;
-import grp16.tripmate.user.database.UserDbColumnNames;
+import grp16.tripmate.user.persistence.IUserPersistence;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
 import grp16.tripmate.user.model.encoder.IPasswordEncoder;
 import grp16.tripmate.user.model.*;
 import grp16.tripmate.user.model.encoder.PasswordEncoder;
@@ -26,12 +26,12 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
     private final ILogger logger = new MyLoggerAdapter(this);
     private final IUserFactory userFactory;
-    private final IUserDatabase userDatabase;
+    private final IUserPersistence userDatabase;
 
     private final IPasswordEncoder passwordEncoder;
     private String emailForgetPassword = null;
-    private INotification notification;
-    private IVerification verification;
+    private final INotification notification;
+    private final IVerification verification;
 
     private String codeMessage;
 
@@ -130,12 +130,10 @@ public class UserController {
         }
 
         this.emailForgetPassword = request.getParameter("email");
-        this.codeMessage = "Please enter the code that you got on "+this.emailForgetPassword;
+        this.codeMessage = "Please enter the code that you got on " + this.emailForgetPassword;
 
         try {
-            verification.sendUniqueCode(this.emailForgetPassword,
-                    "Your reset password code is: ",
-                    "User reset password for Tripmate");
+            verification.sendUniqueCode(this.emailForgetPassword, "Your reset password code is: ", "User reset password for Tripmate");
         } catch (Exception e) {
             model.addAttribute("error", "User Not exists");
             logger.info("User Not exists");
@@ -145,7 +143,7 @@ public class UserController {
     }
 
     @PostMapping("/reset_password")
-    public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes)  {
+    public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         model.addAttribute("email", this.emailForgetPassword);
         model.addAttribute("message", this.codeMessage);
         String code = request.getParameter("code");
@@ -176,9 +174,7 @@ public class UserController {
         model.addAttribute("email", this.emailForgetPassword);
         String password = request.getParameter("password");
         if (user.changeUserPassword(userDatabase, this.emailForgetPassword, PasswordEncoder.getInstance().encodeString(password))) {
-            notification.sendNotification(this.emailForgetPassword,
-                    "Password Updated",
-                    "Password Reset successfully");
+            notification.sendNotification(this.emailForgetPassword, "Password Updated", "Password Reset successfully");
 
             return "redirect:/login";
         } else {

@@ -1,11 +1,11 @@
 package grp16.tripmate.vehicle.model.Vehicle;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.persistence.connection.DatabaseConnection;
+import grp16.tripmate.persistence.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryGenerator;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehiclePersistence;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehicleQueryGenerator;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 
 import java.text.ParseException;
@@ -47,7 +47,7 @@ public class Vehicle implements IVehicle
     private final IDatabaseConnection dbConnection;
     private final IVehicleQueryGenerator queryBuilder;
     private static IVehicleFactory vehicleFactory = null;
-    private final IVehicleDatabase database;
+    private final IVehiclePersistence database;
 
     public Vehicle()
     {

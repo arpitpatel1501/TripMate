@@ -2,7 +2,7 @@ variables:
   GRADLE_OPTS: "-Dorg:gradle.daemon=false"
   GIT_STRATEGY: clone
   GRADLE_VERSION: "7.5"
-  RUNNER: "dalfcs_docker_kvm"#"dalfcs_docker_autoscale" # "grad" #"ugrad"  #
+  RUNNER: "dalfcs_docker_kvm"#"dalfcs_docker_autoscale"
   JDK_VERSION: "jdk8"
 
 before_script:
@@ -33,8 +33,7 @@ test:
 
   only:
     refs:
-      - nobranch
-      # - branches
+      - branches
 # Ref: https://medium.com/trendyol-tech/reporting-test-results-in-gitlab-6c1938a7472e
 
 build:

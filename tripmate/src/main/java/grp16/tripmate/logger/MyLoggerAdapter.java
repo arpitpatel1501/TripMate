@@ -24,5 +24,4 @@ public class MyLoggerAdapter implements ILogger {
     public void warn(String message) {
         logger.warn(message);
     }
-
 }
