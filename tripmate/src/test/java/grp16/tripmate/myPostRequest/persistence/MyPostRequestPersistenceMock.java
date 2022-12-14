@@ -3,21 +3,19 @@ package grp16.tripmate.myPostRequest.persistence;
 import grp16.tripmate.myPostRequest.model.MyPostRequest;
 import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
-import grp16.tripmate.post.model.Post;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyPostRequestDatabaseMock implements IMyPostRequestPersistence {
+public class MyPostRequestPersistenceMock implements IMyPostRequestPersistence {
 
     private static final Map<Integer, Map<String, Object>> myPostRequestsDB = new HashMap<>();
 
     private Map<String, Object> myPostRequest;
     private List<Map<String, Object>> myPostRequests;
-    public MyPostRequestDatabaseMock() {
+    public MyPostRequestPersistenceMock() {
         myPostRequests = new ArrayList<>();
         myPostRequest = new HashMap<>();
 
