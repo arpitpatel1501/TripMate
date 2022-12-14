@@ -104,6 +104,14 @@ class MyPostRequestQueryGeneratorTest {
     }
 
     @Test
-    void getMyRequestByUserId() {
+    void getMyRequestByUserIdTest() {
+        String actual = "SELECT p.title as postTitle, status, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator FROM PostRequest pr JOIN Post p on pr.post_id = p.id JOIN User u on pr.request_owner = u.id JOIN User post_owner on post_owner.id = p.created_by WHERE u.id = 1;";
+        Assertions.assertEquals(actual, queryGenerator.getMyRequestByUserId(1));
+    }
+
+    @Test
+    void getMyRequestByUserIdNegativeTest() {
+        String actual = "SELECT p.title as postTitle, status, post_owner.firstname as firstNameCreator, post_owner.lastname lastNameCreator FROM PostRequest pr JOIN Post p on pr.post_id = p.id JOIN User u on pr.request_owner = u.id JOIN User post_owner on post_owner.id = p.created_by WHERE u.id = 1;";
+        Assertions.assertNotEquals(actual, queryGenerator.getMyRequestByUserId(2));
     }
 }

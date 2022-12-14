@@ -94,6 +94,7 @@ public class MyPostRequestQueryGenerator implements IMyPostRequestQueryGenerator
                 " JOIN " + UserDbColumnNames.TABLE_NAME + " post_owner on post_owner." + UserDbColumnNames.ID + " = p." + PostDbColumnNames.OWNER +
                 " WHERE u." + UserDbColumnNames.ID + " = " + userid + ";";
 
+        logger.info(query);
         return query;
     }
 }

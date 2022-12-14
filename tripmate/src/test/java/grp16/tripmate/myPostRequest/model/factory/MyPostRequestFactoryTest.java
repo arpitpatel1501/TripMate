@@ -24,25 +24,27 @@ class MyPostRequestFactoryTest {
     }
 
     @Test
-    void makeMyPostRequest() {
+    void makeMyPostRequestTest() {
         Assertions.assertInstanceOf(IMyPostRequest.class, factory.makeMyPostRequest());
     }
 
     @Test
-    void makeMyPostRequestDB() {
+    void makeMyPostRequestDBTest() {
         Assertions.assertInstanceOf(IMyPostRequestPersistence.class, factory.makeMyPostRequestDB());
-
     }
 
     @Test
-    void makeMyPostRequestQueryBuilder() {
+    void makeMyPostRequestQueryBuilderTest() {
+        Assertions.assertInstanceOf(IMyPostRequestQueryGenerator.class, factory.makeMyPostRequestQueryGenerator());
     }
 
     @Test
-    void makeNewDatabaseExecutor() {
+    void makeNewDatabaseExecutorTest() {
+        Assertions.assertInstanceOf(IDatabaseExecutor.class, factory.makeNewDatabaseExecutor());
     }
 
     @Test
-    void makeNewLogger() {
+    void makeNewLoggerTest() {
+        Assertions.assertInstanceOf(ILogger.class, factory.makeNewLogger(this));
     }
 }
