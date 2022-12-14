@@ -33,6 +33,8 @@ public class UserController {
     private INotification notification;
     private IVerification verification;
 
+    private String codeMessage;
+
 
     public UserController() {
         userFactory = UserFactory.getInstance();
@@ -101,6 +103,7 @@ public class UserController {
     public String forgetPassword(Model model) {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", this.emailForgetPassword);
+        model.addAttribute("message", this.codeMessage);
 
         return "forgotPassword";
     }
@@ -109,6 +112,8 @@ public class UserController {
     public String sendResetPasswordCode(Model model, HttpServletRequest request) {
         model.addAttribute("title", "Reset password");
         model.addAttribute("email", "");
+        model.addAttribute("message", "");
+
         IUser user = UserFactory.getInstance().makeNewUser();
         try {
             if (user.checkUserExist(userDatabase, request.getParameter("email"))) {
@@ -125,6 +130,7 @@ public class UserController {
         }
 
         this.emailForgetPassword = request.getParameter("email");
+        this.codeMessage = "Please enter the code that you got on "+this.emailForgetPassword;
 
         try {
             verification.sendUniqueCode(this.emailForgetPassword,
@@ -141,6 +147,7 @@ public class UserController {
     @PostMapping("/reset_password")
     public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes)  {
         model.addAttribute("email", this.emailForgetPassword);
+        model.addAttribute("message", this.codeMessage);
         String code = request.getParameter("code");
 
         try {
@@ -156,7 +163,6 @@ public class UserController {
 
     @GetMapping("/new_password")
     public String resetPassword(Model model) {
-//        this.emailForgetPassword = UserFactory.getInstance().makeNewUser().getEmail();
 
         model.addAttribute("title", "New password");
         model.addAttribute("email", this.emailForgetPassword);

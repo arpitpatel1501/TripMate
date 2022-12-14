@@ -1,14 +1,14 @@
-package grp16.tripmate.postrequest.controller;
+package grp16.tripmate.myPostRequest.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.postrequest.model.IMyPostRequest;
-import grp16.tripmate.postrequest.model.MyPostRequest;
-import grp16.tripmate.postrequest.model.factory.IMyPostRequestFactory;
-import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
-import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.model.IMyPostRequest;
+import grp16.tripmate.myPostRequest.model.MyPostRequest;
+import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
+import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import org.springframework.stereotype.Controller;
@@ -16,19 +16,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 public class MyPostRequestController {
 
+    private final IMyPostRequestFactory myPostRequestFactory;
     private final IMyPostRequestPersistence myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
     private final INotification notification;
 
     MyPostRequestController() throws Exception {
-        IMyPostRequestFactory myPostRequestFactory;
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
@@ -83,6 +84,21 @@ public class MyPostRequestController {
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
         return "redirect:/my_post_requests";
+    }
+
+    @GetMapping("/my_requests")
+    public String myRequest(Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("title", "My Request");
+        try {
+            List<MyPostRequest> myRequestList = myPostRequest.getMyRequestByUserId(myPostRequestFactory, myPostRequestDB, SessionManager.getInstance().getLoggedInUserId());
+            model.addAttribute("requests_count", myRequestList.size());
+            model.addAttribute("myRequests", myRequestList);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+        return "myRequests";
     }
 
 }

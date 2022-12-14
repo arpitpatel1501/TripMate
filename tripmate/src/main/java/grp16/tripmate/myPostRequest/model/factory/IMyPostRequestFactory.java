@@ -1,10 +1,10 @@
-package grp16.tripmate.postrequest.model.factory;
+package grp16.tripmate.myPostRequest.model.factory;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.postrequest.persistence.IMyPostRequestQueryGenerator;
-import grp16.tripmate.postrequest.model.IMyPostRequest;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestQueryGenerator;
+import grp16.tripmate.myPostRequest.model.IMyPostRequest;
 
 public interface IMyPostRequestFactory {
     IMyPostRequest makeMyPostRequest();

@@ -1,6 +1,7 @@
-package grp16.tripmate.postrequest.model;
+package grp16.tripmate.myPostRequest.model;
 
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface IMyPostRequest {
     MyPostRequest getPostOwnerDetails(IMyPostRequestPersistence myPostRequestDB, int postId) throws Exception;
     boolean updateRequest(IMyPostRequestPersistence myPostRequestDB, int requestId, PostRequestStatus postRequestStatus);
     MyPostRequest getPostRequesterDetails(IMyPostRequestPersistence myPostRequestDB, int requestId) throws Exception;
+    List<MyPostRequest> getMyRequestByUserId(IMyPostRequestFactory requestFactory, IMyPostRequestPersistence database, int userId);
 }

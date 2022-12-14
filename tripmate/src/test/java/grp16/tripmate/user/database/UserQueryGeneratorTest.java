@@ -21,7 +21,7 @@ class UserQueryGeneratorTest {
                 "    `password`," +
                 "    `birthdate`," +
                 "    `gender` " +
-                "FROM `User` where email = \"" + "email@mail.com" + "\"";
+                "FROM `User` where email = '" + "email@mail.com" + "'";
 
 
         Assertions.assertEquals(expectedQuery, queryGenerator.getUserByUsername("email@mail.com"));
