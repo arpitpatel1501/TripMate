@@ -1,4 +1,4 @@
-package grp16.tripmate.postrequest.database;
+package grp16.tripmate.postrequest.persistence;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
@@ -9,13 +9,13 @@ import grp16.tripmate.user.database.UserDbColumnNames;
 
 import java.util.*;
 
-public class MyPostRequestDB implements IMyPostRequestDB {
+public class MyPostRequestPersistence implements IMyPostRequestPersistence {
 
     private final ILogger logger = new MyLoggerAdapter(this);
-    private final IMyPostRequestQueryBuilder queryGenerator;
+    private final IMyPostRequestQueryGenerator queryGenerator;
     private final IDatabaseExecutor databaseExecution;
 
-    public MyPostRequestDB(IMyPostRequestQueryBuilder queryGenerator, IDatabaseExecutor databaseExecution) {
+    public MyPostRequestPersistence(IMyPostRequestQueryGenerator queryGenerator, IDatabaseExecutor databaseExecution) {
         this.queryGenerator = queryGenerator;
         this.databaseExecution = databaseExecution;
     }

@@ -3,7 +3,7 @@ package grp16.tripmate.postrequest.controller;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.postrequest.database.IMyPostRequestDB;
+import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.MyPostRequest;
 import grp16.tripmate.postrequest.model.factory.IMyPostRequestFactory;
@@ -22,13 +22,13 @@ import java.util.List;
 @Controller
 public class MyPostRequestController {
 
-    private final IMyPostRequestFactory myPostRequestFactory;
-    private final IMyPostRequestDB myPostRequestDB;
+    private final IMyPostRequestPersistence myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
-    private INotification notification;
+    private final INotification notification;
 
     MyPostRequestController() throws Exception {
+        IMyPostRequestFactory myPostRequestFactory;
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
