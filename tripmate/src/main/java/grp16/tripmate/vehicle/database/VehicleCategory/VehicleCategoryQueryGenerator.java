@@ -2,6 +2,7 @@ package grp16.tripmate.vehicle.database.VehicleCategory;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.vehicle.model.Vehicle.VehicleDbColumnNames;
 
 public class VehicleCategoryQueryGenerator implements IVehicleCategoryQueryGenerator
 {
@@ -24,13 +25,27 @@ public class VehicleCategoryQueryGenerator implements IVehicleCategoryQueryGener
     }
     @Override
     public String getVehicleCategoryByVehicleId(int vehicleId) {
-        String query = "";
+        String query = "SELECT " +
+                VehicleCategoryDbColumns.ID + ", " +
+                VehicleCategoryDbColumns.NAME + " FROM " +
+                VehicleDbColumnNames.TABLENAME + " INNER JOIN " +
+                VehicleCategoryDbColumns.TABLENAME + " on " +
+                VehicleDbColumnNames.TABLENAME + "." +
+                VehicleDbColumnNames.ID + "=" +
+                VehicleCategoryDbColumns.TABLENAME + "." +
+                VehicleCategoryDbColumns.ID + " WHERE " +
+                VehicleDbColumnNames.TABLENAME + "." +
+                VehicleDbColumnNames.ID + "=" + vehicleId + ";";
         return query;
     }
 
     @Override
     public String getVehicleCategoryById(int categoryId) {
-        String query = "";
+        String query = "SELECT " +
+                VehicleCategoryDbColumns.ID + ", " +
+                VehicleCategoryDbColumns.NAME + " FROM " +
+                VehicleCategoryDbColumns.TABLENAME + " WHERE " +
+                VehicleCategoryDbColumns.ID + "=" + categoryId + ";";
         return query;
     }
 }

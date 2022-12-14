@@ -45,6 +45,7 @@ public class VehicleDatabase implements IVehicleDatabase {
     private List<Vehicle> assignVehicleCategoryToVehicle(List<Vehicle> vehicles) throws ParseException {
         for (Vehicle vehicleObj: vehicles)
         {
+            logger.info("Vehicle category id: " + vehicleObj.getCategoryId());
             VehicleCategory vehicleCategory = categoryFactory.getVehicleCategoryDatabase().getVehicleCategoryById(vehicleObj.getCategoryId());
             vehicleObj.setCategoryName(vehicleCategory.getName());
             vehicleObj.setVehicleCategory(vehicleCategory);
@@ -71,11 +72,11 @@ public class VehicleDatabase implements IVehicleDatabase {
         return vehicles;
     }
 
-    public Vehicle getVehicleById(int vehicleId) {
+    public Vehicle getVehicleById(int vehicleId) throws ParseException {
         String query = queryBuilder.getVehicleById(vehicleId);
         List<Vehicle> listOfVehicles = listToVehicles(databaseExecutor.executeSelectQuery(query));
         if (listOfVehicles.size() > 0) {
-            return listOfVehicles.get(0);
+            return assignVehicleCategoryToVehicle(listOfVehicles).get(0);
         } else {
             return null;
         }

@@ -141,6 +141,11 @@ public class VehicleBooking implements IVehicleBooking {
         return vehicleBookingDatabaseObj.createVehicleBooking(this);
     }
 
+    public VehicleBooking getLastVehicleBookingByUserId(int userId)
+    {
+        return database.getLastVehicleBookingByUserId(userId);
+    }
+
     public void validateBooking(VehicleBookingValidator validator) throws ParseException, StartDateAfterEndDateException {
         validator.isStartDateBeforeEndDate(this);
     }

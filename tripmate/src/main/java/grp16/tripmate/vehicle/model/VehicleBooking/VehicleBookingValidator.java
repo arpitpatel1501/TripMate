@@ -1,7 +1,6 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
-import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 
 import java.text.ParseException;
 import java.util.Date;

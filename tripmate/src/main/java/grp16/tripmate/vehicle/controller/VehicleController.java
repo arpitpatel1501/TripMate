@@ -108,7 +108,8 @@ public class VehicleController{
         try {
             vehicleBooking.validateBooking(validator);
             vehicleBooking.createVehicleBooking(vehicleBookingDatabase);
-            vehicleBookingPayment.setVehicleBookingId(vehicleBooking.getId());
+            VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking().getLastVehicleBookingByUserId(SessionManager.getInstance().getLoggedInUserId());
+            vehicleBookingPayment.setVehicleBookingId(vehicleBookingObj.getId());
             vehicleBookingPayment.setCreatedOn(new Date());
             vehicleBookingPayment.createVehicleBookingPayment(vehicleBookingPaymentDatabase);
         } catch (StartDateAfterEndDateException e) {
@@ -117,6 +118,9 @@ public class VehicleController{
             List<Vehicle> vehicles = vehicle.getAllVehicles();
             model.addAttribute("vehicles", vehicles);
             return "listVehicles";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/my-vehicle-bookings";
     }

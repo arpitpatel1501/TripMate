@@ -10,4 +10,5 @@ public interface IVehicleBookingQueryBuilder
 
     String getVehicleBookingByBookingId(int bookingId);
     String createVehicleBooking(VehicleBooking vehicleBooking);
+    String getLastVehicleBookingByUserId(int userId);
 }
