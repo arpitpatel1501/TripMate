@@ -16,19 +16,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 public class MyPostRequestController {
 
+    private final IMyPostRequestFactory myPostRequestFactory;
     private final IMyPostRequestPersistence myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
     private final INotification notification;
 
     MyPostRequestController() throws Exception {
-        IMyPostRequestFactory myPostRequestFactory;
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
@@ -83,6 +84,21 @@ public class MyPostRequestController {
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
         return "redirect:/my_post_requests";
+    }
+
+    @GetMapping("/my_requests")
+    public String myRequest(Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("title", "My Request");
+        try {
+            List<MyPostRequest> myRequestList = myPostRequest.getMyRequestByUserId(myPostRequestFactory, myPostRequestDB, SessionManager.getInstance().getLoggedInUserId());
+            model.addAttribute("requests_count", myRequestList.size());
+            model.addAttribute("myRequests", myRequestList);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+        return "myRequests";
     }
 
 }

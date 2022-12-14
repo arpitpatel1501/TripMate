@@ -8,4 +8,5 @@ public interface IMyPostRequestQueryGenerator {
     String getPostOwnerDetails(int post_id);
     String updateRequestStatus(int requestId, PostRequestStatus postRequestStatus);
     String getPostRequesterDetails (int request_id);
+    String getMyRequestByUserId(int userid);
 }

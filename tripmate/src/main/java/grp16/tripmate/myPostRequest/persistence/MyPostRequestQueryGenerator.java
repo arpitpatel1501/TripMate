@@ -84,4 +84,16 @@ public class MyPostRequestQueryGenerator implements IMyPostRequestQueryGenerator
         logger.info(query);
         return query;
     }
+
+    @Override
+    public String getMyRequestByUserId(int userid) {
+        String query = "SELECT p." + PostDbColumnNames.TITLE + " as postTitle, " + MyPostRequestDBColumnNames.STATUS + ", post_owner." + UserDbColumnNames.FIRSTNAME + " as firstNameCreator, post_owner." + UserDbColumnNames.LASTNAME + " lastNameCreator " +
+                "FROM " + MyPostRequestDBColumnNames.TABLE_NAME + " pr " +
+                "JOIN " + PostDbColumnNames.TABLE_NAME + " p on pr." + MyPostRequestDBColumnNames.POST_ID + " = p." + PostDbColumnNames.ID +
+                " JOIN " + UserDbColumnNames.TABLE_NAME + " u on pr." + MyPostRequestDBColumnNames.REQUEST_OWNER + " = u." + UserDbColumnNames.ID +
+                " JOIN " + UserDbColumnNames.TABLE_NAME + " post_owner on post_owner." + UserDbColumnNames.ID + " = p." + PostDbColumnNames.OWNER +
+                " WHERE u." + UserDbColumnNames.ID + " = " + userid + ";";
+
+        return query;
+    }
 }

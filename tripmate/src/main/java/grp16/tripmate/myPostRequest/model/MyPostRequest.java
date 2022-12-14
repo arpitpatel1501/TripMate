@@ -1,5 +1,6 @@
 package grp16.tripmate.myPostRequest.model;
 
+import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
 import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
 import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ public class MyPostRequest implements IMyPostRequest {
 
     private int idRequest;
     private int postId;
+    private PostRequestStatus status;
     private String firstNameRequester;
     private String lastNameRequester;
     private int idRequester;
@@ -61,6 +63,14 @@ public class MyPostRequest implements IMyPostRequest {
 
     public String getLastNameCreator() {    // Required in HTML
         return lastNameCreator;
+    }
+
+    public PostRequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PostRequestStatus status) {
+        this.status = status;
     }
 
     public void setIdRequest(int idRequest) {
@@ -174,6 +184,11 @@ public class MyPostRequest implements IMyPostRequest {
             postRequesterDetails.add(myPostRequest);
         }
         return postRequesterDetails;
+    }
+
+    @Override
+    public List<MyPostRequest> getMyRequestByUserId(IMyPostRequestFactory requestFactory, IMyPostRequestPersistence database, int userId) {
+        return database.getMyRequestByUserId(requestFactory, userId);
     }
 
 }
