@@ -1,6 +1,6 @@
 package grp16.tripmate.post.model.feedback;
 
-import grp16.tripmate.post.database.FeedbackDatabaseMock;
+import grp16.tripmate.post.database.feedback.FeedbackDatabaseMock;
 import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
 import grp16.tripmate.post.model.factory.IPostFactory;
 import grp16.tripmate.post.model.factory.PostFactory;

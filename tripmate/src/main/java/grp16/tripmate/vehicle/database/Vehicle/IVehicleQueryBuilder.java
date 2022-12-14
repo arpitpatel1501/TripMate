@@ -1,8 +1,7 @@
 package grp16.tripmate.vehicle.database.Vehicle;
 
 
-public interface IVehicleQueryBuilder
-{
+public interface IVehicleQueryBuilder {
     String getAllVehicles();
 
     String getVehicleById(int vehicleId);
@@ -10,4 +9,6 @@ public interface IVehicleQueryBuilder
     String getVehiclesByPostId(int postId);
 
     String getVehiclesByUserId(int userId);
+
+    String deleteVehiclesByPostId(int postId);
 }

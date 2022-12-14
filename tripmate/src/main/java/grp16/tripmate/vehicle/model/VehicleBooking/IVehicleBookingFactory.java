@@ -12,4 +12,5 @@ public interface IVehicleBookingFactory {
     IVehicleBookingQueryBuilder getVehicleBookingQueryBuilder();
 
 
+    VehicleBookingValidator getVehicleBookingValidator();
 }

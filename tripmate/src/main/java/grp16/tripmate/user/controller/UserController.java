@@ -2,7 +2,9 @@ package grp16.tripmate.user.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
+import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.IVerification;
+import grp16.tripmate.notification.model.InvalidTokenException;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.IUserDatabase;
@@ -15,6 +17,7 @@ import grp16.tripmate.user.model.factory.UserFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
@@ -26,13 +29,17 @@ public class UserController {
     private final IUserDatabase userDatabase;
 
     private final IPasswordEncoder passwordEncoder;
-    private IVerification iVerification = null;
     private String emailForgetPassword = null;
+    private INotification notification;
+    private IVerification verification;
+
 
     public UserController() {
         userFactory = UserFactory.getInstance();
         userDatabase = UserFactory.getInstance().makeUserDatabase();
         passwordEncoder = UserFactory.getInstance().makePasswordEncoder();
+        notification = NotificationFactory.getInstance().createEmailNotification();
+        verification = NotificationFactory.getInstance().createVerificationMethod();
     }
 
     @GetMapping("/login")
@@ -120,8 +127,7 @@ public class UserController {
         this.emailForgetPassword = request.getParameter("email");
 
         try {
-            iVerification = NotificationFactory.getInstance().createVerificationMethod();
-            iVerification.sendUniqueCode(this.emailForgetPassword,
+            verification.sendUniqueCode(this.emailForgetPassword,
                     "Your reset password code is: ",
                     "User reset password for Tripmate");
         } catch (Exception e) {
@@ -133,14 +139,18 @@ public class UserController {
     }
 
     @PostMapping("/reset_password")
-    public String userVerificationCode(Model model, HttpServletRequest request) {
+    public String userVerificationCode(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes)  {
         model.addAttribute("email", this.emailForgetPassword);
         String code = request.getParameter("code");
 
-        if (this.iVerification.verifyCode(code)) {
+        try {
+            verification.verifyCode(code);
+            logger.info("VERIFY CODE");
             return "newPassword";
-        } else {
-            return "redirect:/error";
+        } catch (InvalidTokenException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            e.printStackTrace();
+            return "redirect:/forget_password";
         }
     }
 
@@ -160,7 +170,7 @@ public class UserController {
         model.addAttribute("email", this.emailForgetPassword);
         String password = request.getParameter("password");
         if (user.changeUserPassword(userDatabase, this.emailForgetPassword, PasswordEncoder.getInstance().encodeString(password))) {
-            NotificationFactory.getInstance().createEmailNotification().sendNotification(this.emailForgetPassword,
+            notification.sendNotification(this.emailForgetPassword,
                     "Password Updated",
                     "Password Reset successfully");
 

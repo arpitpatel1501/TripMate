@@ -8,6 +8,7 @@ import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.time.Instant;
@@ -65,6 +66,8 @@ public class PostDatabase implements IPostDatabase {
     @Override
     public boolean deletePost(int post_id) {
         PostFactory.getInstance().makeFeedbackDatabase().deleteFeedbackByPostId(post_id);
+        VehicleFactory.getInstance().getVehicleDataBase();
+
         String query = queryGenerator.deletePostQuery(post_id);
         return databaseExecutor.executeDeleteQuery(query);
     }

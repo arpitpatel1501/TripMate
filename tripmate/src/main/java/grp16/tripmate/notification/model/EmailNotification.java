@@ -16,28 +16,33 @@ public class EmailNotification implements INotification{
 
     JavaMailSenderImpl javaMailSenderImpl = null;
     private JavaMailSender mailSender = null;
-    private SimpleMailMessage message;
-    private Map<String, String> mailSenderProperties;
-    public EmailNotification() throws Exception {
-        javaMailSenderImpl = new JavaMailSenderImpl();
-        javaMailSenderImpl.setHost(MyProperties.getInstance().getHost());
-        javaMailSenderImpl.setPort(Integer.parseInt(MyProperties.getInstance().getPort()));
+    public EmailNotification() {
+        try {
+            javaMailSenderImpl = new JavaMailSenderImpl();
+            javaMailSenderImpl.setHost(MyProperties.getInstance().getHost());
+            javaMailSenderImpl.setPort(Integer.parseInt(MyProperties.getInstance().getPort()));
 
-        javaMailSenderImpl.setUsername(MyProperties.getInstance().getMailSender());
-        javaMailSenderImpl.setPassword(MyProperties.getInstance().getPassword());
+            javaMailSenderImpl.setUsername(MyProperties.getInstance().getMailSender());
+            javaMailSenderImpl.setPassword(MyProperties.getInstance().getPassword());
 
-        Properties properties = javaMailSenderImpl.getJavaMailProperties();
+            Properties properties = javaMailSenderImpl.getJavaMailProperties();
 
-        for (Map.Entry<String, String> property : this.setMailSenderProperties().entrySet()) {
-            properties.put(property.getKey(), property.getValue());
-            System.out.println(property.getKey() +" -> "+ property.getValue());
+            for (Map.Entry<String, String> property : this.setMailSenderProperties().entrySet()) {
+                properties.put(property.getKey(), property.getValue());
+                System.out.println(property.getKey() + " -> " + property.getValue());
+            }
+
+            mailSender = javaMailSenderImpl;
         }
-
-        mailSender = javaMailSenderImpl;
+        catch(Exception e) {
+            logger.info(e.getMessage());
+        }
     }
 
     @Override
     public void sendNotification(String sendTo, String subject, String body) throws Exception {
+
+        SimpleMailMessage message;
 
         String sendBy = MyProperties.getInstance().getMailSender();
         message = new SimpleMailMessage();
@@ -51,7 +56,9 @@ public class EmailNotification implements INotification{
     }
 
     private Map<String, String> setMailSenderProperties() {
-        mailSenderProperties = new HashMap<String, String>();
+        Map<String, String> mailSenderProperties;
+
+        mailSenderProperties = new HashMap<>();
         mailSenderProperties.put("mail.transport.protocol", "smtp");
         mailSenderProperties.put("mail.smtp.auth", "true");
         mailSenderProperties.put("mail.smtp.starttls.enable", "true");

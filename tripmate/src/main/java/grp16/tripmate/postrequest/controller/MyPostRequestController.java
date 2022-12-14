@@ -3,7 +3,7 @@ package grp16.tripmate.postrequest.controller;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.postrequest.database.IMyPostRequestDB;
+import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
 import grp16.tripmate.postrequest.model.IMyPostRequest;
 import grp16.tripmate.postrequest.model.MyPostRequest;
 import grp16.tripmate.postrequest.model.factory.IMyPostRequestFactory;
@@ -22,13 +22,13 @@ import java.util.List;
 @Controller
 public class MyPostRequestController {
 
-    private final IMyPostRequestFactory myPostRequestFactory;
-    private final IMyPostRequestDB myPostRequestDB;
+    private final IMyPostRequestPersistence myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
-    INotification notification;
+    private final INotification notification;
 
     MyPostRequestController() throws Exception {
+        IMyPostRequestFactory myPostRequestFactory;
         myPostRequestFactory = MyPostRequestFactory.getInstance();
         myPostRequestDB = myPostRequestFactory.makeMyPostRequestDB();
         myPostRequest = myPostRequestFactory.makeMyPostRequest();
@@ -58,7 +58,7 @@ public class MyPostRequestController {
         notification.sendNotification(postRequests.getEmailCreator(),
                 "Join Request for " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " requested for joining " + postRequests.getPostTitle());
-        return "redirect:/myRequests";
+        return "redirect:/my_requests";
     }
 
     @PostMapping("/accept_request/{request_id}")
@@ -70,7 +70,7 @@ public class MyPostRequestController {
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " ACCEPT request for joining " + postRequests.getPostTitle());
 
-        return "redirect:/myPostRequests";
+        return "redirect:/my_post_requests";
     }
 
     @PostMapping("/decline_request/{request_id}")
@@ -82,7 +82,7 @@ public class MyPostRequestController {
                 "Update on request for joining " + postRequests.getPostTitle(),
                 SessionManager.getInstance().getValue(UserDbColumnNames.FIRSTNAME) + " " + SessionManager.getInstance().getValue(UserDbColumnNames.LASTNAME) + " DECLINE requested for joining " + postRequests.getPostTitle());
 
-        return "redirect:/myPostRequests";
+        return "redirect:/my_post_requests";
     }
 
 }

@@ -1,6 +1,6 @@
 package grp16.tripmate.postrequest.model;
 
-import grp16.tripmate.postrequest.database.IMyPostRequestDB;
+import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
 import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.Map;
 public class MyPostRequest implements IMyPostRequest {
 
     private int idRequest;
-    private PostRequestStatus status;
     private int postId;
     private String firstNameRequester;
     private String lastNameRequester;
@@ -104,29 +103,29 @@ public class MyPostRequest implements IMyPostRequest {
     }
 
     @Override
-    public List<MyPostRequest> getMyPostRequests(IMyPostRequestDB myPostRequestDB) throws Exception {
+    public List<MyPostRequest> getMyPostRequests(IMyPostRequestPersistence myPostRequestDB) throws Exception {
         List<MyPostRequest> myPostRequestList = listToMyPostRequest(myPostRequestDB.getMyPostRequests());
         return myPostRequestList;
     }
 
     @Override
-    public boolean createJoinRequest(IMyPostRequestDB myPostRequestDB, int postId) throws Exception {
+    public boolean createJoinRequest(IMyPostRequestPersistence myPostRequestDB, int postId) throws Exception {
         return myPostRequestDB.createJoinRequest(postId);
     }
 
     @Override
-    public MyPostRequest getPostOwnerDetails(IMyPostRequestDB myPostRequestDB, int postId) throws Exception {
+    public MyPostRequest getPostOwnerDetails(IMyPostRequestPersistence myPostRequestDB, int postId) throws Exception {
         List<MyPostRequest> myPostRequestPostOwnerList = listToMyPostRequestPostOwner(myPostRequestDB.getPostOwnerDetails(postId));
         return myPostRequestPostOwnerList.get(0);
     }
 
     @Override
-    public boolean updateRequest(IMyPostRequestDB myPostRequestDB, int requestId, PostRequestStatus postRequestStatus) {
+    public boolean updateRequest(IMyPostRequestPersistence myPostRequestDB, int requestId, PostRequestStatus postRequestStatus) {
         return myPostRequestDB.updateRequest(requestId, postRequestStatus);
     }
 
     @Override
-    public MyPostRequest getPostRequesterDetails(IMyPostRequestDB myPostRequestDB, int requestId) throws Exception {
+    public MyPostRequest getPostRequesterDetails(IMyPostRequestPersistence myPostRequestDB, int requestId) throws Exception {
         List<MyPostRequest> postRequesterDetails = listToPostRequesterDetails(myPostRequestDB.getPostRequesterDetails(requestId));
         return postRequesterDetails.get(0);
     }

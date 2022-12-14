@@ -11,4 +11,6 @@ public interface IVehicleDatabase
     List<Vehicle> getAllVehicles() throws ParseException;
     Vehicle getVehicleById(int vehicleId) throws ParseException;
 
+    boolean deleteVehiclesByPostId(int postId);
+
 }
