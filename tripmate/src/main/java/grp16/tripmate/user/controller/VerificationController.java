@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class VerificationController {
     private final ILogger logger = new MyLoggerAdapter(this);
-    private IVerification verification;
+    private final IVerification verification;
     private User user;
 
     private final IUserPersistence database;
@@ -38,7 +38,7 @@ public class VerificationController {
     }
 
     @PostMapping("/verify")
-    public String userVerificationCode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String CuserVerificationCode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String code = request.getParameter("code");
 
         try {

@@ -13,8 +13,9 @@ public class MyPostRequestPersistenceMock implements IMyPostRequestPersistence {
 
     private static final Map<Integer, Map<String, Object>> myPostRequestsDB = new HashMap<>();
 
-    private Map<String, Object> myPostRequest;
-    private List<Map<String, Object>> myPostRequests;
+    private final Map<String, Object> myPostRequest;
+    private final List<Map<String, Object>> myPostRequests;
+
     public MyPostRequestPersistenceMock() {
         myPostRequests = new ArrayList<>();
         myPostRequest = new HashMap<>();
@@ -89,11 +90,6 @@ public class MyPostRequestPersistenceMock implements IMyPostRequestPersistence {
         myRequest.setPostTitle((String) myPostRequest.get("postTitle"));
         myRequest.setFirstNameCreator((String) myPostRequest.get("firstNameCreator"));
         myRequest.setLastNameCreator((String) myPostRequest.get("lastNameCreator"));
-
-        System.out.println(myRequest.getStatus());
-        System.out.println(myRequest.getPostTitle());
-        System.out.println(myRequest.getFirstNameCreator());
-        System.out.println(myRequest.getLastNameCreator());
 
         myPostRequestList.add(myRequest);
         return myPostRequestList;

@@ -28,6 +28,7 @@ class MyPostRequestTest {
         int postId = 1;
         Assertions.assertTrue(myPostRequest.createJoinRequest(databaseMock, postId));
     }
+
     @Test
     void getMyPostRequestsTest() throws Exception {
         List<Map<String, Object>> myPostRequests = databaseMock.getMyPostRequests();
