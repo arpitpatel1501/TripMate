@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class VehicleBookingPaymentDatabase implements IVehicleBookingPaymentDatabase
 {
-
     private final ILogger logger = new MyLoggerAdapter(this);
 
     IVehicleBookingPaymentQueryBuilder queryBuilder;

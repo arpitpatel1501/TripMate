@@ -18,19 +18,19 @@
 
 <table th:if="${vehicleBookings.size() != 0}" id="vehicleTbl">
     <tr>
-        <th>Vehicle Id</th>
+        <th>Booking Id</th>
         <th>Trip Id</th>
+        <th>Vehicle Id</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th>Paid?</th>
         <th>Total KMs</th>
     </tr>
     <tr th:each="booking: ${vehicleBookings}">
         <td th:text="${booking.getId()}"/>
         <td th:text="${booking.getPostId()}"/>
+        <td th:text="${booking.getVehicleId()}"/>
         <td th:text="${booking.getBookingStartDate()}"/>
         <td th:text="${booking.getBookingEndDate}"/>
-        <td th:text="${booking.getHasPaid}"/>
         <td th:text="${booking.getTotalKm}"/>
     </tr>
 </table>

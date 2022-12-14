@@ -21,6 +21,10 @@ import grp16.tripmate.vehicle.model.VehicleBookingPayment.IVehicleBookingPayment
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPayment;
 import grp16.tripmate.vehicle.model.VehicleBookingPayment.VehicleBookingPaymentFactory;
+import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategory;
+import grp16.tripmate.vehicle.model.VehicleCategory.IVehicleCategoryFactory;
+import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
+import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategoryFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +44,9 @@ public class VehicleController{
     private final IPostFactory postFactory;
     private final IVehicleBookingFactory vehicleBookingFactory;
     private final IVehicleBookingPaymentFactory vehicleBookingPaymentFactory;
-
+    private final IVehicleCategoryFactory vehicleCategoryFactory;
     private final IVehicle vehicle;
+    private final IVehicleCategory vehicleCategory;
     private final IPostDatabase postDatabase;
     private final IVehicleBookingDatabase vehicleBookingDatabase;
     private final IVehicleBookingPaymentDatabase vehicleBookingPaymentDatabase;
@@ -50,12 +55,14 @@ public class VehicleController{
     public VehicleController() {
         postFactory = PostFactory.getInstance();
         vehicle = VehicleFactory.getInstance().getNewVehicle();
+        vehicleCategory = VehicleCategoryFactory.getInstance().getNewVehicleCategory();
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
         vehicleBookingPaymentFactory = VehicleBookingPaymentFactory.getInstance();
         validator = vehicleBookingFactory.getVehicleBookingValidator();
         vehicleBookingPaymentDatabase = vehicleBookingPaymentFactory.getVehicleBookingPaymentDatabase();
         postDatabase = postFactory.makePostDatabase();
         vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
+        vehicleCategoryFactory = VehicleCategoryFactory.getInstance();
     }
 
     @GetMapping("/all-vehicles")
@@ -101,7 +108,8 @@ public class VehicleController{
         try {
             vehicleBooking.validateBooking(validator);
             vehicleBooking.createVehicleBooking(vehicleBookingDatabase);
-            vehicleBookingPayment.setVehicleBookingId(vehicleBooking.getId());
+            VehicleBooking vehicleBookingObj = vehicleBookingFactory.getNewVehicleBooking().getLastVehicleBookingByUserId(SessionManager.getInstance().getLoggedInUserId());
+            vehicleBookingPayment.setVehicleBookingId(vehicleBookingObj.getId());
             vehicleBookingPayment.setCreatedOn(new Date());
             vehicleBookingPayment.createVehicleBookingPayment(vehicleBookingPaymentDatabase);
         } catch (StartDateAfterEndDateException e) {
@@ -110,6 +118,9 @@ public class VehicleController{
             List<Vehicle> vehicles = vehicle.getAllVehicles();
             model.addAttribute("vehicles", vehicles);
             return "listVehicles";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", e.getMessage());
         }
         return "redirect:/my-vehicle-bookings";
     }

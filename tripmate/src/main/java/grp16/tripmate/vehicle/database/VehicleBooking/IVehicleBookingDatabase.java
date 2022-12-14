@@ -15,4 +15,6 @@ public interface IVehicleBookingDatabase {
 
     boolean createVehicleBooking(IVehicleBooking vehicleBooking);
 
+    VehicleBooking getLastVehicleBookingByUserId(int userId);
+
 }

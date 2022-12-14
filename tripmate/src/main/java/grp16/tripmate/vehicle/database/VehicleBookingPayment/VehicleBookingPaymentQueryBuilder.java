@@ -44,6 +44,7 @@ public class VehicleBookingPaymentQueryBuilder implements IVehicleBookingPayment
                 VehicleDbColumnNames.ID + "=vb." +
                 VehicleBookingDbColumnNames.VEHICLE_ID + " where p." +
                 PostDbColumnNames.OWNER + "=" + userId + ";";
+        logger.info("Vehicle Booking Payment records: " + query);
         return query;
     }
 

@@ -12,6 +12,7 @@ import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingDbColumnNames;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,5 +74,18 @@ public class VehicleBookingDatabase implements IVehicleBookingDatabase {
     public boolean createVehicleBooking(IVehicleBooking vehicleBooking) {
         String query = queryBuilder.createVehicleBooking((VehicleBooking) vehicleBooking);
         return databaseExecutor.executeInsertQuery(query);
+    }
+
+    @Override
+    public VehicleBooking getLastVehicleBookingByUserId(int userId) {
+        String query = queryBuilder.getLastVehicleBookingByUserId(userId);
+        List<VehicleBooking> vehicleBooking = listToVehicles(databaseExecutor.executeSelectQuery(query));
+        if (vehicleBooking.size() > 0)
+        {
+            return vehicleBooking.get(0);
+        }
+        else {
+            return null;
+        }
     }
 }

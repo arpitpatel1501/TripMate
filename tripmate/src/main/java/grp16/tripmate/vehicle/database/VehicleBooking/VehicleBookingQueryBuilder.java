@@ -47,6 +47,15 @@ public class VehicleBookingQueryBuilder implements IVehicleBookingQueryBuilder {
     }
 
     @Override
+    public String getLastVehicleBookingByUserId(int userId)
+    {
+        String query = "SELECT * FROM " +
+                VehicleBookingDbColumnNames.TABLENAME +
+                " ORDER BY " + VehicleBookingDbColumnNames.ID+ " DESC;";
+        logger.info("query to get the last booking object : " + query);
+        return query;
+    }
+    @Override
     public String createVehicleBooking(VehicleBooking vehicleBooking) {
         String query = "INSERT INTO " + VehicleBookingDbColumnNames.TABLENAME +
                 " (" +
