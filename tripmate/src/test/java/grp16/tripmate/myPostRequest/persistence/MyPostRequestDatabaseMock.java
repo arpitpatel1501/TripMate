@@ -37,13 +37,6 @@ public class MyPostRequestDatabaseMock implements IMyPostRequestPersistence {
 
     @Override
     public boolean createJoinRequest(int postId) throws Exception {
-//        Map<String, Object> myPostRequest = new HashMap<>();
-//        myPostRequest.put("requestId", 29);
-//        myPostRequest.put("firstNameRequester", "Arpit");
-//        myPostRequest.put("lastNameRequester", "Patel");
-//        myPostRequest.put("idRequester", 40);
-//        myPostRequest.put("postId", postId);
-
         myPostRequestsDB.put(postId, myPostRequest);
 
         return postId == (Integer) myPostRequest.get("postId");
@@ -51,15 +44,6 @@ public class MyPostRequestDatabaseMock implements IMyPostRequestPersistence {
 
     @Override
     public List<Map<String, Object>> getMyPostRequests() {
-//        List<Map<String, Object>> myPostRequests = new ArrayList<>();
-//        Map<String, Object> myPostRequest = new HashMap<>();
-//        myPostRequest.put("requestId", 29);
-//        myPostRequest.put("firstNameRequester", "Arpit");
-//        myPostRequest.put("lastNameRequester", "Patel");
-//        myPostRequest.put("idRequester", 40);
-//        myPostRequest.put("postId", 1);
-//
-//        myPostRequests.add(myPostRequest);
         return myPostRequests;
     }
 
