@@ -9,6 +9,8 @@
 <body>
 <h1 th:text="${title}"></h1>
 
+<B>Please enter the code that you got through mail.</B>
+
 <form action="#" th:action="@{/verify}" method="post">
     <p>Code: <input type="text" th:name="code" /></p>
     <p><input type="submit" value="Verify"/> </p>
