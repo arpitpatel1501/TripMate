@@ -16,8 +16,6 @@ public class EmailNotification implements INotification{
 
     JavaMailSenderImpl javaMailSenderImpl = null;
     private JavaMailSender mailSender = null;
-    private SimpleMailMessage message;
-    private Map<String, String> mailSenderProperties;
     public EmailNotification() {
         try {
             javaMailSenderImpl = new JavaMailSenderImpl();
@@ -44,6 +42,8 @@ public class EmailNotification implements INotification{
     @Override
     public void sendNotification(String sendTo, String subject, String body) throws Exception {
 
+        SimpleMailMessage message;
+
         String sendBy = MyProperties.getInstance().getMailSender();
         message = new SimpleMailMessage();
         message.setFrom(sendBy);
@@ -56,7 +56,9 @@ public class EmailNotification implements INotification{
     }
 
     private Map<String, String> setMailSenderProperties() {
-        mailSenderProperties = new HashMap<String, String>();
+        Map<String, String> mailSenderProperties;
+
+        mailSenderProperties = new HashMap<>();
         mailSenderProperties.put("mail.transport.protocol", "smtp");
         mailSenderProperties.put("mail.smtp.auth", "true");
         mailSenderProperties.put("mail.smtp.starttls.enable", "true");
