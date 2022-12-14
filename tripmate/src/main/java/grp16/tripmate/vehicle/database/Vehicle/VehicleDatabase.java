@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class VehicleDatabase implements IVehicleDatabase
-{
+public class VehicleDatabase implements IVehicleDatabase {
     private final ILogger logger = new MyLoggerAdapter(this);
 
     IVehicleQueryBuilder queryBuilder;
@@ -23,19 +22,18 @@ public class VehicleDatabase implements IVehicleDatabase
 
     private final IDatabaseExecutor databaseExecutor;
 
-    public VehicleDatabase()
-    {
+    public VehicleDatabase() {
         queryBuilder = VehiclesQueryBuilder.getInstance();
         databaseExecutor = new DatabaseExecutor();
         factory = VehicleFactory.getInstance();
     }
 
-    public List<Vehicle> getAllVehicles(){
+    public List<Vehicle> getAllVehicles() {
         String query = queryBuilder.getAllVehicles();
         return listToVehicles(databaseExecutor.executeSelectQuery(query));
     }
 
-    private List<Vehicle> listToVehicles(List<Map<String, Object>> resultSet){
+    private List<Vehicle> listToVehicles(List<Map<String, Object>> resultSet) {
         List<Vehicle> vehicles = new ArrayList<>();
         for (Map<String, Object> rs : resultSet) {
             Vehicle vehicleObj = factory.getNewVehicle();
@@ -54,15 +52,19 @@ public class VehicleDatabase implements IVehicleDatabase
         return vehicles;
     }
 
-    public Vehicle getVehicleById(int vehicleId){
+    public Vehicle getVehicleById(int vehicleId) {
         String query = queryBuilder.getVehicleById(vehicleId);
         List<Vehicle> listOfVehicles = listToVehicles(databaseExecutor.executeSelectQuery(query));
-        if (listOfVehicles.size() > 0)
-        {
+        if (listOfVehicles.size() > 0) {
             return listOfVehicles.get(0);
-        }
-        else {
+        } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean deleteVehiclesByPostId(int postId) {
+        String query = queryBuilder.deleteVehiclesByPostId(postId);
+        return databaseExecutor.executeDeleteQuery(query);
     }
 }
