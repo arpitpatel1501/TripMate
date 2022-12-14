@@ -133,9 +133,7 @@ public class UserController {
         this.codeMessage = "Please enter the code that you got on " + this.emailForgetPassword;
 
         try {
-            verification.sendUniqueCode(this.emailForgetPassword,
-                    "Your reset password code is: ",
-                    "User reset password for Tripmate");
+            verification.sendUniqueCode(this.emailForgetPassword, "Your reset password code is: ", "User reset password for Tripmate");
         } catch (Exception e) {
             model.addAttribute("error", "User Not exists");
             logger.info("User Not exists");
@@ -176,9 +174,7 @@ public class UserController {
         model.addAttribute("email", this.emailForgetPassword);
         String password = request.getParameter("password");
         if (user.changeUserPassword(userDatabase, this.emailForgetPassword, PasswordEncoder.getInstance().encodeString(password))) {
-            notification.sendNotification(this.emailForgetPassword,
-                    "Password Updated",
-                    "Password Reset successfully");
+            notification.sendNotification(this.emailForgetPassword, "Password Updated", "Password Reset successfully");
 
             return "redirect:/login";
         } else {
