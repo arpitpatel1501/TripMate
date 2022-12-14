@@ -18,7 +18,7 @@ public class UserQueryGenerator implements IUserQueryGenerator {
 
     @Override
     public String getUserByUsername(String username) {
-        return "SELECT `" + UserDbColumnNames.ID + "`," + "    `" + UserDbColumnNames.FIRSTNAME + "`," + "    `" + UserDbColumnNames.LASTNAME + "`," + "    `" + UserDbColumnNames.USERNAME + "`," + "    `" + UserDbColumnNames.PASSWORD + "`," + "    `" + UserDbColumnNames.BIRTHDATE + "`," + "    `" + UserDbColumnNames.GENDER + "` " + "FROM `" + UserDbColumnNames.TABLE_NAME + "` where " + UserDbColumnNames.USERNAME + " = \"" + username + "\"";
+        return "SELECT `" + UserDbColumnNames.ID + "`," + "    `" + UserDbColumnNames.FIRSTNAME + "`," + "    `" + UserDbColumnNames.LASTNAME + "`," + "    `" + UserDbColumnNames.USERNAME + "`," + "    `" + UserDbColumnNames.PASSWORD + "`," + "    `" + UserDbColumnNames.BIRTHDATE + "`," + "    `" + UserDbColumnNames.GENDER + "` " + "FROM `" + UserDbColumnNames.TABLE_NAME + "` where " + UserDbColumnNames.USERNAME + " = \'" + username + "\'";
     }
 
     @Override
