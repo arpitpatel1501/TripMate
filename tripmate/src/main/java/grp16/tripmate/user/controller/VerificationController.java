@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class VerificationController {
     private final ILogger logger = new MyLoggerAdapter(this);
-    IVerification verification;
+    private IVerification verification;
     private User user;
 
     private final IUserDatabase database;

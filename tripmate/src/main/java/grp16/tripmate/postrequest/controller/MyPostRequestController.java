@@ -26,7 +26,7 @@ public class MyPostRequestController {
     private final IMyPostRequestDB myPostRequestDB;
     private final IMyPostRequest myPostRequest;
     private final ILogger logger;
-    INotification notification;
+    private INotification notification;
 
     MyPostRequestController() throws Exception {
         myPostRequestFactory = MyPostRequestFactory.getInstance();

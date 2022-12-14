@@ -18,11 +18,11 @@ public class NotificationFactory implements INotificationFactory {
     }
 
     @Override
-    public INotification createEmailNotification() throws Exception {
+    public INotification createEmailNotification() {
         return new EmailNotification();
     }
     @Override
-    public IVerification createVerificationMethod() throws Exception {
+    public IVerification createVerificationMethod() {
         return new EmailVerification();
     }
 }
