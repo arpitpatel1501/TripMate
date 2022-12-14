@@ -58,8 +58,8 @@ public class UserController {
             user.validateUser(userDatabase, passwordEncoder);
             logger.info(user.getUsername() + " Login SUCCESS");
             return "redirect:/dashboard";
-        } catch (InvalidUsernamePasswordException | NoSuchAlgorithmException e) {
-            model.addAttribute("error", e.getMessage());
+        } catch (InvalidUsernamePasswordException | IndexOutOfBoundsException | NoSuchAlgorithmException e) {
+            model.addAttribute("error", "Invalid Username or Password");
             e.printStackTrace();
             return "login";
         }

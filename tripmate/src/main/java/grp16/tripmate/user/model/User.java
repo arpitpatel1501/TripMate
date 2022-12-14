@@ -104,7 +104,6 @@ public class User implements IUser {
 
     public boolean validateUser(IUserPersistence userDatabase, IPasswordEncoder passwordEncoder) throws InvalidUsernamePasswordException, NoSuchAlgorithmException {
         User userFromDb = mapToUser(userDatabase.getUserByUsername(this.getUsername()));
-        logger.info(userFromDb.toString());
         boolean isValidUser = userFromDb.getUsername().equals(this.getUsername()) && userFromDb.getPassword().equals(this.getPassword());
         if (isValidUser) {
             logger.info("Current User: " + userFromDb);
@@ -167,8 +166,7 @@ public class User implements IUser {
         Map<String, Object> result = userDatabase.getUserByUsername(email);
         if (result.size() == 0) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
