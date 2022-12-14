@@ -33,7 +33,7 @@ public class VehicleDatabase implements IVehicleDatabase {
         categoryFactory = VehicleCategoryFactory.getInstance();
     }
 
-
+    @Override
     public List<Vehicle> getAllVehicles() throws ParseException {
         String query = queryBuilder.getAllVehicles();
         List<Vehicle> vehicles = listToVehicles(databaseExecutor.executeSelectQuery(query));
@@ -70,6 +70,7 @@ public class VehicleDatabase implements IVehicleDatabase {
         return vehicles;
     }
 
+    @Override
     public Vehicle getVehicleById(int vehicleId) throws ParseException {
         String query = queryBuilder.getVehicleById(vehicleId);
         List<Vehicle> listOfVehicles = listToVehicles(databaseExecutor.executeSelectQuery(query));
