@@ -38,7 +38,7 @@ public class VerificationController {
     }
 
     @PostMapping("/verify")
-    public String CuserVerificationCode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String userVerificationCode(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String code = request.getParameter("code");
 
         try {
