@@ -1,15 +1,15 @@
-package grp16.tripmate.request.model.factory;
+package grp16.tripmate.joinRequest.model.factory;
 
 import grp16.tripmate.db.execute.DatabaseExecutor;
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.request.persistence.IMyRequestPersistence;
-import grp16.tripmate.request.persistence.IMyRequestQueryGenerator;
-import grp16.tripmate.request.persistence.MyRequestPersistence;
-import grp16.tripmate.request.persistence.MyRequestQueryGenerator;
-import grp16.tripmate.request.model.IMyRequest;
-import grp16.tripmate.request.model.MyRequest;
+import grp16.tripmate.joinRequest.persistence.IMyRequestPersistence;
+import grp16.tripmate.joinRequest.persistence.IMyRequestQueryGenerator;
+import grp16.tripmate.joinRequest.persistence.MyRequestPersistence;
+import grp16.tripmate.joinRequest.persistence.MyRequestQueryGenerator;
+import grp16.tripmate.joinRequest.model.IMyRequest;
+import grp16.tripmate.joinRequest.model.MyRequest;
 
 public class MyRequestFactory implements IMyRequestFactory {
     private static IMyRequestFactory instance = null;

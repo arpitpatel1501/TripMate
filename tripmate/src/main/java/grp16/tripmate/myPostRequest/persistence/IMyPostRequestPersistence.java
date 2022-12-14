@@ -1,6 +1,6 @@
-package grp16.tripmate.postrequest.persistence;
+package grp16.tripmate.myPostRequest.persistence;
 
-import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 
 import java.util.List;
 import java.util.Map;

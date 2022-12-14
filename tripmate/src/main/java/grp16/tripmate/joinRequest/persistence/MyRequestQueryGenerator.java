@@ -1,4 +1,4 @@
-package grp16.tripmate.request.persistence;
+package grp16.tripmate.joinRequest.persistence;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;

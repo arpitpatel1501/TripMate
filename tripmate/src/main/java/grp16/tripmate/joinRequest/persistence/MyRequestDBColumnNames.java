@@ -1,4 +1,4 @@
-package grp16.tripmate.request.persistence;
+package grp16.tripmate.joinRequest.persistence;
 
 public class MyRequestDBColumnNames {
     public static final String TABLE_NAME = "PostRequest";

@@ -1,8 +1,8 @@
-package grp16.tripmate.request.model;
+package grp16.tripmate.joinRequest.model;
 
-import grp16.tripmate.postrequest.model.PostRequestStatus;
-import grp16.tripmate.request.persistence.IMyRequestPersistence;
-import grp16.tripmate.request.model.factory.IMyRequestFactory;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
+import grp16.tripmate.joinRequest.persistence.IMyRequestPersistence;
+import grp16.tripmate.joinRequest.model.factory.IMyRequestFactory;
 
 import java.util.List;
 

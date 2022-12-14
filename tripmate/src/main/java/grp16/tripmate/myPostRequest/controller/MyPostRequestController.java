@@ -1,14 +1,14 @@
-package grp16.tripmate.postrequest.controller;
+package grp16.tripmate.myPostRequest.controller;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.factory.NotificationFactory;
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.postrequest.model.IMyPostRequest;
-import grp16.tripmate.postrequest.model.MyPostRequest;
-import grp16.tripmate.postrequest.model.factory.IMyPostRequestFactory;
-import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
-import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.model.IMyPostRequest;
+import grp16.tripmate.myPostRequest.model.MyPostRequest;
+import grp16.tripmate.myPostRequest.model.factory.IMyPostRequestFactory;
+import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 import org.springframework.stereotype.Controller;

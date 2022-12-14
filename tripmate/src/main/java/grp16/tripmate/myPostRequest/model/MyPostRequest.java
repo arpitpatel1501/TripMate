@@ -1,7 +1,7 @@
-package grp16.tripmate.postrequest.model;
+package grp16.tripmate.myPostRequest.model;
 
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
-import grp16.tripmate.postrequest.model.factory.MyPostRequestFactory;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.model.factory.MyPostRequestFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

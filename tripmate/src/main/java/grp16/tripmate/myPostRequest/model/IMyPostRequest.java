@@ -1,6 +1,6 @@
-package grp16.tripmate.postrequest.model;
+package grp16.tripmate.myPostRequest.model;
 
-import grp16.tripmate.postrequest.persistence.IMyPostRequestPersistence;
+import grp16.tripmate.myPostRequest.persistence.IMyPostRequestPersistence;
 
 import java.util.List;
 

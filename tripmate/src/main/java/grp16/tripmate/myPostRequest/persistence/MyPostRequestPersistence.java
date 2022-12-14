@@ -1,9 +1,9 @@
-package grp16.tripmate.postrequest.persistence;
+package grp16.tripmate.myPostRequest.persistence;
 
 import grp16.tripmate.db.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.session.SessionManager;
 import grp16.tripmate.user.database.UserDbColumnNames;
 

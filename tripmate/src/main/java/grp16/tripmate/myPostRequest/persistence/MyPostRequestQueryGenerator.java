@@ -1,9 +1,9 @@
-package grp16.tripmate.postrequest.persistence;
+package grp16.tripmate.myPostRequest.persistence;
 
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.post.database.PostDbColumnNames;
-import grp16.tripmate.postrequest.model.PostRequestStatus;
+import grp16.tripmate.myPostRequest.model.PostRequestStatus;
 import grp16.tripmate.user.database.UserDbColumnNames;
 
 public class MyPostRequestQueryGenerator implements IMyPostRequestQueryGenerator {
