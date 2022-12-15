@@ -1,19 +1,17 @@
 package grp16.tripmate.post.model.factory;
 
-import grp16.tripmate.db.execute.DatabaseExecutor;
-import grp16.tripmate.db.execute.IDatabaseExecutor;
+import grp16.tripmate.persistence.execute.DatabaseExecutor;
+import grp16.tripmate.persistence.execute.IDatabaseExecutor;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.IPostsQueryGenerator;
-import grp16.tripmate.post.database.PostDatabase;
-import grp16.tripmate.post.database.PostsQueryGenerator;
-import grp16.tripmate.post.database.feedback.FeedbackDatabase;
-import grp16.tripmate.post.database.feedback.FeedbackQueryGenerator;
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
-import grp16.tripmate.post.database.feedback.IFeedbackQueryGenerator;
-import grp16.tripmate.post.model.feedback.Feedback;
-import grp16.tripmate.post.model.feedback.IFeedback;
+import grp16.tripmate.post.persistance.IPostPersistence;
+import grp16.tripmate.post.persistance.IPostsQueryGenerator;
+import grp16.tripmate.post.persistance.PostPersistence;
+import grp16.tripmate.post.persistance.PostsQueryGenerator;
+import grp16.tripmate.post.persistance.feedback.FeedbackPersistence;
+import grp16.tripmate.post.persistance.feedback.FeedbackQueryGenerator;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
+import grp16.tripmate.post.persistance.feedback.IFeedbackQueryGenerator;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostValidator;
@@ -39,8 +37,8 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IPostDatabase makePostDatabase() {
-        return new PostDatabase(makeNewDatabaseExecutor(), makePostQueryBuilder());
+    public IPostPersistence makePostDatabase() {
+        return new PostPersistence(makeNewDatabaseExecutor(), makePostQueryBuilder());
     }
 
     @Override
@@ -49,8 +47,8 @@ public class PostFactory implements IPostFactory {
     }
 
     @Override
-    public IFeedbackDatabase makeFeedbackDatabase() {
-        return new FeedbackDatabase(makeNewDatabaseExecutor(), makeFeedbackQueryBuilder());
+    public IFeedbackPersistence makeFeedbackDatabase() {
+        return new FeedbackPersistence(makeNewDatabaseExecutor(), makeFeedbackQueryBuilder());
     }
 
     @Override
@@ -72,6 +70,4 @@ public class PostFactory implements IPostFactory {
     public IDatabaseExecutor makeNewDatabaseExecutor() {
         return new DatabaseExecutor();
     }
-
-
 }

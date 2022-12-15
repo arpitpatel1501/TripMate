@@ -1,16 +1,14 @@
 package grp16.tripmate.post.model;
 
-import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.persistance.IPostPersistence;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.post.model.exception.MinAgeGreaterThanMaxAgeException;
 import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
 import grp16.tripmate.post.model.exception.StartDateBeforeTodayException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBooking;
 
 import java.text.DateFormat;
@@ -24,8 +22,7 @@ import java.util.List;
  **https://www.baeldung.com/java-simple-date-format
  */
 
-public class Post extends PostSubject implements IPost {
-    private final ILogger logger = new MyLoggerAdapter(this);
+public class Post implements IPost {
     private int id;
     private int owner_id;
     private String title;
@@ -45,46 +42,42 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public boolean createPost(IPostDatabase database) throws Exception {
-        boolean isPostCreated = database.createPost(this);
-        if (isPostCreated) {
-            notifyObservers();
-        }
-        return isPostCreated;
+    public boolean createPost(IPostPersistence database) throws Exception {
+        return database.createPost(this);
     }
 
     @Override
-    public List<Post> getPostsByUserId(IPostDatabase database, int userId) {
+    public List<Post> getPostsByUserId(IPostPersistence database, int userId) {
         return database.getPostsByUserId(userId);
     }
 
     @Override
-    public List<Post> getAllPosts(IPostDatabase database, int loggedInUser) {
+    public List<Post> getAllPosts(IPostPersistence database, int loggedInUser) {
         return database.getAllPosts(loggedInUser);
     }
 
     @Override
-    public Post getPostByPostId(IPostDatabase database, int postId) {
+    public Post getPostByPostId(IPostPersistence database, int postId) {
         return database.getPostByPostId(postId);
     }
 
     @Override
-    public boolean updatePost(IPostDatabase database) {
+    public boolean updatePost(IPostPersistence database) {
         return database.updatePost(this);
     }
 
     @Override
-    public boolean deletePost(IPostDatabase database) {
+    public boolean deletePost(IPostPersistence database) {
         return database.deletePost(this.getId());
     }
 
     @Override
-    public boolean hidePost(IPostDatabase database) {
+    public boolean hidePost(IPostPersistence database) {
         return database.hidePost(this.getId());
     }
 
     @Override
-    public List<Feedback> getFeedbacks(IPostDatabase database, IFeedbackDatabase feedbackDatabase) throws Exception {
+    public List<Feedback> getFeedbacks(IPostPersistence database, IFeedbackPersistence feedbackDatabase) throws Exception {
         return database.getFeedbacks(feedbackDatabase, this.getId());
     }
 
@@ -105,7 +98,7 @@ public class Post extends PostSubject implements IPost {
     }
 
     @Override
-    public List<VehicleBooking> getVehiclesAssociatedWithCurrentPost(IPostDatabase database, IVehicleBookingDatabase vehicleBookingDatabase) {
+    public List<VehicleBooking> getVehiclesAssociatedWithCurrentPost(IPostPersistence database, IVehicleBookingPersistence vehicleBookingDatabase) {
         return database.getVehicles(vehicleBookingDatabase, this.getId());
     }
 
@@ -221,7 +214,6 @@ public class Post extends PostSubject implements IPost {
     public void setHidden(int i) {
         isHidden = i == 0;
     }
-
 
     public int getOwner_id() {
         return owner_id;

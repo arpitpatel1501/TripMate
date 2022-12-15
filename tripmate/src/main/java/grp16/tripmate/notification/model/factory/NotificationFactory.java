@@ -6,20 +6,26 @@ import grp16.tripmate.notification.model.INotification;
 import grp16.tripmate.notification.model.IVerification;
 
 public class NotificationFactory implements INotificationFactory {
-    private static INotificationFactory intance;
+    private static INotificationFactory instance;
+
+    private NotificationFactory() {
+
+    }
+
     public static INotificationFactory getInstance() {
-        if (intance == null) {
-            intance = new NotificationFactory();
+        if (instance == null) {
+            instance = new NotificationFactory();
         }
-        return intance;
+        return instance;
     }
 
     @Override
-    public INotification createEmailNotification() throws Exception {
+    public INotification createEmailNotification() {
         return new EmailNotification();
     }
+
     @Override
-    public IVerification createVerificationMethod() throws Exception {
+    public IVerification createVerificationMethod() {
         return new EmailVerification();
     }
 }

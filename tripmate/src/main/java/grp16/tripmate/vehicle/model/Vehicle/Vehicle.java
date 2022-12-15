@@ -1,15 +1,14 @@
 package grp16.tripmate.vehicle.model.Vehicle;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.persistence.connection.DatabaseConnection;
+import grp16.tripmate.persistence.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleQueryBuilder;
-import grp16.tripmate.vehicle.database.Vehicle.VehicleDatabase;
-import grp16.tripmate.vehicle.model.Vehicle.IVehicleFactory;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehiclePersistence;
+import grp16.tripmate.vehicle.persistence.Vehicle.IVehicleQueryGenerator;
 import grp16.tripmate.vehicle.model.VehicleCategory.VehicleCategory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +24,30 @@ public class Vehicle implements IVehicle
     private boolean isForLongJourney;
     private float ratePerKm;
     private String description;
+    private int categoryId;
+
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private final IDatabaseConnection dbConnection;
-    private final IVehicleQueryBuilder queryBuilder;
-
+    private final IVehicleQueryGenerator queryBuilder;
     private static IVehicleFactory vehicleFactory = null;
-
-    private final IVehicleDatabase database;
+    private final IVehiclePersistence database;
 
     public Vehicle()
     {
@@ -70,9 +87,14 @@ public class Vehicle implements IVehicle
         return vehicleCategory.getName();
     }
 
-    public void setVehicleCategory(int vehicleCategoryId)
+    public void setVehicleCategory(VehicleCategory vehicleCategory)
     {
-        this.vehicleCategory = new VehicleCategory(vehicleCategoryId);
+        this.vehicleCategory = vehicleCategory;
+    }
+
+    public void setVehicleCategoryId(int categoryId)
+    {
+        this.vehicleCategory = new VehicleCategory(categoryId);
     }
 
     public int getId() {
@@ -114,13 +136,11 @@ public class Vehicle implements IVehicle
     public void setIsForLongJourney(boolean forLongJourney) {
         isForLongJourney = forLongJourney;
     }
-    public List<Vehicle> getAllVehicles()
-    {
+    public List<Vehicle> getAllVehicles() throws ParseException {
         return database.getAllVehicles();
     }
 
-    public Vehicle getVehicleById(int vehicleId)
-    {
+    public Vehicle getVehicleById(int vehicleId) throws ParseException {
         return database.getVehicleById(vehicleId);
     }
 
@@ -139,8 +159,7 @@ public class Vehicle implements IVehicle
         return new ArrayList<>();
     }
 
-    public float getVehicleRatePerKmByVehicleId()
-    {
+    public float getVehicleRatePerKmByVehicleId() throws ParseException {
         Vehicle vehicleObj = database.getVehicleById(this.id);
         return vehicleObj.getRatePerKm();
     }

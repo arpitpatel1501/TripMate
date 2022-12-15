@@ -1,9 +1,9 @@
 package grp16.tripmate.vehicle.model.VehicleBookingPayment;
 
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryBuilder;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.VehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.VehicleBookingPaymentQueryBuilder;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.IVehicleBookingPaymentPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.IVehicleBookingPaymentQueryGenerator;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.VehicleBookingPaymentPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.VehicleBookingPaymentQueryGenerator;
 
 public class VehicleBookingPaymentFactory implements IVehicleBookingPaymentFactory
 {
@@ -27,12 +27,12 @@ public class VehicleBookingPaymentFactory implements IVehicleBookingPaymentFacto
     }
 
     @Override
-    public IVehicleBookingPaymentDatabase getVehicleBookingPaymentDatabase() {
-        return new VehicleBookingPaymentDatabase();
+    public IVehicleBookingPaymentPersistence getVehicleBookingPaymentDatabase() {
+        return new VehicleBookingPaymentPersistence();
     }
 
     @Override
-    public IVehicleBookingPaymentQueryBuilder getVehicleBookingPaymentQueryBuilder() {
-        return VehicleBookingPaymentQueryBuilder.getInstance();
+    public IVehicleBookingPaymentQueryGenerator getVehicleBookingPaymentQueryBuilder() {
+        return VehicleBookingPaymentQueryGenerator.getInstance();
     }
 }

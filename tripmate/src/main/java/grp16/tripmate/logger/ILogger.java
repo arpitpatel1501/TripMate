@@ -7,5 +7,4 @@ public interface ILogger {
 
     void warn(String message);
 
-
 }

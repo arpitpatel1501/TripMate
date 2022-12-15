@@ -4,6 +4,7 @@ import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
 import grp16.tripmate.user.model.factory.IUserFactory;
 import grp16.tripmate.user.model.factory.UserFactory;
+import grp16.tripmate.user.persistence.UserPersistenceMock;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,15 +15,16 @@ import java.text.SimpleDateFormat;
 
 @SpringBootTest
 class UserTest {
-    private final ILogger logger = new MyLoggerAdapter(this);
-
     private final IUserFactory userFactory;
 
     private User user;
 
+    private final UserPersistenceMock userPersistence;
+
     UserTest() throws NoSuchAlgorithmException, ParseException {
         userFactory = UserFactory.getInstance();
         createTestUser();
+        userPersistence = new UserPersistenceMock();
     }
 
     private void createTestUser() throws NoSuchAlgorithmException, ParseException {
@@ -36,113 +38,64 @@ class UserTest {
         user.setGender("Male");
     }
 
-
     @Test
-    void getId() {
-        Assertions.assertEquals(1, user.getId());
-    }
-
-    @Test
-    void setId() {
-        user.setId(2);
-        Assertions.assertEquals(2, user.getId());
-    }
-
-    @Test
-    void getFirstname() {
-        Assertions.assertEquals("firstname", user.getFirstname());
-    }
-
-    @Test
-    void setFirstname() {
-        user.setFirstname("first name 2");
-        Assertions.assertEquals("first name 2", user.getFirstname());
-    }
-
-    @Test
-    void getLastname() {
-        Assertions.assertEquals("lastname", user.getLastname());
-    }
-
-    @Test
-    void setLastname() {
-        user.setLastname("last name 2");
-        Assertions.assertEquals("last name 2", user.getLastname());
-    }
-
-    @Test
-    void getBirthDate() throws ParseException {
-        Assertions.assertEquals(new SimpleDateFormat("dd-MM-yyyy").parse("11-01-1999"), user.getBirthDate());
-    }
-
-    @Test
-    void setBirthDate() throws ParseException {
-        user.setBirthDate("12-01-1999");
-        Assertions.assertEquals(new SimpleDateFormat("yyyy-MM-dd").parse("12-01-1999"), user.getBirthDate());
-    }
-
-    @Test
-    void getGender() {
-        Assertions.assertEquals("Male", user.getGender());
-    }
-
-    @Test
-    void setGender() {
-        user.setGender("Female");
-        Assertions.assertEquals("Female", user.getGender());
-    }
-
-    @Test
-    void getUsername() {
-        Assertions.assertEquals("uname", user.getUsername());
-    }
-
-    @Test
-    void setUsername() {
-        user.setUsername("username 2");
-        Assertions.assertEquals("username 2", user.getUsername());
-    }
-
-    @Test
-    void getPassword() throws NoSuchAlgorithmException {
-        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password"), user.getPassword());
-    }
-
-    @Test
-    void setPassword() throws NoSuchAlgorithmException {
-        user.setPassword("password 2");
-        Assertions.assertEquals(userFactory.makePasswordEncoder().encodeString("password 2"), user.getPassword());
-    }
-
-    @Test
-    void testToString() {
-        logger.info(user.toString());
+    void testToStringTest() {
         Assertions.assertEquals(user.toString(), user.toString());
     }
 
     @Test
-    void validateUser() {
+    void createUserPositiveTest() {
+        Assertions.assertTrue(userPersistence.insertUser(user));
     }
 
     @Test
-    void createUser() {
+    void createUserNegativeTest() {
+        Assertions.assertFalse(userPersistence.insertUser(user));
     }
 
     @Test
-    void getLoggedInUser() {
+    void validateUserPositiveTest() throws NoSuchAlgorithmException {
+        userPersistence.insertUser(user);
+        Assertions.assertEquals(user, userPersistence.getUserByUsername("uname"));
     }
 
     @Test
-    void dateToSQLDate() {
+    void validateUserNegativeTest() throws NoSuchAlgorithmException {
+        Assertions.assertNull(userPersistence.getUserByUsername("sharshil1299@gmail.com"));
+    }
+
+    @Test
+    void dateToSQLDateTest() {
         String SQLBirthDate = user.dateToSQLDate(user.getBirthDate());
         Assertions.assertEquals("1999-01-11", SQLBirthDate);
     }
 
     @Test
-    void changeUserDetails() {
+    void changeUserDetailsPositiveTest() throws Exception {
+        Assertions.assertTrue(userPersistence.updateUser(user));
     }
 
     @Test
-    void getUserById() {
+    void changeUserDetailsNegativeTest() throws Exception {
+        user.setId(4);
+        Assertions.assertFalse(userPersistence.updateUser(user));
+    }
+
+    @Test
+    void checkUserExistTest() throws NoSuchAlgorithmException {
+        userPersistence.insertUser(user);
+        Assertions.assertEquals(user, userPersistence.getUserByUsername("uname"));
+    }
+
+    @Test
+    void checkUserExistNegativeTest() throws NoSuchAlgorithmException {
+        Assertions.assertNull(userPersistence.getUserByUsername("arpitpatel@gmail.com"));
+    }
+
+    @Test
+    void changeUserPassword() throws NoSuchAlgorithmException {
+        String email = "arpitpatel1501@gmail.com";
+        String password = "newpassword";
+        Assertions.assertTrue(userPersistence.changeUserPassword(email, password));
     }
 }

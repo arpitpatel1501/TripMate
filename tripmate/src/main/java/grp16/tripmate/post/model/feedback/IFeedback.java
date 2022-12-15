@@ -1,8 +1,7 @@
 package grp16.tripmate.post.model.feedback;
 
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
 
 public interface IFeedback {
-    boolean createFeedback(IFeedbackDatabase database);
-    boolean updateFeedback(IFeedbackDatabase database);
+    boolean createFeedback(IFeedbackPersistence database);
 }

@@ -1,8 +1,8 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryBuilder;
-import grp16.tripmate.vehicle.database.VehicleBooking.VehicleBookingDatabase;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingQueryGenerator;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.VehicleBookingPersistence;
 
 public class VehicleBookingFactory implements IVehicleBookingFactory {
     private static IVehicleBookingFactory instance;
@@ -24,12 +24,17 @@ public class VehicleBookingFactory implements IVehicleBookingFactory {
     }
 
     @Override
-    public IVehicleBookingDatabase getVehicleBookingDatabase() {
-        return new VehicleBookingDatabase();
+    public IVehicleBookingPersistence getVehicleBookingDatabase() {
+        return new VehicleBookingPersistence();
     }
 
     @Override
-    public IVehicleBookingQueryBuilder getVehicleBookingQueryBuilder() {
+    public IVehicleBookingQueryGenerator getVehicleBookingQueryBuilder() {
         return null;
+    }
+
+    @Override
+    public VehicleBookingValidator getVehicleBookingValidator(){
+        return new VehicleBookingValidator();
     }
 }

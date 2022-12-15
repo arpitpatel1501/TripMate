@@ -1,11 +1,12 @@
 package grp16.tripmate.vehicle.model.VehicleBooking;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.persistence.connection.DatabaseConnection;
+import grp16.tripmate.persistence.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingQueryBuilder;
+import grp16.tripmate.post.model.exception.StartDateAfterEndDateException;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingQueryGenerator;
 import grp16.tripmate.vehicle.model.Vehicle.VehicleFactory;
 
 import java.text.DateFormat;
@@ -25,11 +26,11 @@ public class VehicleBooking implements IVehicleBooking {
     private Date bookingEndDate;
     private boolean hasPaid;
     private final IDatabaseConnection dbConnection;
-    private final IVehicleBookingQueryBuilder queryBuilder;
+    private final IVehicleBookingQueryGenerator queryBuilder;
 
     private static IVehicleBookingFactory vehicleBookingFactory = null;
 
-    private final IVehicleBookingDatabase database;
+    private final IVehicleBookingPersistence database;
 
     public VehicleBooking() {
         vehicleBookingFactory = VehicleBookingFactory.getInstance();
@@ -41,8 +42,7 @@ public class VehicleBooking implements IVehicleBooking {
         this.setBookingEndDate(new Date());
     }
 
-    public float getTotalBookingAmount()
-    {
+    public float getTotalBookingAmount() throws ParseException {
         return VehicleFactory.getInstance().getNewVehicle().getVehicleById(
                 this.vehicleId).getVehicleRatePerKmByVehicleId() * this.totalKm;
     }
@@ -133,5 +133,20 @@ public class VehicleBooking implements IVehicleBooking {
     @Override
     public VehicleBooking getVehicleBookingByBookingId(int bookingId) {
         return null;
+    }
+
+    @Override
+    public boolean createVehicleBooking(IVehicleBookingPersistence vehicleBookingDatabaseObj)
+    {
+        return vehicleBookingDatabaseObj.createVehicleBooking(this);
+    }
+
+    public VehicleBooking getLastVehicleBookingByUserId(int userId)
+    {
+        return database.getLastVehicleBookingByUserId(userId);
+    }
+
+    public void validateBooking(VehicleBookingValidator validator) throws ParseException, StartDateAfterEndDateException {
+        validator.isStartDateBeforeEndDate(this);
     }
 }

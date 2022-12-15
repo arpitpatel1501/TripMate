@@ -1,12 +1,11 @@
 package grp16.tripmate.vehicle.model.VehicleBookingPayment;
 
-import grp16.tripmate.db.connection.DatabaseConnection;
-import grp16.tripmate.db.connection.IDatabaseConnection;
+import grp16.tripmate.persistence.connection.DatabaseConnection;
+import grp16.tripmate.persistence.connection.IDatabaseConnection;
 import grp16.tripmate.logger.ILogger;
 import grp16.tripmate.logger.MyLoggerAdapter;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentDatabase;
-import grp16.tripmate.vehicle.database.VehicleBookingPayment.IVehicleBookingPaymentQueryBuilder;
-import grp16.tripmate.vehicle.database.Vehicle.IVehicleDatabase;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.IVehicleBookingPaymentPersistence;
+import grp16.tripmate.vehicle.persistence.VehicleBookingPayment.IVehicleBookingPaymentQueryGenerator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -72,11 +71,11 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
     }
 
     private final IDatabaseConnection dbConnection;
-    private final IVehicleBookingPaymentQueryBuilder queryBuilder;
+    private final IVehicleBookingPaymentQueryGenerator queryBuilder;
 
     private static IVehicleBookingPaymentFactory vehicleBookingPaymentFactory = null;
 
-    private final IVehicleBookingPaymentDatabase database;
+    private final IVehicleBookingPaymentPersistence database;
 
     public VehicleBookingPayment()
     {
@@ -88,5 +87,11 @@ public class VehicleBookingPayment implements IVehicleBookingPayment
     @Override
     public List<VehicleBookingPayment> getVehicleBookingPaymentByUserId(int userId) throws ParseException {
         return database.getVehicleBookingPaymentByUserId(userId);
+    }
+
+    @Override
+    public boolean createVehicleBookingPayment(IVehicleBookingPaymentPersistence vehicleBookingPayment)
+    {
+        return vehicleBookingPayment.createVehicleBookingPayment(this);
     }
 }

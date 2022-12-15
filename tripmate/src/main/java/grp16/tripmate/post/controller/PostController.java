@@ -1,8 +1,8 @@
 package grp16.tripmate.post.controller;
 
 import grp16.tripmate.logger.ILogger;
-import grp16.tripmate.post.database.IPostDatabase;
-import grp16.tripmate.post.database.feedback.IFeedbackDatabase;
+import grp16.tripmate.post.persistance.IPostPersistence;
+import grp16.tripmate.post.persistance.feedback.IFeedbackPersistence;
 import grp16.tripmate.post.model.IPost;
 import grp16.tripmate.post.model.Post;
 import grp16.tripmate.post.model.PostValidator;
@@ -11,9 +11,8 @@ import grp16.tripmate.post.model.factory.PostFactory;
 import grp16.tripmate.post.model.feedback.Feedback;
 import grp16.tripmate.session.SessionEndedException;
 import grp16.tripmate.session.SessionManager;
-import grp16.tripmate.user.database.UserDbColumnNames;
-import grp16.tripmate.vehicle.database.VehicleBooking.IVehicleBookingDatabase;
-import grp16.tripmate.vehicle.model.VehicleBooking.IVehicleBookingFactory;
+import grp16.tripmate.user.persistence.UserDbColumnNames;
+import grp16.tripmate.vehicle.persistence.VehicleBooking.IVehicleBookingPersistence;
 import grp16.tripmate.vehicle.model.VehicleBooking.VehicleBookingFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,11 +33,10 @@ import java.util.List;
 public class PostController {
     private final ILogger logger;
     private final IPostFactory postFactory;
-    private final IPostDatabase postDatabase;
+    private final IPostPersistence postDatabase;
     private final PostValidator validator;
-    private final IFeedbackDatabase feedbackDatabase;
-    private final IVehicleBookingFactory vehicleBookingFactory;
-    private final IVehicleBookingDatabase vehicleBookingDatabase;
+    private final IFeedbackPersistence feedbackDatabase;
+    private final IVehicleBookingPersistence vehicleBookingDatabase;
 
     PostController() {
         postFactory = PostFactory.getInstance();
@@ -46,8 +44,7 @@ public class PostController {
         feedbackDatabase = postFactory.makeFeedbackDatabase();
         postDatabase = postFactory.makePostDatabase();
         validator = postFactory.makePostValidator();
-        vehicleBookingFactory = VehicleBookingFactory.getInstance();
-        vehicleBookingDatabase = vehicleBookingFactory.getVehicleBookingDatabase();
+        vehicleBookingDatabase = VehicleBookingFactory.getInstance().getVehicleBookingDatabase();
     }
 
     @GetMapping("/dashboard")
@@ -57,7 +54,7 @@ public class PostController {
             IPost post = postFactory.makeNewPost();
             List<Post> posts = post.getAllPosts(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-            return "listposts";
+            return "listPosts";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -70,7 +67,7 @@ public class PostController {
         Post myPost = (Post) postFactory.makeNewPost();
         model.addAttribute("title", "New Post");
         model.addAttribute("post", myPost);
-        return "createpost";
+        return "createPost";
     }
 
     @PostMapping("/createpost")
@@ -83,7 +80,7 @@ public class PostController {
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
-            return "createpost";
+            return "createPost";
         }
     }
 
@@ -94,7 +91,7 @@ public class PostController {
             Post post = (Post) postFactory.makeNewPost();
             List<Post> posts = post.getPostsByUserId(postDatabase, SessionManager.getInstance().getLoggedInUserId());
             model.addAttribute("posts", posts);
-            return "listposts";
+            return "listPosts";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -116,7 +113,7 @@ public class PostController {
             model.addAttribute("feedbacks", myPost.getFeedbacks(postDatabase, feedbackDatabase));
             model.addAttribute("canJoin", myPost.isEligibleToJoin());
             model.addAttribute("vehicles", myPost.getVehiclesAssociatedWithCurrentPost(postDatabase, vehicleBookingDatabase));
-            return "viewpost";
+            return "viewPost";
         } catch (SessionEndedException e) {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
@@ -138,7 +135,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatepost";
+        return "updatePost";
     }
 
     @PostMapping("/updatepost")
@@ -152,7 +149,7 @@ public class PostController {
             model.addAttribute("error", e.getMessage());
             e.printStackTrace();
         }
-        return "updatepost";
+        return "updatePost";
     }
 
     @PostMapping("/deletepost/{id}")
@@ -165,7 +162,7 @@ public class PostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
-            return "redirect:/viewpost/" + postId;
+            return "redirect:/viewPost/" + postId;
         }
     }
 
@@ -179,7 +176,7 @@ public class PostController {
             return "redirect:/dashboard";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", e.getMessage());
-            return "redirect:/viewpost/" + postId;
+            return "redirect:/viewPost/" + postId;
         }
     }
 
